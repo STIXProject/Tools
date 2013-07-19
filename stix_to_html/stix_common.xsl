@@ -25,6 +25,7 @@
     xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2">
     
 <xsl:output method="html" omit-xml-declaration="yes" indent="yes" media-type="text/html" version="4.0" />
+    <xsl:include href="cybox_common.xsl"/>
 
     <xsl:template name="processHeader">
         <xsl:for-each select="//stix:STIX_Package/stix:STIX_Header">        
@@ -297,13 +298,11 @@
                 <xsl:variable name="relationshipOrAssociationType" select="''" />
                 
                 (indicator within composition -- idref: <xsl:value-of select="fn:data(@idref)"/>)
-                <!--
                 <xsl:call-template name="headerAndExpandableContent">
                     <xsl:with-param name="targetId" select="$targetId"/>
                     <xsl:with-param name="isComposition" select="fn:true()"/>
                     <xsl:with-param name="relationshipOrAssociationType" select="''" />
                 </xsl:call-template>
-                -->
             </div>
         </xsl:if>
         
@@ -315,7 +314,11 @@
     
     
     <xsl:template match="indicator:Observable">
-        <div>(indicator observable)</div>
+        <!-- <div>(indicator observable)</div> -->
+        
+        <xsl:for-each select=".">
+            <xsl:call-template name="processObservableInObservableCompositionSimple" />
+        </xsl:for-each>
     </xsl:template>
     
     <xsl:template match="indicator:Indicated_TTP">
@@ -355,5 +358,28 @@
             TTP (references "<xsl:value-of select="fn:data(@idref)" />")
         </div>
     </xsl:template>
+    
+    
+    
+    <xsl:template match="indicator:Composite_Indicator_Expression/indicator:Indicator">
+        <div>(indicator reference inside composition)</div>
+        <xsl:if test="@idref">
+            <div class="foreignObservablePointer">
+                <xsl:variable name="targetId" select="string(@idref)"/>
+                <xsl:variable name="relationshipOrAssociationType" select="''" />
+                
+                <xsl:call-template name="headerAndExpandableContent">
+                    <xsl:with-param name="targetId" select="$targetId"/>
+                    <xsl:with-param name="isComposition" select="fn:true()"/>
+                    <xsl:with-param name="relationshipOrAssociationType" select="''" />
+                </xsl:call-template>
+            </div>
+        </xsl:if>
+        
+        <xsl:for-each select="cybox:Observable_Composition">
+            <xsl:call-template name="processObservableCompositionSimple" />
+        </xsl:for-each>
+    </xsl:template>
+    
     
 </xsl:stylesheet>

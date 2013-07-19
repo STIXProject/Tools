@@ -50,7 +50,7 @@ mdunn@mitre.org
     
 <xsl:output method="html" omit-xml-declaration="yes" indent="yes" media-type="text/html" version="4.0" />
   <xsl:include href="stix_common.xsl"/>
-  <xsl:include href="cybox_common.xsl"/>
+  <!-- <xsl:include href="cybox_common.xsl"/> -->
   <xsl:key name="observableID" match="cybox:Observable" use="@id"/>
     
     <!--
