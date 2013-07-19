@@ -308,7 +308,7 @@
         </xsl:if>
         
         <xsl:for-each select="cybox:Observable_Composition">
-            <xsl:call-template name="processObservableCompositionSimple" />
+            <xsl:apply-templates select="." mode="composition" />
         </xsl:for-each>
     </xsl:template>
     
