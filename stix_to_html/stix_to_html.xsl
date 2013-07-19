@@ -498,6 +498,11 @@ mdunn@mitre.org
                     {
                       display: none;
                     }
+                    
+                    .indicator-sub-table > colgroup > col.heading-column
+                    {
+                      width: 15em;
+                    }
                 </style>
                 
                 <script type="text/javascript">
@@ -655,7 +660,7 @@ mdunn@mitre.org
                         <h2><a name="analysis">Observables</a></h2>
                           <xsl:call-template name="processStixObservables"/>
                         <h2><a name="analysis">Indicators</a></h2>
-                        <!-- <xsl:call-template name="processIndicators"/> -->
+                        <xsl:call-template name="processIndicators"/>
                         <h2><a name="analysis">TTPs</a></h2>
                         <!-- <xsl:call-template name="processTTPs"/> -->
                         <h2><a name="analysis">Exploit Targets</a></h2>
@@ -704,6 +709,36 @@ mdunn@mitre.org
               <!-- <xsl:sort select="cybox:Observable_Composition" order="descending"/> -->
               <xsl:variable name="evenOrOdd" select="if(position() mod 2 = 0) then 'even' else 'odd'" />
               <xsl:call-template name="processObservable"><xsl:with-param name="evenOrOdd" select="$evenOrOdd"/></xsl:call-template>
+            </xsl:for-each>
+          </TBODY>
+        </TABLE>    
+      </div>
+    </xsl:for-each>
+  </xsl:template>
+  
+  <xsl:template name="processIndicators">
+    <xsl:for-each select="//stix:STIX_Package/stix:Indicators">        
+      <div id="observablesspandiv" style="font-weight:bold; margin:5px; color:#BD9C8C;">
+        <TABLE class="grid tablesorter" cellspacing="0">
+          <COLGROUP>
+            <COL width="90%"/>
+            <COL width="10%"/>
+          </COLGROUP>
+          <THEAD>
+            <TR>
+              <TH class="header">
+                ID
+              </TH>
+              <TH class="header">
+                Type
+              </TH>
+            </TR>
+          </THEAD>
+          <TBODY>
+            <xsl:for-each select="stix:Indicator">
+              <!-- <xsl:sort select="cybox:Observable_Composition" order="descending"/> -->
+              <xsl:variable name="evenOrOdd" select="if(position() mod 2 = 0) then 'even' else 'odd'" />
+              <xsl:call-template name="processIndicator"><xsl:with-param name="evenOrOdd" select="$evenOrOdd"/></xsl:call-template>
             </xsl:for-each>
           </TBODY>
         </TABLE>    

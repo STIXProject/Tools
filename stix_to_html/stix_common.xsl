@@ -68,4 +68,292 @@
                 </TD>
             </TR>
     </xsl:template>    
+
+
+
+    <!--
+      This is the template that produces the rows in the indicator table.
+      These are the observables just below the root element of the document.
+      
+      Each observable produces two rows.  The first row is the heading and is
+      clickable to expand/collapse the second row with all the details.
+      
+      The heading row contains the observable id and the observable type.
+      The type is one of the following categories:
+       - "Compostion"
+       - "Event"
+       - Object (the value of the cybox:Properties/xsi:type will be used)
+       - "Object (no properties set)"
+       - "Other"
+    -->
+    <xsl:template name="processIndicator">
+        <xsl:param name="evenOrOdd" />
+        
+        <xsl:variable name="contentVar" select="concat(count(ancestor::node()), '00000000', count(preceding::node()))"/>
+        <xsl:variable name="imgVar" select="generate-id()"/>
+        <TR><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
+            <TD>
+                <div class="collapsibleLabel" style="cursor: pointer;" onclick="toggleDiv('{$contentVar}','{$imgVar}')">
+                    <span id="{$imgVar}" style="font-weight:bold; margin:5px; color:#BD9C8C;">+</span><xsl:value-of select="@id"/>
+                </div>
+            </TD>
+            <TD>                    
+                <xsl:choose>
+                    <xsl:when test="indicator:Composite_Indicator_Expression">
+                        Composition
+                    </xsl:when>
+                    <xsl:when test="indicator:Observable">
+                        Observable
+                    </xsl:when>
+                    
+                    <!--
+                    <xsl:when test="cybox:Event">
+                        Event
+                    </xsl:when>
+                    <xsl:when test="cybox:Object/cybox:Properties/@xsi:type">
+                        <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName(cybox:Object/cybox:Properties/@xsi:type, cybox:Object/cybox:Properties))" />
+                    </xsl:when>
+                    <xsl:when test="cybox:Object/cybox:Properties/@xsi:type and not(cybox:Object/cybox:Properties/@xsi:type)">
+                        Object (no properties set)
+                    </xsl:when>
+                    -->
+                    
+                    <xsl:otherwise>
+                        Other
+                    </xsl:otherwise>
+                </xsl:choose>
+            </TD>
+        </TR>
+        <TR><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
+            <TD colspan="2">
+                <div id="{$contentVar}"  class="collapsibleContent" style="overflow:hidden; display:none; padding:0px 0px;">
+                    <div><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+                        <!-- set empty class for non-composition observables -->
+                        
+                        <!-- <span style="color: red; background-color: yellow;">INDICATOR CONTENTS HERE</span> -->
+                        
+                        <xsl:if test="not(indicator:Composite_Indicator_Expression)"><xsl:attribute name="class" select="'baseindicator'" /></xsl:if>
+                        <xsl:if test="indicator:Title">
+                            <div id="section">
+                                <table class="one-column-emphasis indicator-sub-table">
+                                    <colgroup>
+                                        <col class="oce-first-obs heading-column" />
+                                        <col class="details-column" />
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <td>Title</td>
+                                            <td>
+                                                <xsl:for-each select="indicator:Title">
+                                                    <xsl:value-of select="."/>
+                                                </xsl:for-each>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table> 
+                            </div>
+                        </xsl:if>              
+                        <xsl:if test="not(indicator:Composite_Indicator_Expression)">
+                            <div id="section">
+                                <table class="one-column-emphasis indicator-sub-table">
+                                    <colgroup>
+                                        <col class="oce-first-obs heading-column" />
+                                        <col class="details-column" />
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <xsl:apply-templates select="indicator:Observable" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table> 
+                            </div>
+                        </xsl:if>
+                        <xsl:if test="indicator:Composite_Indicator_Expression">
+                            <div id="section">
+                                <table class="one-column-emphasis indicator-sub-table">
+                                    <colgroup>
+                                        <col class="oce-first-obs heading-column" />
+                                        <col class="details-column" />
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <td>Indicator Composition</td>
+                                            <td>
+                                                <xsl:apply-templates select="indicator:Composite_Indicator_Expression" />
+                                                <!--
+                                                <xsl:for-each select="indicator:Composite_Indicator_Expression">
+                                                    <xsl:call-template name="processObservableCompositionSimple" />
+                                                </xsl:for-each>
+                                                -->
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table> 
+                            </div>
+                        </xsl:if>
+                        <xsl:if test="indicator:Indicated_TTP">
+                            <div id="section">
+                                <table class="one-column-emphasis indicator-sub-table">
+                                    <colgroup>
+                                        <col class="oce-first-obs heading-column" />
+                                        <col class="details-column" />
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <td>Indicator Indicated TTP</td>
+                                            <td>
+                                                <xsl:apply-templates select="indicator:Indicated_TTP" />
+                                                <!--
+                                                <xsl:for-each select="indicator:Composite_Indicator_Expression">
+                                                    <xsl:call-template name="processObservableCompositionSimple" />
+                                                </xsl:for-each>
+                                                -->
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table> 
+                            </div>
+                        </xsl:if>
+                        <xsl:if test="indicator:Kill_Chain_Phases">
+                            <div id="section">
+                                <table class="one-column-emphasis indicator-sub-table">
+                                    <colgroup>
+                                        <col class="oce-first-obs heading-column" />
+                                        <col class="details-column" />
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <td>Indicator Kill Chain Phases</td>
+                                            <td>
+                                                <xsl:apply-templates select="indicator:Kill_Chain_Phases" />
+                                                <!--
+                                                <xsl:for-each select="indicator:Composite_Indicator_Expression">
+                                                    <xsl:call-template name="processObservableCompositionSimple" />
+                                                </xsl:for-each>
+                                                -->
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table> 
+                            </div>
+                        </xsl:if>
+                    </div>
+                </div>
+            </TD>
+        </TR>
+    </xsl:template>
+    
+    
+    <!--
+    <xsl:template match="indicator:Composite_Indicator_Expression">
+        <div>(composite indicator)</div>
+    </xsl:template>
+    -->
+    
+    <xsl:template match="indicator:Composite_Indicator_Expression">
+        <table class="compositionTableOperator">
+            <colgroup>
+                <xsl:choose>
+                    <xsl:when test="@operator='AND'">
+                        <col class="oce-first-obscomp-and"/>
+                    </xsl:when>
+                    <xsl:when test="@operator='OR'">
+                        <col class="oce-first-obscomp-or"/>
+                    </xsl:when>
+                </xsl:choose>
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th>
+                        <xsl:attribute name="rowspan"><xsl:value-of select="count(cybox:Observable)"/></xsl:attribute>
+                        <span><xsl:value-of select="@operator"/></span>
+                    </th>
+                    <td>
+                        <table class="compositionTableOperand">
+                            <xsl:for-each select="indicator:Indicator">
+                                <tr>
+                                    <td>
+                                        <xsl:apply-templates select="." mode="composition" />
+                                    </td>
+                                </tr>
+                                
+                            </xsl:for-each>
+                            <tr>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table> 
+    </xsl:template>
+    
+    <xsl:template match="indicator:Indicator" mode="composition">
+        <xsl:if test="@idref">
+            <div class="foreignObservablePointer">
+                <xsl:variable name="targetId" select="string(@idref)"/>
+                <xsl:variable name="relationshipOrAssociationType" select="''" />
+                
+                (indicator within composition -- idref: <xsl:value-of select="fn:data(@idref)"/>)
+                <!--
+                <xsl:call-template name="headerAndExpandableContent">
+                    <xsl:with-param name="targetId" select="$targetId"/>
+                    <xsl:with-param name="isComposition" select="fn:true()"/>
+                    <xsl:with-param name="relationshipOrAssociationType" select="''" />
+                </xsl:call-template>
+                -->
+            </div>
+        </xsl:if>
+        
+        <xsl:for-each select="cybox:Observable_Composition">
+            <xsl:call-template name="processObservableCompositionSimple" />
+        </xsl:for-each>
+    </xsl:template>
+    
+    
+    
+    <xsl:template match="indicator:Observable">
+        <div>(indicator observable)</div>
+    </xsl:template>
+    
+    <xsl:template match="indicator:Indicated_TTP">
+        <div>
+        <!-- <div>(indicator Indicated TTP)</div> -->
+        <div>
+            <xsl:apply-templates/>
+        </div>
+        </div>
+    </xsl:template>
+    
+    <xsl:template match="indicator:Kill_Chain_Phases">
+        <div>
+            <!-- <div>Kill Chain Phases</div> -->
+            <div>
+                <xsl:apply-templates />
+            </div>
+        </div>
+    </xsl:template>
+    
+    <xsl:template match="stixCommon:TTP">
+        <div>
+            <div>TTP</div> 
+            <xsl:if test="@idref"><div>(reference to "<xsl:value-of select="fn:data(@idref)" />")</div></xsl:if>
+            <xsl:if test="@id"><div>(id "<xsl:value-of select="fn:data(@id)" />")</div></xsl:if>
+        </div>
+    </xsl:template>
+    
+    <xsl:template match="stixCommon:Kill_Chain_Phase">
+        <div>
+            * name = "<xsl:value-of select="fn:data(@name)"/>" | phase id = "<xsl:value-of select="fn:data(@phase_id)"/>"
+        </div>
+    </xsl:template>
+    
+    <xsl:template match="stixCommon:TTP">
+        <div>
+            TTP (references "<xsl:value-of select="fn:data(@idref)" />")
+        </div>
+    </xsl:template>
+    
 </xsl:stylesheet>
