@@ -76,15 +76,15 @@
       This is the template that produces the rows in the indicator table.
       These are the observables just below the root element of the document.
       
-      Each observable produces two rows.  The first row is the heading and is
+      This behavior mimics the behavior in producing the observables table.
+      
+      Each indicator produces two rows.  The first row is the heading and is
       clickable to expand/collapse the second row with all the details.
       
-      The heading row contains the observable id and the observable type.
+      The heading row contains the indicator id and the indicator type.
       The type is one of the following categories:
        - "Compostion"
-       - "Event"
-       - Object (the value of the cybox:Properties/xsi:type will be used)
-       - "Object (no properties set)"
+       - "Observable"
        - "Other"
     -->
     <xsl:template name="processIndicator">
@@ -92,6 +92,9 @@
         
         <xsl:variable name="contentVar" select="concat(count(ancestor::node()), '00000000', count(preceding::node()))"/>
         <xsl:variable name="imgVar" select="generate-id()"/>
+        
+        
+        
         <TR><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
             <TD>
                 <div class="collapsibleLabel" style="cursor: pointer;" onclick="toggleDiv('{$contentVar}','{$imgVar}')">
@@ -128,12 +131,25 @@
         <TR><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
             <TD colspan="2">
                 <div id="{$contentVar}"  class="collapsibleContent" style="overflow:hidden; display:none; padding:0px 0px;">
-                    <div><xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+                    <!-- create hidden div which will contain a fresh copy of the object at runtime -->
+                    <xsl:if test="@id">
+                        <div style="overflow:hidden; display:none; padding:0px 0px;" class="copyobj">
+                            <xsl:attribute name="id">copy-<xsl:value-of select="@id" />
+                            </xsl:attribute>
+                        </div>
+                    </xsl:if>
+                    <div>
+                    <div>
+                        <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+                        
                         <!-- set empty class for non-composition observables -->
                         
                         <!-- <span style="color: red; background-color: yellow;">INDICATOR CONTENTS HERE</span> -->
                         
-                        <xsl:if test="not(indicator:Composite_Indicator_Expression)"><xsl:attribute name="class" select="'baseindicator'" /></xsl:if>
+                        <xsl:attribute name="class">
+                        <xsl:if test="not(indicator:Composite_Indicator_Expression)">baseindicator </xsl:if>
+                        <xsl:if test="@id">container baseobj</xsl:if>
+                        </xsl:attribute>
                         <xsl:if test="indicator:Title">
                             <div id="section">
                                 <table class="one-column-emphasis indicator-sub-table">
@@ -241,6 +257,7 @@
                             </div>
                         </xsl:if>
                     </div>
+                    </div>
                 </div>
             </TD>
         </TR>
@@ -253,6 +270,11 @@
     </xsl:template>
     -->
     
+    <!--
+      This template produces the table displaying composite indicator expressions.
+      
+      This is similar to how the composite observables are produced.
+    -->
     <xsl:template match="indicator:Composite_Indicator_Expression">
         <table class="compositionTableOperator">
             <colgroup>
@@ -291,13 +313,17 @@
         </table> 
     </xsl:template>
     
+    <!--
+      This template display the simple indicator within a composit indicator
+      expression (one of the operands).
+    -->
     <xsl:template match="indicator:Indicator" mode="composition">
         <xsl:if test="@idref">
             <div class="foreignObservablePointer">
                 <xsl:variable name="targetId" select="string(@idref)"/>
                 <xsl:variable name="relationshipOrAssociationType" select="''" />
                 
-                (indicator within composition -- idref: <xsl:value-of select="fn:data(@idref)"/>)
+                <!-- (indicator within composition - - idref: <xsl:value-of select="fn:data(@idref)"/>) -->
                 <xsl:call-template name="headerAndExpandableContent">
                     <xsl:with-param name="targetId" select="$targetId"/>
                     <xsl:with-param name="isComposition" select="fn:true()"/>
@@ -312,13 +338,38 @@
     </xsl:template>
     
     
-    
+    <!--
+      This template display an observable contained within an indicator.
+    -->
     <xsl:template match="indicator:Observable">
         <!-- <div>(indicator observable)</div> -->
         
+        <xsl:variable name="targetId" select="fn:data(@idref)" />
+        <xsl:variable name="targetObject" select="//*[@id=$targetId]" />
+        
+        <div class="expandableContainer expandableSeparate collapsed">
+            <xsl:variable name="idVar" select="generate-id(.)"/>
+            
+            <div class="expandableToggle objectReference">
+                <xsl:attribute name="onclick">embedObject(this.parentElement, 'copy-<xsl:value-of select="$targetId"/>','<xsl:value-of select="$idVar"/>');</xsl:attribute>
+                <xsl:call-template name="clickableIdref">
+                    <xsl:with-param name="targetObject" select="$targetObject" />
+                    <xsl:with-param name="relationshipOrAssociationType" select="''"/>
+                    <xsl:with-param name="idref" select="$targetId"/>
+                </xsl:call-template>
+            </div>
+            
+            <div class="expandableContents">
+                <xsl:attribute name="id"><xsl:value-of select="$idVar"/></xsl:attribute>
+            </div>
+        </div>
+        
+        
+        <!--
         <xsl:for-each select=".">
             <xsl:call-template name="processObservableInObservableCompositionSimple" />
         </xsl:for-each>
+        -->
     </xsl:template>
     
     <xsl:template match="indicator:Indicated_TTP">
@@ -361,6 +412,7 @@
     
     
     
+    <!--
     <xsl:template match="indicator:Composite_Indicator_Expression/indicator:Indicator">
         <div>(indicator reference inside composition)</div>
         <xsl:if test="@idref">
@@ -380,6 +432,7 @@
             <xsl:call-template name="processObservableCompositionSimple" />
         </xsl:for-each>
     </xsl:template>
+    -->
     
     
 </xsl:stylesheet>

@@ -636,7 +636,7 @@ mdunn@mitre.org
                  ]]>
                  </script>
                </head>
-                <body>
+              <body onload="runtimeCopyObjects();">
                     <div id="wrapper">
                         <div id="header"> 
                             <H1>STIX Output</H1>

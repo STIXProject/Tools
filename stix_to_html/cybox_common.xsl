@@ -143,16 +143,19 @@ ikirillov@mitre.org
             </div>
         </xsl:if>
         
-          <div id="{$contentVar}"  class="collapsibleContent" style="overflow:hidden; display:none; padding:0px 0px;">
+          <div id="{$contentVar}"  style="overflow:hidden; display:none; padding:0px 0px;" data-dummy1="abc">
               <div>
                   <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
                   <xsl:attribute name="class">
+                      <xsl:text>collapsibleContent </xsl:text>
                       <xsl:text>container </xsl:text>
                       <xsl:if test="@id">baseobj</xsl:if>
+                      <xsl:if test="not(cybox:Observable_Composition)">baseobserv </xsl:if>
                   </xsl:attribute>
+                  <xsl:attribute name="data-dummy2">1234</xsl:attribute>
                   
                   <!-- set empty class for non-composition observables -->
-                  <xsl:if test="not(cybox:Observable_Composition)"><xsl:attribute name="class" select="'baseobserv'" /></xsl:if>
+                  <!-- <xsl:if test="not(cybox:Observable_Composition)"><xsl:attribute name="class" select="'baseobserv'" /></xsl:if> -->
                   <xsl:if test="cybox:Title">
                     <div id="section">
                         <table class="one-column-emphasis">
@@ -395,7 +398,8 @@ ikirillov@mitre.org
                     <xsl:choose>
                         <xsl:when test="$isComposition">
                             <div class="expandableToggle objectReference">
-                                <xsl:attribute name="onclick">toggle(this.parentElement)</xsl:attribute>
+                                <!-- <xsl:attribute name="onclick">toggle(this.parentElement)</xsl:attribute> -->
+                                <xsl:attribute name="onclick">embedObject(this.parentElement, 'copy-<xsl:value-of select="$targetId"/>','<xsl:value-of select="$idVar"/>');</xsl:attribute>
                                 <xsl:call-template name="clickableIdref">
                                     <xsl:with-param name="targetObject" select="$targetObject" />
                                     <xsl:with-param name="relationshipOrAssociationType" select="$relationshipOrAssociationType"/>
@@ -403,9 +407,14 @@ ikirillov@mitre.org
                                 </xsl:call-template>
                             </div>
                             
+                            <div class="expandableContents">
+                                <xsl:attribute name="id"><xsl:value-of select="$idVar"/></xsl:attribute>
+                            </div>
+                            <!--
                             <div class="copyobserv expandableContents">
                                 <xsl:attribute name="id">copy-<xsl:value-of select="$targetId"/></xsl:attribute>
                             </div>
+-->
                         </xsl:when>
                         <xsl:otherwise>
                             <div class="expandableToggle objectReference">
