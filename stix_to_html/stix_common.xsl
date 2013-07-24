@@ -22,7 +22,10 @@
     xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1"
     xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
     xmlns:cyboxCommon="http://cybox.mitre.org/common-2"
-    xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2">
+    xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2"
+    
+    xmlns:ttp='http://stix.mitre.org/TTP-1'
+    >
     
 <xsl:output method="html" omit-xml-declaration="yes" indent="yes" media-type="text/html" version="4.0" />
     <xsl:include href="cybox_common.xsl"/>
@@ -404,7 +407,7 @@
         </div>
     </xsl:template>
     
-    <xsl:template match="stixCommon:TTP">
+    <xsl:template match="stixCommon:TTP|stix:TTP">
         <div>
             TTP (references "<xsl:value-of select="fn:data(@idref)" />")
         </div>
@@ -433,6 +436,132 @@
         </xsl:for-each>
     </xsl:template>
     -->
+    
+    
+    
+    <!--
+      This is the template that produces the rows in the TTP table.
+      These are the TTPs just below the root element of the document.
+      
+      This behavior mimics the behavior in producing the observables table.
+      
+      Each indicator produces two rows.  The first row is the heading and is
+      clickable to expand/collapse the second row with all the details.
+      
+      The heading row contains the indicator id and the indicator type.
+      The type is one of the following categories:
+       - "Compostion"
+       - "Observable"
+       - "Other"
+    -->
+    <xsl:template name="processTTP">
+        <xsl:param name="evenOrOdd" />
+        
+        <xsl:variable name="contentVar" select="concat(count(ancestor::node()), '00000000', count(preceding::node()))"/>
+        <xsl:variable name="imgVar" select="generate-id()"/>
+        
+        
+        
+        <TR><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
+            <TD>
+                <div class="collapsibleLabel" style="cursor: pointer;" onclick="toggleDiv('{$contentVar}','{$imgVar}')">
+                    <span id="{$imgVar}" style="font-weight:bold; margin:5px; color:#BD9C8C;">+</span><xsl:value-of select="@id"/>
+                </div>
+            </TD>
+            <TD>                    
+                <xsl:value-of select="ttp:Title" />
+            </TD>
+        </TR>
+        <TR><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
+            <TD colspan="2">
+                <div id="{$contentVar}"  class="collapsibleContent" style="overflow:hidden; display:none; padding:0px 0px;">
+                    <!-- create hidden div which will contain a fresh copy of the object at runtime -->
+                    <xsl:if test="@id">
+                        <div style="overflow:hidden; display:none; padding:0px 0px;" class="copyobj">
+                            <xsl:attribute name="id">copy-<xsl:value-of select="@id" />
+                            </xsl:attribute>
+                        </div>
+                    </xsl:if>
+                    <div>
+                        <div>
+                            <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+                            
+                            <!-- set empty class for non-composition observables -->
+                            
+                            <!-- <span style="color: red; background-color: yellow;">INDICATOR CONTENTS HERE</span> -->
+                            
+                            <xsl:attribute name="class">
+                                <!-- <xsl:if test="not(indicator:Composite_Indicator_Expression)">baseindicator </xsl:if> -->
+                                <xsl:if test="@id">container baseobj</xsl:if>
+                            </xsl:attribute>
+                            <xsl:if test="indicator:Description">
+                                <div id="section">
+                                    <table class="one-column-emphasis indicator-sub-table">
+                                        <colgroup>
+                                            <col class="oce-first-obs heading-column" />
+                                            <col class="details-column" />
+                                        </colgroup>
+                                        <tbody>
+                                            <tr>
+                                                <td>Description</td>
+                                                <td>
+                                                    <xsl:for-each select="ttp:Description">
+                                                        <xsl:value-of select="."/>
+                                                    </xsl:for-each>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table> 
+                                </div>
+                            </xsl:if>              
+                            <xsl:if test="ttp:Behavior">
+                                <div id="section">
+                                    <table class="one-column-emphasis indicator-sub-table">
+                                        <colgroup>
+                                            <col class="oce-first-obs heading-column" />
+                                            <col class="details-column" />
+                                        </colgroup>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <xsl:apply-templates select="ttp:Behavior" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table> 
+                                </div>
+                            </xsl:if>
+                            <xsl:if test="ttp:Related_TTPs/ttp:Related_TTP">
+                                <div id="section">
+                                    <table class="one-column-emphasis indicator-sub-table">
+                                        <colgroup>
+                                            <col class="oce-first-obs heading-column" />
+                                            <col class="details-column" />
+                                        </colgroup>
+                                        <tbody>
+                                            <tr>
+                                                <td>Related TTPs</td>
+                                                <td>
+                                                    <xsl:apply-templates select="ttp:Related_TTPs/ttp:Related_TTP" />
+                                                    <!--
+                                                <xsl:for-each select="indicator:Composite_Indicator_Expression">
+                                                    <xsl:call-template name="processObservableCompositionSimple" />
+                                                </xsl:for-each>
+                                                -->
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table> 
+                                </div>
+                            </xsl:if>
+                        </div>
+                    </div>
+                </div>
+            </TD>
+        </TR>
+    </xsl:template>
+    
+    
     
     
 </xsl:stylesheet>

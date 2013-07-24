@@ -43,6 +43,8 @@ ikirillov@mitre.org
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:fn="http://www.w3.org/2005/xpath-functions"
     
+    xmlns:ttp='http://stix.mitre.org/TTP-1'
+    
     xmlns:EmailMessageObj="http://cybox.mitre.org/objects#EmailMessageObject-2"
     exclude-result-prefixes="cybox Common xsi fn EmailMessageObj">
     
@@ -615,11 +617,14 @@ ikirillov@mitre.org
       
       This is customizable by writing custom templates for specific properties.
     -->
-    <xsl:template match="cybox:Properties">
+    <xsl:template match="cybox:Properties|ttp:Behavior">
         <fieldset>
             <legend>
-                cybox properties
-                (type: <xsl:value-of select="local-name-from-QName(fn:resolve-QName(fn:data(@xsi:type), .))"/>)
+                <xsl:if test="./self::cybox:Properties">cybox properties</xsl:if>
+                <xsl:if test="./self::ttp:Behavior">behavior</xsl:if>
+                <xsl:if test="@xsi:type">
+                    (type: <xsl:value-of select="local-name-from-QName(fn:resolve-QName(fn:data(@xsi:type), .))"/>)
+                </xsl:if>
                 <xsl:apply-templates select="@*[not(fn:QName(namespace-uri(), local-name()) = fn:QName('http://www.w3.org/2001/XMLSchema-instance', 'type'))]" mode="cyboxProperties" />
             </legend>
             <xsl:apply-templates select="*" mode="cyboxProperties"></xsl:apply-templates>
