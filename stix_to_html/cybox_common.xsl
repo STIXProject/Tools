@@ -460,7 +460,7 @@ ikirillov@mitre.org
       the heading and call the template to print out actual related/associated
       objects).
     -->
-    <xsl:template match="cybox:Related_Objects|cybox:Associated_Objects">
+    <xsl:template match="cybox:Related_Objects|cybox:Associated_Objects|ttp:Related_TTPs">
         <xsl:variable name="relatedOrAssociated" select="if (local-name() = 'Related_Objects') then ('related') else if (local-name() = 'Associated_Objects') then ('associated') else ('other')" />
         <xsl:variable name="relatedOrAssociatedCapitalized" select="if (local-name() = 'Related_Objects') then ('Related') else if (local-name() = 'Associated_Objects') then ('Associated') else ('Other')" />
         <div class="container {$relatedOrAssociated}Objects">
@@ -468,7 +468,7 @@ ikirillov@mitre.org
                 <xsl:value-of select="$relatedOrAssociatedCapitalized"/> Objects
             </div>
             <div class="contents {$relatedOrAssociated}Objects">
-                <xsl:apply-templates select="cybox:Related_Object|cybox:Associated_Object"></xsl:apply-templates>
+                <xsl:apply-templates select="cybox:Related_Object|cybox:Associated_Object|ttp:Related_TTP"></xsl:apply-templates>
             </div>
         </div>
     </xsl:template>
