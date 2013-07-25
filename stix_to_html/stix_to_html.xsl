@@ -507,6 +507,11 @@ mdunn@mitre.org
                     {
                       width: 15em;
                     }
+                    
+                    .StixDescriptionValue
+                    {
+                      white-space: pre-line;
+                    }
                 </style>
 
                  <script type="text/javascript">

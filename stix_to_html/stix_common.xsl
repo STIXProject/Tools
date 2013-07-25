@@ -63,12 +63,19 @@
     <xsl:template name="processNameValue">
         <xsl:param name="evenOrOdd" />
         <TR><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
-                <TD>
-                    <xsl:value-of select="fn:local-name(.)"/>
+                <TD class="Stix{local-name()}Name">
+                  <xsl:value-of select="fn:local-name(.)"/>
                 </TD>
-                <TD>
-                    <!-- does not handle markings gracefully -->
-                    <xsl:value-of select="self::node()[text()]"/>
+                <TD class="Stix{local-name()}Value">
+                    <xsl:variable name="class" select="if (self::stix:Description) then ('longText expandableContainer expandableToggle expandableContents expandableSame collapsed') else ('') " />
+                    <div>
+                        <xsl:if test="$class">
+                            <xsl:attribute name="class" select="$class"/>
+                            <xsl:attribute name="onclick">toggle(this);</xsl:attribute>
+                        </xsl:if>
+                        <!-- does not handle markings gracefully -->
+                        <xsl:value-of select="self::node()[text()]"/>
+                    </div>
                 </TD>
             </TR>
     </xsl:template>    
