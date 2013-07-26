@@ -582,6 +582,20 @@ mdunn@mitre.org
                     
                     <!-- copy object from clean src copy to dst destination and then toggle visibility -->
                     function embedObject(container, src, dst) {
+                    
+                        var id = src;
+                        var copy = pristineCopies[id].cloneNode(true);
+                        
+                        var target = container.querySelector("#" + dst);
+                        
+                        while(target.lastChild)
+                        {
+                          target.removeChild(target.lastChild);
+                        }
+                        
+                        target.appendChild(copy);
+                        
+                        /*
                         <!-- deep copy the source div's html into the destination div --> 
                         <!-- (typically a RelatedObjects's content expanded into a parent Object's RO container) -->
                         var objDiv = document.getElementById(src).cloneNode(true);
@@ -591,6 +605,7 @@ mdunn@mitre.org
                                 container.children[i].innerHTML = objDiv.innerHTML;
                             }
                         }
+                        */
                         
                         <!-- finally, toggle the visibility state of the div  -->
                         toggle(container);
@@ -598,6 +613,7 @@ mdunn@mitre.org
                         return false;
                     }
                     
+                    var pristineCopies = {};
                     <!-- onload, make a clean copy of all id'd objects/actions for runtime copying -->
                     function runtimeCopyObjects() {
                         embedCompositions()
@@ -605,6 +621,13 @@ mdunn@mitre.org
                         var divSrcList = getElementsByClass('baseobj');
                         var divDstList = getElementsByClass('copyobj');
                         
+                        for (i = 0; i < divSrcList.length; i++) {
+                          var current = divSrcList[i];
+                          var id = current.id;
+                          pristineCopies[id] = current;
+                        }
+                        
+                        /*
                         for (i = 0; i < divSrcList.length; i++) {
                             divDeepCopy = divSrcList[i].cloneNode(true);
                             
@@ -621,6 +644,7 @@ mdunn@mitre.org
                                     divDstList[k].innerHTML = divDeepCopy.innerHTML;
                             }
                         }
+                        */
                         
                         return false;
                     }

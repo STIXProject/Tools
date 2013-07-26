@@ -111,7 +111,12 @@
                     <span id="{$imgVar}" style="font-weight:bold; margin:5px; color:#BD9C8C;">+</span><xsl:value-of select="@id"/>
                 </div>
             </TD>
-            <TD>                    
+            <TD>
+                <xsl:choose>
+                    <xsl:when test="indicator:Type"><xsl:value-of select="indicator:Type/text()"></xsl:value-of></xsl:when>
+                    <xsl:otherwise>Other</xsl:otherwise>
+                </xsl:choose>
+                <!--
                 <xsl:choose>
                     <xsl:when test="indicator:Composite_Indicator_Expression">
                         Composition
@@ -119,23 +124,11 @@
                     <xsl:when test="indicator:Observable">
                         Observable
                     </xsl:when>
-                    
-                    <!--
-                    <xsl:when test="cybox:Event">
-                        Event
-                    </xsl:when>
-                    <xsl:when test="cybox:Object/cybox:Properties/@xsi:type">
-                        <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName(cybox:Object/cybox:Properties/@xsi:type, cybox:Object/cybox:Properties))" />
-                    </xsl:when>
-                    <xsl:when test="cybox:Object/cybox:Properties/@xsi:type and not(cybox:Object/cybox:Properties/@xsi:type)">
-                        Object (no properties set)
-                    </xsl:when>
-                    -->
-                    
                     <xsl:otherwise>
                         Other
                     </xsl:otherwise>
                 </xsl:choose>
+                -->
             </TD>
         </TR>
         <TR><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
@@ -352,8 +345,18 @@
       This template display an observable contained within an indicator.
     -->
     <xsl:template match="indicator:Observable">
-        <!-- <div>(indicator observable)</div> -->
         
+        <xsl:choose>
+            <xsl:when test="@id">
+                <xsl:call-template name="processObservableInline" />
+            </xsl:when>
+            <xsl:when test="@idref">
+                <xsl:call-template name="processObservableInObservableCompositionSimple" />
+            </xsl:when>
+        </xsl:choose>
+        
+        
+        <!--
         <xsl:variable name="targetId" select="fn:data(@idref)" />
         <xsl:variable name="targetObject" select="//*[@id=$targetId]" />
         
@@ -373,7 +376,7 @@
                 <xsl:attribute name="id"><xsl:value-of select="$idVar"/></xsl:attribute>
             </div>
         </div>
-        
+        -->
         
         <!--
         <xsl:for-each select=".">

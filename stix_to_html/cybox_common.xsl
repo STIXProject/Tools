@@ -218,6 +218,209 @@ ikirillov@mitre.org
         </TR>
     </xsl:template>
     
+    <xsl:template name="processObservableInline">
+        <xsl:variable name="localName" select="local-name()"/>
+        <!-- <xsl:variable name="identifierName" select="if ($localName = 'Object') then 'object' else if ($localName = 'Event') then 'event' else if ($localName = 'Related_Object') then 'relatedObject' else if ($localName = 'Associated_Object') then 'associatedObject' else ''" /> -->
+        <xsl:variable name="identifierName">Observable</xsl:variable>
+        <xsl:variable name="friendlyName" select="fn:replace($localName, '_', ' ')" />
+        <xsl:variable name="headingName" select="fn:upper-case($friendlyName)" />
+        <xsl:variable name="includeHeading" select="fn:true()" />
+        
+        <xsl:variable name="targetId" select="fn:data(@id)" />
+        <xsl:variable name="idVar" select="generate-id(.)"/>
+        
+        <!-- create hidden div which will contain a fresh copy of the object at runtime -->
+        <xsl:if test="@id">
+            <div style="overflow:hidden; display:none; padding:0px 0px;" class="copyobj">
+                <xsl:attribute name="id">copy-<xsl:value-of select="@id" />
+                </xsl:attribute>
+            </div>
+        </xsl:if>
+
+        <div> <!-- container div -->
+            <!--
+              The following is important - it makes this object "linkable" with
+              an id. This means the idref links can be resolved to show linked
+              objects.  This is the object that will be highlighted when a link
+              is clicked.
+            -->
+            <!--
+            <xsl:if test="@id and $includeHeading">
+                <xsl:attribute name="id" select="@id"/>
+            </xsl:if>
+            -->
+            <xsl:attribute name="class">
+                <!-- <xsl:text>baseobj </xsl:text> -->
+                <!--
+                <xsl:text>container </xsl:text>
+                <xsl:value-of select="$identifierName" />
+                <xsl:text> </xsl:text>
+                <xsl:value-of select="$identifierName" /><xsl:text>Container </xsl:text>
+                -->
+                expandableContainer expandableSeparate collapsed
+            </xsl:attribute>
+            
+            <xsl:if test="@id">
+                <xsl:variable name="targetId" select="string(@id)"/>
+                <xsl:variable name="targetObject" select="."/>
+                
+                <xsl:variable name="relationshipOrAssociationType" select="cybox:Relationship|cybox:Association_Type" />
+
+                <div class="expandableToggle objectReference">
+                    <!-- <xsl:attribute name="onclick">toggle(this.parentElement)</xsl:attribute> -->
+                    <xsl:attribute name="onclick">embedObject(this.parentElement, '<xsl:value-of select="$targetId"/>','<xsl:value-of select="$idVar"/>');</xsl:attribute>
+                    <xsl:call-template name="clickableIdref">
+                        <xsl:with-param name="targetObject" select="$targetObject" />
+                        <xsl:with-param name="relationshipOrAssociationType" select="$relationshipOrAssociationType"/>
+                        <xsl:with-param name="idref" select="$targetId"/>
+                    </xsl:call-template>
+                </div>
+                
+                <div class="expandableContents">
+                    <xsl:attribute name="id"><xsl:value-of select="$idVar"/></xsl:attribute>
+                </div>
+                
+                <!--
+                <xsl:call-template name="headerAndExpandableContent">
+                    <xsl:with-param name="targetId" select="$targetId"/>
+                    <xsl:with-param name="relationshipOrAssociationType" select="$relationshipOrAssociationType" />
+                </xsl:call-template>
+                -->
+            </xsl:if>
+            <!--
+              If this "object" is an object reference (an "idref link")
+              print out the link that will jump to the original object.
+            -->
+            <xsl:if test="@idref">
+                
+                <xsl:variable name="targetId" select="string(@idref)"/>
+                <xsl:variable name="targetObject" select="//*[@id = $targetId]"/>
+                
+                <xsl:variable name="relationshipOrAssociationType" select="cybox:Relationship|cybox:Association_Type" />
+                
+                <xsl:call-template name="headerAndExpandableContent">
+                    <xsl:with-param name="targetId" select="$targetId"/>
+                    <xsl:with-param name="relationshipOrAssociationType" select="$relationshipOrAssociationType" />
+                </xsl:call-template>
+            </xsl:if>
+            
+            
+            <!--
+            <div class="expandableToggle objectReference">
+                <xsl:attribute name="onclick">embedObject(this.parentElement, '<xsl:value-of select="$targetId"/>','<xsl:value-of select="$idVar"/>');</xsl:attribute>
+                
+                <xsl:call-template name="inlineObjectHeading">
+                    <xsl:with-param name="currentObject" select="." />
+                    <xsl:with-param name="relationshipOrAssociationType" select="cybox:Relationship|cybox:Association_Type"/>
+                    <xsl:with-param name="id" select="@id"/>
+                </xsl:call-template>
+            </div>
+            -->
+            
+            <!--
+            <xsl:call-template name="processObservableCommon" />
+            -->
+            
+        </div>
+        
+        <xsl:call-template name="processObservableCommon" />
+        
+        <div>
+            
+            
+            <!--
+              The following is important - it makes this object "linkable" with
+              an id. This means the idref links can be resolved to show linked
+              objects.  This is the object that will be highlighted when a link
+              is clicked.
+            -->
+            <!--
+            <xsl:if test="@id and $includeHeading">
+                <xsl:attribute name="id" select="@id"/>
+                <div>CONTENT HERE</div>
+                <xsl:call-template name="processObservableCommon" />
+            </xsl:if>
+            -->
+            
+        </div>
+    </xsl:template>
+    
+    <xsl:template name="processObservableCommon">
+        
+        <div style="overflow:hidden; display:none; padding:0px 0px;">
+            <div>
+                <xsl:attribute name="id" select="@id" />
+                <xsl:attribute name="class">
+                    <xsl:text>collapsibleContent </xsl:text>
+                    <xsl:text>container </xsl:text>
+                    <xsl:if test="@id">baseobj </xsl:if>
+                    <xsl:if test="not(cybox:Observable_Composition)">baseobserv </xsl:if>
+                </xsl:attribute>
+                
+                <div>CONTENT HERE</div>
+                
+                <!-- set empty class for non-composition observables -->
+                <!-- <xsl:if test="not(cybox:Observable_Composition)"><xsl:attribute name="class" select="'baseobserv'" /></xsl:if> -->
+                
+                <xsl:if test="cybox:Title">
+                    <div id="section">
+                        <table class="one-column-emphasis">
+                            <colgroup>
+                                <col class="oce-first-obs" />
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td>Title</td>
+                                    <td>
+                                        <xsl:for-each select="cybox:Title">
+                                            <xsl:value-of select="."/>
+                                        </xsl:for-each>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table> 
+                    </div>
+                </xsl:if>              
+                <xsl:if test="not(cybox:Observable_Composition)">
+                    <div id="section">
+                        <table class="one-column-emphasis">
+                            <colgroup>
+                                <col class="oce-first-obs" />
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <xsl:apply-templates select="cybox:Object|cybox:Event"></xsl:apply-templates>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table> 
+                    </div>
+                </xsl:if>
+                <xsl:if test="cybox:Observable_Composition">
+                    <div id="section">
+                        <table class="one-column-emphasis">
+                            <colgroup>
+                                <col class="oce-first-obs" />
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td>Observable Composition</td>
+                                    <td>
+                                        <xsl:for-each select="cybox:Observable_Composition">
+                                            <xsl:call-template name="processObservableCompositionSimple" />
+                                        </xsl:for-each>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table> 
+                    </div>
+                </xsl:if>
+
+            </div>
+        </div>
+    </xsl:template>
+    
     <!--
       Produce the details for an observable composition.
       
@@ -401,7 +604,7 @@ ikirillov@mitre.org
                         <xsl:when test="$isComposition">
                             <div class="expandableToggle objectReference">
                                 <!-- <xsl:attribute name="onclick">toggle(this.parentElement)</xsl:attribute> -->
-                                <xsl:attribute name="onclick">embedObject(this.parentElement, 'copy-<xsl:value-of select="$targetId"/>','<xsl:value-of select="$idVar"/>');</xsl:attribute>
+                                <xsl:attribute name="onclick">embedObject(this.parentElement, '<xsl:value-of select="$targetId"/>','<xsl:value-of select="$idVar"/>');</xsl:attribute>
                                 <xsl:call-template name="clickableIdref">
                                     <xsl:with-param name="targetObject" select="$targetObject" />
                                     <xsl:with-param name="relationshipOrAssociationType" select="$relationshipOrAssociationType"/>
@@ -420,7 +623,7 @@ ikirillov@mitre.org
                         </xsl:when>
                         <xsl:otherwise>
                             <div class="expandableToggle objectReference">
-                                <xsl:attribute name="onclick">embedObject(this.parentElement, 'copy-<xsl:value-of select="$targetId"/>','<xsl:value-of select="$idVar"/>');</xsl:attribute>
+                                <xsl:attribute name="onclick">embedObject(this.parentElement, '<xsl:value-of select="$targetId"/>','<xsl:value-of select="$idVar"/>');</xsl:attribute>
                                 <xsl:call-template name="clickableIdref">
                                     <xsl:with-param name="targetObject" select="$targetObject" />
                                     <xsl:with-param name="relationshipOrAssociationType" select="$relationshipOrAssociationType"/>
