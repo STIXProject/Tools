@@ -16,8 +16,10 @@
     xmlns:saxon="http://saxon.sf.net/"
 >
 
-<xsl:output indent="yes" saxon:indent-spaces="2" method="xml" />
-    
+<xsl:output method="html" omit-xml-declaration="yes" indent="yes" media-type="text/html" version="4.0" />
+<!-- <xsl:output indent="yes" saxon:indent-spaces="2" method="xml" /> -->
+
+<!--
 <xsl:template match="/">
     <root>
         <original>
@@ -27,23 +29,24 @@
             <xsl:apply-templates select="/stix:STIX_Package/*" mode="createNormalized">
             </xsl:apply-templates>
         </normalized>
-        <!--
+        <!- -
         <reference-before-cleaning>
             <xsl:apply-templates select="/stix:STIX_Package//*[@id]" mode="verbatim"/>
         </reference-before-cleaning>
-        -->
+        - ->
         <reference>
             <xsl:apply-templates select="/stix:STIX_Package//*[@id]" mode="createReference">
                 <xsl:with-param name="isTopLevel" select="fn:true()" />
             </xsl:apply-templates>
         </reference>
-        <!--
+        <!- -
         <xsl:for-each select="/stix:STIX_Package/stix:Observables/cybox:Observable/(cybox:Event|cybox:Object)">
             <xsl:apply-templates mode="oneDeep" select="." />
         </xsl:for-each>
-        -->
+        - ->
     </root>
 </xsl:template>
+-->
 
 <xsl:template match="node()" mode="createNormalized" priority="10.0">
     

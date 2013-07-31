@@ -50,6 +50,7 @@ mdunn@mitre.org
     
 <xsl:output method="html" omit-xml-declaration="yes" indent="yes" media-type="text/html" version="4.0" />
   <xsl:include href="stix_common.xsl"/>
+  <xsl:include href="normalize.xsl"/>
   <!-- <xsl:include href="cybox_common.xsl"/> -->
   <xsl:key name="observableID" match="cybox:Observable" use="@id"/>
     
@@ -60,6 +61,15 @@ mdunn@mitre.org
       surrounding content for the Observables table.
     --> 
     <xsl:template match="/">
+        <xsl:variable name="normalized">
+          <xsl:apply-templates select="/stix:STIX_Package/*" mode="createNormalized" />
+        </xsl:variable>
+        <xsl:variable name="reference">
+          <xsl:apply-templates select="/stix:STIX_Package//*[@id]" mode="createReference">
+            <xsl:with-param name="isTopLevel" select="fn:true()" />
+          </xsl:apply-templates>
+        </xsl:variable>
+      
             <html>
                <head>
                 <title>STIX Output</title>
@@ -673,6 +683,13 @@ mdunn@mitre.org
                  </script>
                </head>
               <body onload="runtimeCopyObjects();">
+                <div>
+                  <div>BEGIN DEBUG</div>
+                  <div>
+                    <xsl:apply-templates select="$normalized" mode="verbatim" />
+                  </div>
+                  <div>END DEBUG</div>
+                </div>
                     <div id="wrapper">
                         <div id="header"> 
                             <H1>STIX Output</H1>
@@ -694,7 +711,10 @@ mdunn@mitre.org
                         <h2><a name="analysis">STIX Header</a></h2>
                           <xsl:call-template name="processHeader"/>
                         <h2><a name="analysis">Observables</a></h2>
-                          <xsl:call-template name="processStixObservables"/>
+                          <xsl:call-template name="processStixObservables">
+                            <xsl:with-param name="reference" select="$reference" />
+                            <xsl:with-param name="normalized" select="$normalized" />
+                          </xsl:call-template>
                         <h2><a name="analysis">Indicators</a></h2>
                         <xsl:call-template name="processIndicators"/>
                         <h2><a name="analysis">TTPs</a></h2>
@@ -723,7 +743,10 @@ mdunn@mitre.org
       second row.
     -->
   <xsl:template name="processStixObservables">
-    <xsl:for-each select="//stix:STIX_Package/stix:Observables">        
+    <xsl:param name="reference" select="()" />
+    <xsl:param name="normalized" select="()" />
+    
+    <xsl:for-each select="$normalized/stix:Observables">      
       <div id="observablesspandiv" style="font-weight:bold; margin:5px; color:#BD9C8C;">
         <TABLE class="grid tablesorter" cellspacing="0">
           <COLGROUP>
@@ -744,7 +767,11 @@ mdunn@mitre.org
             <xsl:for-each select="cybox:Observable">
               <!-- <xsl:sort select="cybox:Observable_Composition" order="descending"/> -->
               <xsl:variable name="evenOrOdd" select="if(position() mod 2 = 0) then 'even' else 'odd'" />
-              <xsl:call-template name="processObservable"><xsl:with-param name="evenOrOdd" select="$evenOrOdd"/></xsl:call-template>
+              <xsl:call-template name="processObservable2">
+                <xsl:with-param name="reference" select="$reference" />
+                <xsl:with-param name="normalized" select="$normalized" />
+                <xsl:with-param name="evenOrOdd" select="$evenOrOdd"/>
+              </xsl:call-template>
             </xsl:for-each>
           </TBODY>
         </TABLE>    
