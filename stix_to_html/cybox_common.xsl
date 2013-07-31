@@ -109,13 +109,13 @@ ikirillov@mitre.org
         <xsl:param name="normalized" select="()" />
         
         <xsl:variable name="originalObservable" select="." />
-        <xsl:variable name="actualObservable"  as="element()" select="if ($originalObservable/@id) then ($originalObservable) else ($reference/*[@id = fn:data($originalObservable/@idref)])" />
         <!--
-        <xsl:variable name="actualObservable"  as="element()">
-            <xsl:if test="$originalObservable/@id"><xsl:value-of select="$originalObservable"/></xsl:if>
-            <xsl:if test="$originalObservable/@idref"><xsl:value-of select="$reference/*[@id = fn:data($originalObservable/@idref)]"/></xsl:if>
-        </xsl:variable>
+        <xsl:variable name="actualObservable"  as="element()" select="if ($originalObservable/@id) then ($originalObservable) else ($reference/*[@id = fn:data($originalObservable/@idref)])" />
         -->
+        <xsl:variable name="actualObservable"  as="element()">
+            <xsl:if test="$originalObservable/@id"><xsl:copy-of select="$originalObservable"/></xsl:if>
+            <xsl:if test="$originalObservable/@idref"><xsl:copy-of select="$reference/*[@id = fn:data($originalObservable/@idref)]"/></xsl:if>
+        </xsl:variable>
         
         <xsl:variable name="contentVar" select="concat(count(ancestor::node()), '00000000', count(preceding::node()))"/>
         <xsl:variable name="imgVar" select="generate-id()"/>
@@ -236,6 +236,9 @@ ikirillov@mitre.org
         
         <xsl:variable name="originalObservable" select="." />
         <xsl:variable name="actualObservable"  as="element()" select="if ($originalObservable/@id) then ($originalObservable) else ($reference/*[@id = fn:data($originalObservable/@idref)])" />
+        
+        <xsl:variable name="expandedContentId" select="generate-id(.)"/>
+        
         <!--
         <xsl:variable name="actualObservable"  as="element()">
             <xsl:if test="$originalObservable/@id"><xsl:value-of select="$originalObservable"/></xsl:if>
@@ -245,7 +248,9 @@ ikirillov@mitre.org
         
         <xsl:variable name="contentVar" select="concat(count(ancestor::node()), '00000000', count(preceding::node()))"/>
         <xsl:variable name="imgVar" select="generate-id()"/>
+        
         <TR><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
+            <!--
             <TD>
                 <div class="collapsibleLabel" style="cursor: pointer;" onclick="toggleDiv('{$contentVar}','{$imgVar}')">
                     <span id="{$imgVar}" style="font-weight:bold; margin:5px; color:#BD9C8C;">+</span><xsl:value-of select="$actualObservable/@id"/>
@@ -260,8 +265,8 @@ ikirillov@mitre.org
                         Event
                     </xsl:when>
                     <xsl:when test="$actualObservable/cybox:Object/cybox:Properties/@xsi:type">
-                        <!-- <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($actualObservable/cybox:Object/cybox:Properties/@xsi:type, $actualObservable/cybox:Object/cybox:Properties))" /> -->
-                        (from xsi type -- TODO FIX) <!-- <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($actualObservable/cybox:Object/cybox:Properties/@xsi:type, (/*)[1]))" /> -->
+                        <!- - <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($actualObservable/cybox:Object/cybox:Properties/@xsi:type, $actualObservable/cybox:Object/cybox:Properties))" /> - ->
+                        (from xsi type - - TODO FIX) <!- - <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($actualObservable/cybox:Object/cybox:Properties/@xsi:type, (/*)[1]))" /> - ->
                     </xsl:when>
                     <xsl:when test="$actualObservable/cybox:Object/cybox:Properties/@xsi:type and not($actualObservable/cybox:Object/cybox:Properties/@xsi:type)">
                         Object (no properties set)
@@ -270,6 +275,23 @@ ikirillov@mitre.org
                         Other
                     </xsl:otherwise>
                 </xsl:choose>
+            </TD>
+            -->
+            
+            <td colspan="2">
+            <div class="expandableContainer expandableSeparate collapsed" onclick="toggle(this)">
+                <div class="expandableToggle objectReference">
+                    <xsl:value-of select="$actualObservable/@id"/>
+                </div>
+                <div id="{$expandedContentId}" class="expandableContents">
+                    OBSERVABLE CONTENT HERE
+                </div>
+            </div>
+            </td>
+        </TR>
+        <TR><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
+            <TD colspan="2">
+                <div id="{contentVar}" />
             </TD>
         </TR>
     </xsl:template>
