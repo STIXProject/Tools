@@ -267,7 +267,7 @@ ikirillov@mitre.org
                     </xsl:when>
                     <xsl:when test="$actualObservable/cybox:Object/cybox:Properties/@xsi:type">
                         <!-- <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($actualObservable/cybox:Object/cybox:Properties/@xsi:type, $actualObservable/cybox:Object/cybox:Properties))" /> -->
-                        (from xsi type - - TODO FIX) <!-- <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($actualObservable/cybox:Object/cybox:Properties/@xsi:type, (/*)[1]))" /> -->
+                        <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($actualObservable/cybox:Object/cybox:Properties/@xsi:type, $actualObservable))" />
                     </xsl:when>
                     <xsl:when test="$actualObservable/cybox:Object/cybox:Properties/@xsi:type and not($actualObservable/cybox:Object/cybox:Properties/@xsi:type)">
                         Object (no properties set)
