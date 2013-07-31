@@ -249,14 +249,14 @@ ikirillov@mitre.org
         <xsl:variable name="contentVar" select="concat(count(ancestor::node()), '00000000', count(preceding::node()))"/>
         <xsl:variable name="imgVar" select="generate-id()"/>
         
-        <TR><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
-            <!--
-            <TD>
-                <div class="collapsibleLabel" style="cursor: pointer;" onclick="toggleDiv('{$contentVar}','{$imgVar}')">
-                    <span id="{$imgVar}" style="font-weight:bold; margin:5px; color:#BD9C8C;">+</span><xsl:value-of select="$actualObservable/@id"/>
+        <tbody class="expandableContainer expandableSeparate collapsed">
+        <tr><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
+            <td>
+                <div class="expandableToggle objectReference" onclick="toggle(this.parentNode.parentNode.parentNode)"> <!-- that is the tbody -->
+                    <xsl:value-of select="$actualObservable/@id"/>
                 </div>
-            </TD>
-            <TD>         
+            </td>
+            <td>
                 <xsl:choose>
                     <xsl:when test="$actualObservable/cybox:Observable_Composition">
                         Composition
@@ -265,8 +265,8 @@ ikirillov@mitre.org
                         Event
                     </xsl:when>
                     <xsl:when test="$actualObservable/cybox:Object/cybox:Properties/@xsi:type">
-                        <!- - <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($actualObservable/cybox:Object/cybox:Properties/@xsi:type, $actualObservable/cybox:Object/cybox:Properties))" /> - ->
-                        (from xsi type - - TODO FIX) <!- - <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($actualObservable/cybox:Object/cybox:Properties/@xsi:type, (/*)[1]))" /> - ->
+                        <!-- <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($actualObservable/cybox:Object/cybox:Properties/@xsi:type, $actualObservable/cybox:Object/cybox:Properties))" /> -->
+                        (from xsi type - - TODO FIX) <!-- <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($actualObservable/cybox:Object/cybox:Properties/@xsi:type, (/*)[1]))" /> -->
                     </xsl:when>
                     <xsl:when test="$actualObservable/cybox:Object/cybox:Properties/@xsi:type and not($actualObservable/cybox:Object/cybox:Properties/@xsi:type)">
                         Object (no properties set)
@@ -275,25 +275,42 @@ ikirillov@mitre.org
                         Other
                     </xsl:otherwise>
                 </xsl:choose>
-            </TD>
-            -->
-            
+            </td>
+        </tr>
+        <tr><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
             <td colspan="2">
-            <div class="expandableContainer expandableSeparate collapsed" onclick="toggle(this)">
-                <div class="expandableToggle objectReference">
-                    <xsl:value-of select="$actualObservable/@id"/>
-                </div>
                 <div id="{$expandedContentId}" class="expandableContents">
                     OBSERVABLE CONTENT HERE
                 </div>
-            </div>
             </td>
-        </TR>
-        <TR><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
-            <TD colspan="2">
-                <div id="{contentVar}" />
-            </TD>
-        </TR>
+        </tr>
+        </tbody>
+    </xsl:template>
+    
+    <xsl:template name="processObservableReference">
+        <xsl:param name="reference" select="()" />
+        <xsl:param name="normalized" select="()" />
+        
+        <xsl:variable name="originalObservable" select="." />
+        <xsl:variable name="actualObservable"  as="element()" select="if ($originalObservable/@id) then ($originalObservable) else ($reference/*[@id = fn:data($originalObservable/@idref)])" />
+        
+        <xsl:variable name="expandedContentId" select="generate-id(.)"/>
+        
+        <div class="expandableContainer expandableSeparate collapsed">
+            <div class="expandableToggle objectReference" onclick="toggle(this.parentNode)">
+                <xsl:value-of select="$actualObservable/@id"/>
+                <xsl:call-template name="itemHeadingOnly">
+                    <xsl:with-param name="reference" select="$reference" />
+                    <xsl:with-param name="normalized" select="$normalized" />
+                </xsl:call-template>
+                
+            </div>
+            
+            <div id="{$expandedContentId}" class="expandableContents">
+                <xsl:call-template name="processObservableCommon">
+                </xsl:call-template>
+            </div>
+        </div>
     </xsl:template>
     
     <xsl:template name="processObservableInline">
@@ -425,6 +442,7 @@ ikirillov@mitre.org
     
     <xsl:template name="processObservableCommon">
         
+        <!--
         <div style="overflow:hidden; display:none; padding:0px 0px;">
             <div>
                 <xsl:attribute name="id" select="@id" />
@@ -434,6 +452,7 @@ ikirillov@mitre.org
                     <xsl:if test="@id">baseobj </xsl:if>
                     <xsl:if test="not(cybox:Observable_Composition)">baseobserv </xsl:if>
                 </xsl:attribute>
+                -->
                 
                 <div>CONTENT HERE</div>
                 
@@ -494,9 +513,10 @@ ikirillov@mitre.org
                         </table> 
                     </div>
                 </xsl:if>
-
+<!--
             </div>
         </div>
+        -->
     </xsl:template>
     
     <!--
@@ -545,6 +565,48 @@ ikirillov@mitre.org
             </tbody>
         </table> 
     </xsl:template>
+    
+    <!--
+      Print out the heading for an inline object instance (it has an id
+      attribute and does not have an idref attribute).
+    -->
+    <xsl:template name="itemHeadingOnly">
+        <xsl:param name="reference" select="()" />
+        <xsl:param name="normalized" select="()" />
+        
+        <xsl:param name="currentObject" select="." />
+        <xsl:param name="id" select="if ($currentObject/@id) then (fn:data($currentObject/@id)) else (fn:data($currentObject/@idref))"/>
+        
+        <xsl:variable name="originalObservable" select="$currentObject" />
+        <xsl:variable name="actualObservable"  as="element()" select="if ($originalObservable/@id) then ($originalObservable) else ($reference/*[@id = fn:data($originalObservable/@idref)])" />
+        
+        <xsl:variable name="relationshipOrAssociationType" select="$actualObservable/(cybox:Relationship|cybox:Association_Type)"/>
+        
+        <xsl:variable name="currentObjectType">
+            <xsl:choose>
+                <!-- case 1: cybox objects have a cybox:Properties child with an xsi type,
+                     or an observable has a child that is an object that has cybox:Properties
+                -->
+                <xsl:when test="($currentObject/cybox:Properties|$currentObject/cybox:*/cybox:Properties)/@xsi:type"><xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName(($currentObject/cybox:Properties|$currentObject/cybox:*/cybox:Properties)/@xsi:type, ($currentObject/cybox:Properties|$currentObject/cybox:*/cybox:Properties)))"/></xsl:when>
+                <!-- case 2: the current item is a cybox event or an observable that contains an event  -->
+                <xsl:when test="$currentObject/cybox:Type|$currentObject/cybox:Event/cybox:Type"><xsl:value-of select="($currentObject/cybox:Type|$currentObject/cybox:Event/cybox:Type)/text()"/></xsl:when>
+                <!-- catch all -->
+                <xsl:otherwise></xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        
+        <xsl:if test="$relationshipOrAssociationType">
+            <xsl:value-of select="$relationshipOrAssociationType/text()" />
+            <xsl:text> &#x25CB; </xsl:text>
+        </xsl:if>
+        
+        <xsl:if test="$currentObjectType">
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="$currentObjectType" />
+            <xsl:text> &#x25CB; </xsl:text>
+        </xsl:if>
+    </xsl:template>
+
     
     <!--
       Print out the heading for an inline object instance (it has an id

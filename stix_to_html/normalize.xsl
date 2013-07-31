@@ -81,7 +81,7 @@
 <xsl:template match="node()" mode="createReference" priority="10.0">
     <xsl:param name="isTopLevel" select="fn:false()" />
     
-    <xsl:copy copy-namespaces="no">
+    <xsl:copy copy-namespaces="yes">
         
         <!-- for debugging, label each element with an attribute indicating if
              it's the top level or a descendant

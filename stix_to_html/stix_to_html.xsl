@@ -433,18 +433,21 @@ mdunn@mitre.org
                     }
                     
                     .expandableContainer.collapsed > .expandableToggle::before,
-                    .expandableContainer.collapsed.expandableToggle::before
+                    .expandableContainer.collapsed.expandableToggle::before,
+                    tbody.expandableContainer.collapsed > tr > td > .expandableToggle::before
                     {
                       content: "+";
                     }
                     .expandableContainer.expanded > .expandableToggle::before,
-                    .expandableContainer.expanded.expandableToggle::before
+                    .expandableContainer.expanded.expandableToggle::before,
+                    tbody.expandableContainer.expanded > tr > td > .expandableToggle::before
                     {
                       content: "\2212"; /* that's the minus sign, which is the same width as + */
                     }
                     .expandableContainer > .expandableToggle::before,
                     .expandableContainer.expandableToggle::before,
-                    .nonexpandableContainer::before
+                    .nonexpandableContainer::before,
+                    tbody.expandableContainer > tr > td > .expandableToggle::before
                     {
                       color: goldenrod;
                       /*
@@ -463,7 +466,8 @@ mdunn@mitre.org
                       padding-left: 1.0em;
                       text-indent: -0.5em;
                     }
-                    .expandableContainer > .expandableContents
+                    .expandableContainer > .expandableContents,
+                    tbody.expandableContainer > tr > td > .expandableContents
                     {
                       background-color: #A8CBDE;
                       padding-top: 0.25em;
@@ -472,7 +476,8 @@ mdunn@mitre.org
                       padding-bottom: 0.5em;
                     }
                     
-                    .expandableSeparate.expandableContainer.collapsed > .expandableContents
+                    .expandableSeparate.expandableContainer.collapsed > .expandableContents,
+                    tbody.expandableSeparate.expandableContainer.collapsed > tr > td > .expandableContents
                     {
                       display: none;
                     }
@@ -710,6 +715,14 @@ mdunn@mitre.org
                         </div>
                         <h2><a name="analysis">STIX Header</a></h2>
                           <xsl:call-template name="processHeader"/>
+                      
+                        <xsl:call-template name="processReference">
+                          <xsl:with-param name="reference" select="$reference" />
+                          <xsl:with-param name="normalized" select="$normalized" />
+                        </xsl:call-template>
+                      
+                      
+                      
                         <h2><a name="analysis">Observables</a></h2>
                           <xsl:call-template name="processStixObservables">
                             <xsl:with-param name="reference" select="$reference" />
@@ -733,6 +746,27 @@ mdunn@mitre.org
                 </body>
             </html>
     </xsl:template>
+  
+  <xsl:template name="processReference">
+    <xsl:param name="reference" select="()" />
+    <xsl:param name="normalized" select="()" />
+    
+    <div class="reference">
+      <xsl:apply-templates select="$reference" mode="reference" />
+    </div>
+  </xsl:template>
+  
+  <xsl:template match="node()" mode="reference" />
+  
+  <xsl:template match="cybox:Observable" mode="reference">
+    <xsl:param name="reference" select="()" />
+    <xsl:param name="normalized" select="()" />
+
+    <xsl:call-template name="processObservableReference">
+      <xsl:with-param name="reference" select="$reference" />
+      <xsl:with-param name="normalized" select="$normalized" />
+    </xsl:call-template>
+  </xsl:template>
   
   <!--
       draw the main table on the page that represents the list of Observables.
