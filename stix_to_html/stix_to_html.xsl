@@ -596,19 +596,28 @@ mdunn@mitre.org
                     }
                     
                     <!-- copy object from clean src copy to dst destination and then toggle visibility -->
-                    function embedObject(container, src, dst) {
+                    function embedObject(container, targetId, expandedContentContainerId) {
                     
-                        var id = src;
-                        var copy = pristineCopies[id].cloneNode(true);
+                        //var copy = pristineCopies[targetId].cloneNode(true);
+                        var template = document.querySelector(".reference #" + targetId.replace(":", "\\:"));
+                        //var copy = template.cloneNode(true);
                         
-                        var target = container.querySelector("#" + dst);
+                        var target = container.querySelector("#" + expandedContentContainerId.replace(":", "\\:"));
                         
                         while(target.lastChild)
                         {
                           target.removeChild(target.lastChild);
                         }
                         
-                        target.appendChild(copy);
+                        var childrenToBeCopied = template.querySelectorAll(".expandableContents > *");
+                        for (var i = 0; i < childrenToBeCopied.length; i++)
+                        {
+                          var current = childrenToBeCopied.item(i);
+                          var currentCopy = current.cloneNode(true);
+                          target.appendChild(currentCopy);
+                        }
+                        
+                        //target.appendChild(copy);
                         
                         /*
                         <!-- deep copy the source div's html into the destination div --> 
@@ -631,13 +640,10 @@ mdunn@mitre.org
                     var pristineCopies = {};
                     <!-- onload, make a clean copy of all id'd objects/actions for runtime copying -->
                     function runtimeCopyObjects() {
-                        embedCompositions()
+                        var referenceItems = document.querySelector(".reference > *");
                         
-                        var divSrcList = getElementsByClass('baseobj');
-                        var divDstList = getElementsByClass('copyobj');
-                        
-                        for (i = 0; i < divSrcList.length; i++) {
-                          var current = divSrcList[i];
+                        for (i = 0; i < referenceItems.length; i++) {
+                          var current = referenceItems[i];
                           var id = current.id;
                           pristineCopies[id] = current;
                         }

@@ -236,7 +236,7 @@ ikirillov@mitre.org
         
         <xsl:variable name="originalObservable" select="." />
         <xsl:variable name="actualObservable"  as="element()" select="if ($originalObservable/@id) then ($originalObservable) else ($reference/*[@id = fn:data($originalObservable/@idref)])" />
-        
+        <xsl:variable name="id" select="fn:data($actualObservable/@id)" />
         <xsl:variable name="expandedContentId" select="generate-id(.)"/>
         
         <!--
@@ -247,12 +247,13 @@ ikirillov@mitre.org
         -->
         
         <xsl:variable name="contentVar" select="concat(count(ancestor::node()), '00000000', count(preceding::node()))"/>
-        <xsl:variable name="imgVar" select="generate-id()"/>
         
         <tbody class="expandableContainer expandableSeparate collapsed">
         <tr><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
             <td>
-                <div class="expandableToggle objectReference" onclick="toggle(this.parentNode.parentNode.parentNode)"> <!-- that is the tbody -->
+                <div class="expandableToggle objectReference" onclick="embedObject()toggle(this.parentNode.parentNode.parentNode)">
+                    <xsl:attribute name="onclick">embedObject(this.parentNode.parentNode.parentNode, '<xsl:value-of select="$id"/>','<xsl:value-of select="$expandedContentId"/>');</xsl:attribute>
+                <!-- <div class="expandableToggle objectReference" onclick="toggle(this.parentNode.parentNode.parentNode)"> --> <!-- that is the tbody -->
                     <xsl:value-of select="$actualObservable/@id"/>
                 </div>
             </td>
@@ -296,8 +297,12 @@ ikirillov@mitre.org
         
         <xsl:variable name="expandedContentId" select="generate-id(.)"/>
         
-        <div class="expandableContainer expandableSeparate collapsed">
-            <div class="expandableToggle objectReference" onclick="toggle(this.parentNode)">
+        <xsl:variable name="id" select="fn:data($actualObservable/@id)" />
+        
+        <div id="{fn:data($actualObservable/@id)}" class="expandableContainer expandableSeparate collapsed">
+            <!-- <div class="expandableToggle objectReference" onclick="toggle(this.parentNode)"> -->
+            <div class="expandableToggle objectReference">
+                <xsl:attribute name="onclick">embedObject(this.parentElement, '<xsl:value-of select="$id"/>','<xsl:value-of select="$expandedContentId"/>');</xsl:attribute>
                 <xsl:value-of select="$actualObservable/@id"/>
                 <xsl:call-template name="itemHeadingOnly">
                     <xsl:with-param name="reference" select="$reference" />
