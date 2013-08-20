@@ -132,10 +132,21 @@
     </xsl:choose>
 </xsl:template>        
 
+<!--
+    NOT NEEDED - - NORMALIZATION FIXES THIS BEFORE THIS POINT
 <xsl:template match="@object_reference" mode="createReference" priority="20.0">
     <xsl:attribute name="idref" select="fn:data(.)" />
+</xsl:template>
+-->
+
+<xsl:template match="@phase_id[../../self::stixCommon:Kill_Chain]" mode="createReference" priority="20.0">
+  <xsl:attribute name="id" select="fn:data(.)" />
 </xsl:template>        
 
+<xsl:template match="@phase_id[not(../../self::stixCommon:Kill_Chain)]" mode="createReference" priority="20.0">
+  <xsl:attribute name="idref" select="fn:data(.)" />
+</xsl:template>        
+  
 <!--
 <xsl:template match="stix:TTPs/stix:Kill_Chains/stixCommon:Kill_Chain/stixCommon:Kill_Chain_Phase[@phase_id]" mode="createReference" priority="20.0">
     <xsl:copy copy-namespaces="no">
@@ -187,5 +198,7 @@
         <xsl:apply-templates select="@*|node()" mode="verbatim" />
     </xsl:copy>
 </xsl:template>
+    
+    
     
 </xsl:stylesheet>

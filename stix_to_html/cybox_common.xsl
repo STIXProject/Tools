@@ -51,9 +51,10 @@ ikirillov@mitre.org
     
     xmlns:EmailMessageObj="http://cybox.mitre.org/objects#EmailMessageObject-2"
     exclude-result-prefixes="cybox Common xsi fn EmailMessageObj">
-    
+
+
     <xsl:output method="html" omit-xml-declaration="yes" indent="yes" media-type="text/html" version="4.0" />
-    
+  
     <!--
       draw the main table on the page that represents the list of Observables.
       these are the elements that are directly below the root element of the page.
@@ -234,7 +235,7 @@ ikirillov@mitre.org
     </xsl:template>
     
     <xsl:function name="cybox:calculateDisplayTypeGenericItem" as="xs:string">
-        <xsl:param name="genericItem" as="element()" />
+        <xsl:param name="genericItem" as="element()?" />
 
         <xsl:choose>
             <xsl:when test="$genericItem/cybox:Observable_Composition">
@@ -279,7 +280,7 @@ ikirillov@mitre.org
             </looked-up>
           </processed-item>
         </xsl:message>
-        <xsl:variable name="actualItem"  as="element()" select="if ($originalItem/@id) then ($originalItem) else ($reference/*[@id = fn:data($originalItem/@idref)])" />
+        <xsl:variable name="actualItem"  as="element()?" select="if ($originalItem/@id) then ($originalItem) else ($reference/*[@id = fn:data($originalItem/@idref)])" />
         <xsl:variable name="id" select="fn:data($actualItem/@id)" />
         <xsl:variable name="expandedContentId" select="generate-id(.)"/>
         
@@ -1051,6 +1052,8 @@ ikirillov@mitre.org
             </div>
         </div>
     </xsl:template>
+    
+    
     
     <!--
       Print the details of an action.

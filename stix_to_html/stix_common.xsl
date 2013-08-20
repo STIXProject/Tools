@@ -585,7 +585,37 @@
       </div>
     </xsl:template>
     
+  <xsl:template match="stixCommon:Kill_Chain[@id]" priority="30.0">
+    <xsl:variable name="localName" select="local-name()"/>
+    <xsl:variable name="identifierName" select="if ($localName = 'Object') then 'object' else if ($localName = 'Event') then 'event' else if ($localName = 'Related_Object') then 'relatedObject' else if ($localName = 'Associated_Object') then 'associatedObject' else ''" />
+    <xsl:variable name="friendlyName" select="fn:replace($localName, '_', ' ')" />
+    <xsl:variable name="headingName" select="fn:upper-case($friendlyName)" />
     
-    
+    <div class="container {$identifierName}Container {$identifierName}">
+      <div class="contents {$identifierName}Contents {$identifierName}">
+        <!-- Print the description if one is available (often they are not) -->
+        KILL CHAIN
+        
+        <div>
+          name: <xsl:value-of select="fn:data(@name)" />
+        </div>
+        <div>
+          definer: <xsl:value-of select="fn:data(@definer)" />
+        </div>
+        <div>
+          reference: <xsl:value-of select="fn:data(@reference)" />
+        </div>
+        
+        <xsl:if test="cybox:Description">
+          <div class="{$identifierName}Description description">
+            <xsl:value-of select="cybox:Description"/>
+          </div>
+        </xsl:if>
+        
+      </div>
+    </div>
+  </xsl:template>
+  
+  
     
 </xsl:stylesheet>

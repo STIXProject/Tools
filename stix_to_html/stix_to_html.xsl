@@ -53,6 +53,7 @@ mdunn@mitre.org
 <xsl:output method="html" omit-xml-declaration="yes" indent="yes" media-type="text/html" version="4.0" />
   <xsl:include href="stix_common.xsl"/>
   <xsl:include href="normalize.xsl"/>
+  
   <!-- <xsl:include href="cybox_common.xsl"/> -->
   <xsl:key name="observableID" match="cybox:Observable" use="@id"/>
     
@@ -67,7 +68,7 @@ mdunn@mitre.org
           <xsl:apply-templates select="/stix:STIX_Package/*" mode="createNormalized" />
         </xsl:variable>
         <xsl:variable name="reference">
-          <xsl:apply-templates select="/stix:STIX_Package//*[@id or @phase_id]" mode="createReference">
+          <xsl:apply-templates select="/stix:STIX_Package//*[@id or @phase_id[../../self::stixCommon:Kill_Chain]]" mode="createReference">
             <xsl:with-param name="isTopLevel" select="fn:true()" />
           </xsl:apply-templates>
         </xsl:variable>
@@ -102,11 +103,19 @@ mdunn@mitre.org
                     border-width:1px;
                     }
                     
-                    table.grid thead, table.grid .collapsible {
+                    /*
+                    table.grid thead,
+                    table.grid .collapsible
+                    */
+                    table.grid > thead > tr > th
+                    {
                     background-color: #c7c3bb;
                     }
                     
-                    table.grid th {
+                    /* table.grid th */
+                    table.grid > thead > tr > th,
+                    table.grid > tbody > tr > th
+                    {
                     color: #565770;
                     padding: 4px 16px 4px 0;
                     padding-left: 10px;
@@ -540,7 +549,8 @@ mdunn@mitre.org
                     
                     .reference
                     {
-                      display: none;
+                      display: block;
+                      /*display: none;*/
                     }
                 </style>
 
@@ -739,7 +749,7 @@ mdunn@mitre.org
                         <h2><a name="analysis">STIX Header</a></h2>
                           <xsl:call-template name="processHeader"/>
                       
-                        <xsl:call-template name="processReference">
+                        <xsl:call-template name="printReference">
                           <xsl:with-param name="reference" select="$reference" />
                           <xsl:with-param name="normalized" select="$normalized" />
                         </xsl:call-template>
@@ -785,18 +795,18 @@ mdunn@mitre.org
             </html>
     </xsl:template>
   
-  <xsl:template name="processReference">
+  <xsl:template name="printReference">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
     
     <div class="reference">
-      <xsl:apply-templates select="$reference" mode="reference" />
+      <xsl:apply-templates select="$reference" mode="printReference" />
     </div>
   </xsl:template>
   
-  <xsl:template match="node()" mode="reference" />
+  <xsl:template match="node()" mode="printReference" />
   
-  <xsl:template match="cybox:Observable|stix:Indicator|stix:TTP|stixCommon:Kill_Chain|stixCommon:Kill_Chain_Phase" mode="reference">
+  <xsl:template match="cybox:Observable|stix:Indicator|stix:TTP|stixCommon:Kill_Chain|stixCommon:Kill_Chain_Phase" mode="printReference">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
 
@@ -806,7 +816,7 @@ mdunn@mitre.org
     </xsl:call-template>
   </xsl:template>
 
-  <xsl:template match="cybox:Object|cybox:Related_Object" mode="reference">
+  <xsl:template match="cybox:Object|cybox:Related_Object|stixCommon:Kill_Chain" mode="printReference">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
     
@@ -854,6 +864,21 @@ mdunn@mitre.org
               <xsl:with-param name="normalized" select="$normalized" />
               <xsl:with-param name="evenOrOdd" select="$evenOrOdd"/>
             </xsl:call-template>
+          </xsl:for-each>
+          
+          <xsl:for-each select="$categoryGroupingElement/stix:Kill_Chains">
+            <thead><tr><th colspan="2">Kill Chains</th></tr></thead>
+            <xsl:for-each select="./stixCommon:Kill_Chain">
+                <!-- <tr><td colspan="2">kill chain <xsl:value-of select="fn:data(./@idref)"/></td></tr> -->
+              
+              <xsl:variable name="evenOrOdd" select="if(position() mod 2 = 0) then 'even' else 'odd'" />
+              <xsl:call-template name="processGenericItem">
+                <xsl:with-param name="reference" select="$reference" />
+                <xsl:with-param name="normalized" select="$normalized" />
+                <xsl:with-param name="evenOrOdd" select="$evenOrOdd"/>
+              </xsl:call-template>
+              
+            </xsl:for-each>
           </xsl:for-each>
         </tbody>
       </table>    
