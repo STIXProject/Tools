@@ -143,127 +143,136 @@
                     </xsl:if>
                     <div>
                     <div>
-                        <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
-                        
-                        <!-- set empty class for non-composition observables -->
-                        
-                        <!-- <span style="color: red; background-color: yellow;">INDICATOR CONTENTS HERE</span> -->
-                        
-                        <xsl:attribute name="class">
-                        <xsl:if test="not(indicator:Composite_Indicator_Expression)">baseindicator </xsl:if>
-                        <xsl:if test="@id">container baseobj</xsl:if>
-                        </xsl:attribute>
-                        <xsl:if test="indicator:Title">
-                            <div id="section">
-                                <table class="one-column-emphasis indicator-sub-table">
-                                    <colgroup>
-                                        <col class="oce-first-obs heading-column" />
-                                        <col class="details-column" />
-                                    </colgroup>
-                                    <tbody>
-                                        <tr>
-                                            <td>Title</td>
-                                            <td>
-                                                <xsl:for-each select="indicator:Title">
-                                                    <xsl:value-of select="."/>
-                                                </xsl:for-each>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table> 
-                            </div>
-                        </xsl:if>              
-                        <xsl:if test="not(indicator:Composite_Indicator_Expression)">
-                            <div id="section">
-                                <table class="one-column-emphasis indicator-sub-table">
-                                    <colgroup>
-                                        <col class="oce-first-obs heading-column" />
-                                        <col class="details-column" />
-                                    </colgroup>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <xsl:apply-templates select="indicator:Observable" />
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table> 
-                            </div>
-                        </xsl:if>
-                        <xsl:if test="indicator:Composite_Indicator_Expression">
-                            <div id="section">
-                                <table class="one-column-emphasis indicator-sub-table">
-                                    <colgroup>
-                                        <col class="oce-first-obs heading-column" />
-                                        <col class="details-column" />
-                                    </colgroup>
-                                    <tbody>
-                                        <tr>
-                                            <td>Indicator Composition</td>
-                                            <td>
-                                                <xsl:apply-templates select="indicator:Composite_Indicator_Expression" />
-                                                <!--
-                                                <xsl:for-each select="indicator:Composite_Indicator_Expression">
-                                                    <xsl:call-template name="processObservableCompositionSimple" />
-                                                </xsl:for-each>
-                                                -->
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table> 
-                            </div>
-                        </xsl:if>
-                        <xsl:if test="indicator:Indicated_TTP">
-                            <div id="section">
-                                <table class="one-column-emphasis indicator-sub-table">
-                                    <colgroup>
-                                        <col class="oce-first-obs heading-column" />
-                                        <col class="details-column" />
-                                    </colgroup>
-                                    <tbody>
-                                        <tr>
-                                            <td>Indicator Indicated TTP</td>
-                                            <td>
-                                                <xsl:apply-templates select="indicator:Indicated_TTP" />
-                                                <!--
-                                                <xsl:for-each select="indicator:Composite_Indicator_Expression">
-                                                    <xsl:call-template name="processObservableCompositionSimple" />
-                                                </xsl:for-each>
-                                                -->
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table> 
-                            </div>
-                        </xsl:if>
-                        <xsl:if test="indicator:Kill_Chain_Phases">
-                            <div id="section">
-                                <table class="one-column-emphasis indicator-sub-table">
-                                    <colgroup>
-                                        <col class="oce-first-obs heading-column" />
-                                        <col class="details-column" />
-                                    </colgroup>
-                                    <tbody>
-                                        <tr>
-                                            <td>Indicator Kill Chain Phases</td>
-                                            <td>
-                                                <xsl:apply-templates select="indicator:Kill_Chain_Phases" />
-                                                <!--
-                                                <xsl:for-each select="indicator:Composite_Indicator_Expression">
-                                                    <xsl:call-template name="processObservableCompositionSimple" />
-                                                </xsl:for-each>
-                                                -->
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table> 
-                            </div>
-                        </xsl:if>
+                      
+                      <xsl:call-template name="processIndicatorContents" />
+
                     </div>
                     </div>
                 </div>
             </TD>
         </TR>
+    </xsl:template>
+  
+    <xsl:template name="processIndicatorContents">
+      
+      <div>
+      <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+      
+      <!-- set empty class for non-composition observables -->
+      
+      <!-- <span style="color: red; background-color: yellow;">INDICATOR CONTENTS HERE</span> -->
+      
+      <xsl:attribute name="class">
+        <xsl:if test="not(indicator:Composite_Indicator_Expression)">baseindicator </xsl:if>
+        <xsl:if test="@id">container baseobj</xsl:if>
+      </xsl:attribute>
+      <xsl:if test="indicator:Title">
+        <div id="section">
+          <table class="one-column-emphasis indicator-sub-table">
+            <colgroup>
+              <col class="oce-first-obs heading-column" />
+              <col class="details-column" />
+            </colgroup>
+            <tbody>
+              <tr>
+                <td>Title</td>
+                <td>
+                  <xsl:for-each select="indicator:Title">
+                    <xsl:value-of select="."/>
+                  </xsl:for-each>
+                </td>
+              </tr>
+            </tbody>
+          </table> 
+        </div>
+      </xsl:if>              
+      <xsl:if test="not(indicator:Composite_Indicator_Expression)">
+        <div id="section">
+          <table class="one-column-emphasis indicator-sub-table">
+            <colgroup>
+              <col class="oce-first-obs heading-column" />
+              <col class="details-column" />
+            </colgroup>
+            <tbody>
+              <tr>
+                <td>
+                  <xsl:apply-templates select="indicator:Observable" />
+                </td>
+              </tr>
+            </tbody>
+          </table> 
+        </div>
+      </xsl:if>
+      <xsl:if test="indicator:Composite_Indicator_Expression">
+        <div id="section">
+          <table class="one-column-emphasis indicator-sub-table">
+            <colgroup>
+              <col class="oce-first-obs heading-column" />
+              <col class="details-column" />
+            </colgroup>
+            <tbody>
+              <tr>
+                <td>Indicator Composition</td>
+                <td>
+                  <xsl:apply-templates select="indicator:Composite_Indicator_Expression" />
+                  <!--
+                                                <xsl:for-each select="indicator:Composite_Indicator_Expression">
+                                                    <xsl:call-template name="processObservableCompositionSimple" />
+                                                </xsl:for-each>
+                                                -->
+                </td>
+              </tr>
+            </tbody>
+          </table> 
+        </div>
+      </xsl:if>
+      <xsl:if test="indicator:Indicated_TTP">
+        <div id="section">
+          <table class="one-column-emphasis indicator-sub-table">
+            <colgroup>
+              <col class="oce-first-obs heading-column" />
+              <col class="details-column" />
+            </colgroup>
+            <tbody>
+              <tr>
+                <td>Indicator Indicated TTP</td>
+                <td>
+                  <xsl:apply-templates select="indicator:Indicated_TTP" />
+                  <!--
+                                                <xsl:for-each select="indicator:Composite_Indicator_Expression">
+                                                    <xsl:call-template name="processObservableCompositionSimple" />
+                                                </xsl:for-each>
+                                                -->
+                </td>
+              </tr>
+            </tbody>
+          </table> 
+        </div>
+      </xsl:if>
+      <xsl:if test="indicator:Kill_Chain_Phases">
+        <div id="section">
+          <table class="one-column-emphasis indicator-sub-table">
+            <colgroup>
+              <col class="oce-first-obs heading-column" />
+              <col class="details-column" />
+            </colgroup>
+            <tbody>
+              <tr>
+                <td>Indicator Kill Chain Phases</td>
+                <td>
+                  <xsl:apply-templates select="indicator:Kill_Chain_Phases" />
+                  <!--
+                                                <xsl:for-each select="indicator:Composite_Indicator_Expression">
+                                                    <xsl:call-template name="processObservableCompositionSimple" />
+                                                </xsl:for-each>
+                                                -->
+                </td>
+              </tr>
+            </tbody>
+          </table> 
+        </div>
+      </xsl:if> 
+      </div>
     </xsl:template>
     
     
@@ -492,83 +501,88 @@
                             </xsl:attribute>
                         </div>
                     </xsl:if>
-                    <div>
-                        <div>
-                            <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
-                            
-                            <!-- set empty class for non-composition observables -->
-                            
-                            <!-- <span style="color: red; background-color: yellow;">INDICATOR CONTENTS HERE</span> -->
-                            
-                            <xsl:attribute name="class">
-                                <!-- <xsl:if test="not(indicator:Composite_Indicator_Expression)">baseindicator </xsl:if> -->
-                                <xsl:if test="@id">container baseobj</xsl:if>
-                            </xsl:attribute>
-                            <xsl:if test="indicator:Description">
-                                <div id="section">
-                                    <table class="one-column-emphasis indicator-sub-table">
-                                        <colgroup>
-                                            <col class="oce-first-obs heading-column" />
-                                            <col class="details-column" />
-                                        </colgroup>
-                                        <tbody>
-                                            <tr>
-                                                <td>Description</td>
-                                                <td>
-                                                    <xsl:for-each select="ttp:Description">
-                                                        <xsl:value-of select="."/>
-                                                    </xsl:for-each>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table> 
-                                </div>
-                            </xsl:if>              
-                            <xsl:if test="ttp:Behavior">
-                                <div id="section">
-                                    <table class="one-column-emphasis indicator-sub-table">
-                                        <colgroup>
-                                            <col class="oce-first-obs heading-column" />
-                                            <col class="details-column" />
-                                        </colgroup>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <xsl:apply-templates select="ttp:Behavior" />
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table> 
-                                </div>
-                            </xsl:if>
-                            <xsl:if test="ttp:Related_TTPs/ttp:Related_TTP">
-                                <div id="section">
-                                    <table class="one-column-emphasis indicator-sub-table">
-                                        <colgroup>
-                                            <col class="oce-first-obs heading-column" />
-                                            <col class="details-column" />
-                                        </colgroup>
-                                        <tbody>
-                                            <tr>
-                                                <td>Related TTPs</td>
-                                                <td>
-                                                    <xsl:apply-templates select="ttp:Related_TTPs/ttp:Related_TTP" />
-                                                    <!--
+                    
+                    <xsl:call-template name="processTTPContents" />
+                </div>
+            </TD>
+        </TR>
+    </xsl:template>
+  
+    <xsl:template name="processTTPContents">
+      <div>
+        <div>
+          <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+          
+          <!-- set empty class for non-composition observables -->
+          
+          <!-- <span style="color: red; background-color: yellow;">INDICATOR CONTENTS HERE</span> -->
+          
+          <xsl:attribute name="class">
+            <!-- <xsl:if test="not(indicator:Composite_Indicator_Expression)">baseindicator </xsl:if> -->
+            <xsl:if test="@id">container baseobj</xsl:if>
+          </xsl:attribute>
+          <xsl:if test="ttp:Description">
+            <div id="section">
+              <table class="one-column-emphasis indicator-sub-table">
+                <colgroup>
+                  <col class="oce-first-obs heading-column" />
+                  <col class="details-column" />
+                </colgroup>
+                <tbody>
+                  <tr>
+                    <td>Description</td>
+                    <td>
+                      <xsl:for-each select="ttp:Description">
+                        <xsl:value-of select="."/>
+                      </xsl:for-each>
+                    </td>
+                  </tr>
+                </tbody>
+              </table> 
+            </div>
+          </xsl:if>              
+          <xsl:if test="ttp:Behavior">
+            <div id="section">
+              <table class="one-column-emphasis indicator-sub-table">
+                <colgroup>
+                  <col class="oce-first-obs heading-column" />
+                  <col class="details-column" />
+                </colgroup>
+                <tbody>
+                  <tr>
+                    <td>
+                      <xsl:apply-templates select="ttp:Behavior" />
+                    </td>
+                  </tr>
+                </tbody>
+              </table> 
+            </div>
+          </xsl:if>
+          <xsl:if test="ttp:Related_TTPs/ttp:Related_TTP">
+            <div id="section">
+              <table class="one-column-emphasis indicator-sub-table">
+                <colgroup>
+                  <col class="oce-first-obs heading-column" />
+                  <col class="details-column" />
+                </colgroup>
+                <tbody>
+                  <tr>
+                    <td>Related TTPs</td>
+                    <td>
+                      <xsl:apply-templates select="ttp:Related_TTPs/ttp:Related_TTP" />
+                      <!--
                                                 <xsl:for-each select="indicator:Composite_Indicator_Expression">
                                                     <xsl:call-template name="processObservableCompositionSimple" />
                                                 </xsl:for-each>
                                                 -->
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table> 
-                                </div>
-                            </xsl:if>
-                        </div>
-                    </div>
-                </div>
-            </TD>
-        </TR>
+                    </td>
+                  </tr>
+                </tbody>
+              </table> 
+            </div>
+          </xsl:if>
+        </div>
+      </div>
     </xsl:template>
     
     

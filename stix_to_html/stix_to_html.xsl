@@ -34,6 +34,7 @@ mdunn@mitre.org
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:fn="http://www.w3.org/2005/xpath-functions"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
 
     xmlns:indicator="http://stix.mitre.org/Indicator-2"
     xmlns:TTP="http://stix.mitre.org/TTP-1"
@@ -44,6 +45,7 @@ mdunn@mitre.org
     xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
     xmlns:cyboxCommon="http://cybox.mitre.org/common-2"
     xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2"
+    xmlns:stixCommon='http://stix.mitre.org/common-1'
     
     xmlns:EmailMessageObj="http://cybox.mitre.org/objects#EmailMessageObject-2"
     exclude-result-prefixes="cybox xsi fn EmailMessageObj">
@@ -65,7 +67,7 @@ mdunn@mitre.org
           <xsl:apply-templates select="/stix:STIX_Package/*" mode="createNormalized" />
         </xsl:variable>
         <xsl:variable name="reference">
-          <xsl:apply-templates select="/stix:STIX_Package//*[@id]" mode="createReference">
+          <xsl:apply-templates select="/stix:STIX_Package//*[@id or @phase_id]" mode="createReference">
             <xsl:with-param name="isTopLevel" select="fn:true()" />
           </xsl:apply-templates>
         </xsl:variable>
@@ -80,6 +82,14 @@ mdunn@mitre.org
                     {
                       font-family: Arial,Helvetica,sans-serif;
                     }
+                    
+                    .topLevelCategoryTable
+                    {
+                      font-weight: bold;
+                      margin: 5px;
+                      color: #BD9C8C;
+                    }
+                    
                     /* define table skin */
                     table.grid {
                     margin: 0px;
@@ -527,6 +537,11 @@ mdunn@mitre.org
                     {
                       white-space: pre-line;
                     }
+                    
+                    .reference
+                    {
+                      display: none;
+                    }
                 </style>
 
                  <script type="text/javascript">
@@ -694,6 +709,7 @@ mdunn@mitre.org
                  </script>
                </head>
               <body onload="runtimeCopyObjects();">
+                <!--
                 <div>
                   <div>BEGIN DEBUG</div>
                   <div>
@@ -701,6 +717,7 @@ mdunn@mitre.org
                   </div>
                   <div>END DEBUG</div>
                 </div>
+                -->
                     <div id="wrapper">
                         <div id="header"> 
                             <H1>STIX Output</H1>
@@ -730,14 +747,29 @@ mdunn@mitre.org
                       
                       
                         <h2><a name="analysis">Observables</a></h2>
-                          <xsl:call-template name="processStixObservables">
+                        <xsl:call-template name="processTopLevelCategory">
                             <xsl:with-param name="reference" select="$reference" />
                             <xsl:with-param name="normalized" select="$normalized" />
-                          </xsl:call-template>
+                            <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Observables" />
+                        </xsl:call-template>
+                      
                         <h2><a name="analysis">Indicators</a></h2>
-                        <xsl:call-template name="processIndicators"/>
+                        <!-- <xsl:call-template name="processIndicators"/> -->
+                        <xsl:call-template name="processTopLevelCategory">
+                          <xsl:with-param name="reference" select="$reference" />
+                          <xsl:with-param name="normalized" select="$normalized" />
+                          <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Indicators" />
+                        </xsl:call-template>
+                      
                         <h2><a name="analysis">TTPs</a></h2>
-                        <xsl:call-template name="processTTPs"/>
+                        <!-- <xsl:call-template name="processTTPs"/> -->
+                        <xsl:call-template name="processTopLevelCategory">
+                          <xsl:with-param name="reference" select="$reference" />
+                          <xsl:with-param name="normalized" select="$normalized" />
+                          <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:TTPs" />
+                          <xsl:with-param name="headingLabels" select="('ID', 'Title')" />
+                        </xsl:call-template>
+                      
                         <h2><a name="analysis">Exploit Targets</a></h2>
                         <!-- <xsl:call-template name="processExploitTargets"/> -->
                         <h2><a name="analysis">Incidents</a></h2>
@@ -764,11 +796,21 @@ mdunn@mitre.org
   
   <xsl:template match="node()" mode="reference" />
   
-  <xsl:template match="cybox:Observable" mode="reference">
+  <xsl:template match="cybox:Observable|stix:Indicator|stix:TTP|stixCommon:Kill_Chain|stixCommon:Kill_Chain_Phase" mode="reference">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
 
-    <xsl:call-template name="processObservableReference">
+    <xsl:call-template name="processGenericItemReference">
+      <xsl:with-param name="reference" select="$reference" />
+      <xsl:with-param name="normalized" select="$normalized" />
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template match="cybox:Object|cybox:Related_Object" mode="reference">
+    <xsl:param name="reference" select="()" />
+    <xsl:param name="normalized" select="()" />
+    
+    <xsl:call-template name="processObjectReference">
       <xsl:with-param name="reference" select="$reference" />
       <xsl:with-param name="normalized" select="$normalized" />
     </xsl:call-template>
@@ -782,101 +824,108 @@ mdunn@mitre.org
       heading that's always visible and is clickable to expand/collapse the
       second row.
     -->
-  <xsl:template name="processStixObservables">
+  <xsl:template name="processTopLevelCategory">
+    <xsl:param name="reference" select="()" />
+    <xsl:param name="normalized" select="()" />
+    <xsl:param name="categoryGroupingElement" select="()" />
+    <xsl:param name="headingLabels" select="('ID', 'Type')" />
+    
+    <div class="topLevelCategoryTable">
+      <table class="grid tablesorter" cellspacing="0">
+        <colgroup>
+          <col width="70%"/>
+          <col width="30%"/>
+        </colgroup>
+        <thead>
+          <tr>
+            <xsl:for-each select="$headingLabels">
+              <th class="header">
+                <xsl:value-of select="." />
+              </th>
+            </xsl:for-each>
+          </tr>
+        </thead>
+        <tbody>
+          <xsl:for-each select="$categoryGroupingElement/*[@idref]">
+            <!-- <xsl:sort select="cybox:Observable_Composition" order="descending"/> -->
+            <xsl:variable name="evenOrOdd" select="if(position() mod 2 = 0) then 'even' else 'odd'" />
+            <xsl:call-template name="processGenericItem">
+              <xsl:with-param name="reference" select="$reference" />
+              <xsl:with-param name="normalized" select="$normalized" />
+              <xsl:with-param name="evenOrOdd" select="$evenOrOdd"/>
+            </xsl:call-template>
+          </xsl:for-each>
+        </tbody>
+      </table>    
+    </div>
+  </xsl:template>
+  
+  
+  <xsl:template name="processGenericItemReference">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
     
-    <xsl:for-each select="$normalized/stix:Observables">      
-      <div id="observablesspandiv" style="font-weight:bold; margin:5px; color:#BD9C8C;">
-        <TABLE class="grid tablesorter" cellspacing="0">
-          <COLGROUP>
-            <COL width="90%"/>
-            <COL width="10%"/>
-          </COLGROUP>
-          <THEAD>
-            <TR>
-              <TH class="header">
-                ID
-              </TH>
-              <TH class="header">
-                Type
-              </TH>
-            </TR>
-          </THEAD>
-          <TBODY>
-            <xsl:for-each select="cybox:Observable">
-              <!-- <xsl:sort select="cybox:Observable_Composition" order="descending"/> -->
-              <xsl:variable name="evenOrOdd" select="if(position() mod 2 = 0) then 'even' else 'odd'" />
-              <xsl:call-template name="processObservable2">
-                <xsl:with-param name="reference" select="$reference" />
-                <xsl:with-param name="normalized" select="$normalized" />
-                <xsl:with-param name="evenOrOdd" select="$evenOrOdd"/>
-              </xsl:call-template>
-            </xsl:for-each>
-          </TBODY>
-        </TABLE>    
-      </div>
-    </xsl:for-each>
+    <xsl:variable name="originalItem" select="." />
+    <xsl:variable name="originalItemId" as="xs:string?" select="fn:data($originalItem/@id)" />
+    <xsl:variable name="originalItemIdref" as="xs:string?" select="fn:data($originalItem/@idref)" />
+    <xsl:message>
+      original item id: <xsl:value-of select="$originalItemId"/>; original item idref: <xsl:value-of select="$originalItemIdref"/>; 
+    </xsl:message>
+    <xsl:variable name="actualItem"  as="element()?" select="if ($originalItemId) then ($originalItem) else ($reference/*[@id = $originalItemIdref])" />
+    
+    <xsl:variable name="expandedContentId" select="generate-id(.)"/>
+    
+    <xsl:variable name="id" select="fn:data($actualItem/@id)" />
+    
+    <xsl:choose>
+      <xsl:when test="fn:empty($actualItem)">
+        <div id="{fn:data($actualItem/@id)}" class="nonExpandable">
+          <div class="externalReference objectReference">
+            <xsl:value-of select="$actualItem/@id"/>
+            [EXTERNAL]
+            <!--
+            <xsl:call-template name="itemHeadingOnly">
+              <xsl:with-param name="reference" select="$reference" />
+              <xsl:with-param name="normalized" select="$normalized" />
+            </xsl:call-template>
+            -->
+            
+          </div>
+        </div>
+          
+      </xsl:when>
+      <xsl:otherwise>
+        <div id="{fn:data($actualItem/@id)}" class="expandableContainer expandableSeparate collapsed">
+          <!-- <div class="expandableToggle objectReference" onclick="toggle(this.parentNode)"> -->
+          <div class="expandableToggle objectReference">
+            <xsl:attribute name="onclick">embedObject(this.parentElement, '<xsl:value-of select="$id"/>','<xsl:value-of select="$expandedContentId"/>');</xsl:attribute>
+            <xsl:value-of select="$actualItem/@id"/>
+            <xsl:call-template name="itemHeadingOnly">
+              <xsl:with-param name="reference" select="$reference" />
+              <xsl:with-param name="normalized" select="$normalized" />
+            </xsl:call-template>
+            
+          </div>
+          
+          <div id="{$expandedContentId}" class="expandableContents">
+            <xsl:choose>
+              <xsl:when test="self::cybox:Observable">
+                <xsl:call-template name="processObservableCommon" />
+              </xsl:when>
+              <xsl:when test="self::stix:Indicator">
+                <xsl:call-template name="processIndicatorContents" />
+              </xsl:when>
+              <xsl:when test="self::stix:TTP">
+                <xsl:call-template name="processTTPContents" />
+              </xsl:when>
+              
+            </xsl:choose>
+          </div>
+        </div>
+      </xsl:otherwise>
+    </xsl:choose>
+    
   </xsl:template>
   
-  <xsl:template name="processIndicators">
-    <xsl:for-each select="//stix:STIX_Package/stix:Indicators">        
-      <div id="observablesspandiv" style="font-weight:bold; margin:5px; color:#BD9C8C;">
-        <TABLE class="grid tablesorter" cellspacing="0">
-          <COLGROUP>
-            <COL width="90%"/>
-            <COL width="10%"/>
-          </COLGROUP>
-          <THEAD>
-            <TR>
-              <TH class="header">
-                ID
-              </TH>
-              <TH class="header">
-                Type
-              </TH>
-            </TR>
-          </THEAD>
-          <TBODY>
-            <xsl:for-each select="stix:Indicator">
-              <!-- <xsl:sort select="cybox:Observable_Composition" order="descending"/> -->
-              <xsl:variable name="evenOrOdd" select="if(position() mod 2 = 0) then 'even' else 'odd'" />
-              <xsl:call-template name="processIndicator"><xsl:with-param name="evenOrOdd" select="$evenOrOdd"/></xsl:call-template>
-            </xsl:for-each>
-          </TBODY>
-        </TABLE>    
-      </div>
-    </xsl:for-each>
-  </xsl:template>
-  
-  <xsl:template name="processTTPs">
-    <xsl:for-each select="//stix:STIX_Package/stix:TTPs">        
-      <div id="observablesspandiv" style="font-weight:bold; margin:5px; color:#BD9C8C;">
-        <TABLE class="grid tablesorter" cellspacing="0">
-          <COLGROUP>
-            <COL width="90%"/>
-            <COL width="10%"/>
-          </COLGROUP>
-          <THEAD>
-            <TR>
-              <TH class="header">
-                ID
-              </TH>
-              <TH class="header">
-                Type
-              </TH>
-            </TR>
-          </THEAD>
-          <TBODY>
-            <xsl:for-each select="stix:TTP">
-              <!-- <xsl:sort select="cybox:Observable_Composition" order="descending"/> -->
-              <xsl:variable name="evenOrOdd" select="if(position() mod 2 = 0) then 'even' else 'odd'" />
-              <xsl:call-template name="processTTP"><xsl:with-param name="evenOrOdd" select="$evenOrOdd"/></xsl:call-template>
-            </xsl:for-each>
-          </TBODY>
-        </TABLE>    
-      </div>
-    </xsl:for-each>
-  </xsl:template>
   
 </xsl:stylesheet>

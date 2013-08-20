@@ -39,11 +39,15 @@ ikirillov@mitre.org
     xmlns:cybox="http://cybox.mitre.org/cybox-2"
     xmlns:Common="http://cybox.mitre.org/common-2"
     
+    xmlns:indicator="http://stix.mitre.org/Indicator-2"
+    
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:fn="http://www.w3.org/2005/xpath-functions"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
     
     xmlns:ttp='http://stix.mitre.org/TTP-1'
+    xmlns:stix='http://stix.mitre.org/stix-1'
     
     xmlns:EmailMessageObj="http://cybox.mitre.org/objects#EmailMessageObject-2"
     exclude-result-prefixes="cybox Common xsi fn EmailMessageObj">
@@ -229,6 +233,81 @@ ikirillov@mitre.org
         </TR>
     </xsl:template>
     
+    <xsl:function name="cybox:calculateDisplayTypeGenericItem" as="xs:string">
+        <xsl:param name="genericItem" as="element()" />
+
+        <xsl:choose>
+            <xsl:when test="$genericItem/cybox:Observable_Composition">
+                Composition
+            </xsl:when>
+            <xsl:when test="$genericItem/cybox:Event">
+                Event
+            </xsl:when>
+            <xsl:when test="$genericItem/cybox:Object/cybox:Properties/@xsi:type">
+                <!-- <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($actualObservable/cybox:Object/cybox:Properties/@xsi:type, $actualObservable/cybox:Object/cybox:Properties))" /> -->
+                <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($genericItem/cybox:Object/cybox:Properties/@xsi:type, $genericItem))" />
+            </xsl:when>
+            <xsl:when test="$genericItem/cybox:Object/cybox:Properties/@xsi:type and not($genericItem/cybox:Object/cybox:Properties/@xsi:type)">
+                Object (no properties set)
+            </xsl:when>
+            <xsl:when test="$genericItem/indicator:Type">
+                <xsl:value-of select="$genericItem/indicator:Type/text()" />
+            </xsl:when>
+          <xsl:when test="$genericItem/ttp:Title">
+            <xsl:value-of select="$genericItem/ttp:Title/text()" />
+          </xsl:when>
+          <xsl:otherwise>
+                Other
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
+    <xsl:template name="processGenericItem">
+        <xsl:param name="evenOrOdd" />
+        <xsl:param name="reference" select="()" />
+        <xsl:param name="normalized" select="()" />
+
+        <xsl:variable name="originalItem" select="." />
+        <xsl:message>
+          <processed-item>
+            <context-has-id><xsl:value-of select="exists($originalItem/@id)"></xsl:value-of></context-has-id>
+            <id><xsl:value-of select="fn:data($originalItem/@id)"/></id>
+            <context-has-idref><xsl:value-of select="exists($originalItem/@idref)"></xsl:value-of></context-has-idref>
+            <idref><xsl:value-of select="fn:data($originalItem/@idref)"/></idref>
+            <looked-up>
+              <xsl:copy-of select="$reference/*[@id = fn:data($originalItem/@idref)]" copy-namespaces="no"/>
+            </looked-up>
+          </processed-item>
+        </xsl:message>
+        <xsl:variable name="actualItem"  as="element()" select="if ($originalItem/@id) then ($originalItem) else ($reference/*[@id = fn:data($originalItem/@idref)])" />
+        <xsl:variable name="id" select="fn:data($actualItem/@id)" />
+        <xsl:variable name="expandedContentId" select="generate-id(.)"/>
+        
+        <xsl:variable name="contentVar" select="concat(count(ancestor::node()), '00000000', count(preceding::node()))"/>
+        
+        <tbody class="expandableContainer expandableSeparate collapsed">
+            <tr><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
+                <td>
+                    <div class="expandableToggle objectReference" onclick="embedObject()toggle(this.parentNode.parentNode.parentNode)">
+                        <xsl:attribute name="onclick">embedObject(this.parentNode.parentNode.parentNode, '<xsl:value-of select="$id"/>','<xsl:value-of select="$expandedContentId"/>');</xsl:attribute>
+                        <!-- <div class="expandableToggle objectReference" onclick="toggle(this.parentNode.parentNode.parentNode)"> --> <!-- that is the tbody -->
+                        <xsl:value-of select="$actualItem/@id"/>
+                    </div>
+                </td>
+                <td>
+                    <xsl:value-of select="cybox:calculateDisplayTypeGenericItem($actualItem)" />
+                </td>
+            </tr>
+            <tr><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
+                <td colspan="2">
+                    <div id="{$expandedContentId}" class="expandableContents">
+                        EXPANDABLE CONTENT HERE
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </xsl:template>
+    
     <xsl:template name="processObservable2">
         <xsl:param name="evenOrOdd" />
         <xsl:param name="reference" select="()" />
@@ -258,24 +337,7 @@ ikirillov@mitre.org
                 </div>
             </td>
             <td>
-                <xsl:choose>
-                    <xsl:when test="$actualObservable/cybox:Observable_Composition">
-                        Composition
-                    </xsl:when>
-                    <xsl:when test="$actualObservable/cybox:Event">
-                        Event
-                    </xsl:when>
-                    <xsl:when test="$actualObservable/cybox:Object/cybox:Properties/@xsi:type">
-                        <!-- <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($actualObservable/cybox:Object/cybox:Properties/@xsi:type, $actualObservable/cybox:Object/cybox:Properties))" /> -->
-                        <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($actualObservable/cybox:Object/cybox:Properties/@xsi:type, $actualObservable))" />
-                    </xsl:when>
-                    <xsl:when test="$actualObservable/cybox:Object/cybox:Properties/@xsi:type and not($actualObservable/cybox:Object/cybox:Properties/@xsi:type)">
-                        Object (no properties set)
-                    </xsl:when>
-                    <xsl:otherwise>
-                        Other
-                    </xsl:otherwise>
-                </xsl:choose>
+                <xsl:value-of select="cybox:calculateDisplayTypeGenericItem($actualObservable)" />
             </td>
         </tr>
         <tr><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
@@ -288,22 +350,22 @@ ikirillov@mitre.org
         </tbody>
     </xsl:template>
     
-    <xsl:template name="processObservableReference">
+    <xsl:template name="processObjectReference">
         <xsl:param name="reference" select="()" />
         <xsl:param name="normalized" select="()" />
         
-        <xsl:variable name="originalObservable" select="." />
-        <xsl:variable name="actualObservable"  as="element()" select="if ($originalObservable/@id) then ($originalObservable) else ($reference/*[@id = fn:data($originalObservable/@idref)])" />
+        <xsl:variable name="originalObject" select="." />
+        <xsl:variable name="actualObject"  as="element()" select="if ($originalObject/@id) then $originalObject else if ($originalObject/@idref) then ($reference/*[@id = fn:data($originalObject/@idref)]) else if ($originalObject/@object_reference) then $reference/*[@id = fn:data($originalObject/@object_reference)] else ()" />
         
         <xsl:variable name="expandedContentId" select="generate-id(.)"/>
         
-        <xsl:variable name="id" select="fn:data($actualObservable/@id)" />
+        <xsl:variable name="id" select="fn:data($actualObject/@id)" />
         
-        <div id="{fn:data($actualObservable/@id)}" class="expandableContainer expandableSeparate collapsed">
+        <div id="{fn:data($actualObject/@id)}" class="expandableContainer expandableSeparate collapsed">
             <!-- <div class="expandableToggle objectReference" onclick="toggle(this.parentNode)"> -->
             <div class="expandableToggle objectReference">
                 <xsl:attribute name="onclick">embedObject(this.parentElement, '<xsl:value-of select="$id"/>','<xsl:value-of select="$expandedContentId"/>');</xsl:attribute>
-                <xsl:value-of select="$actualObservable/@id"/>
+                <xsl:value-of select="$actualObject/@id"/>
                 <xsl:call-template name="itemHeadingOnly">
                     <xsl:with-param name="reference" select="$reference" />
                     <xsl:with-param name="normalized" select="$normalized" />
@@ -312,8 +374,7 @@ ikirillov@mitre.org
             </div>
             
             <div id="{$expandedContentId}" class="expandableContents">
-                <xsl:call-template name="processObservableCommon">
-                </xsl:call-template>
+                <xsl:apply-templates select="$actualObject" mode="#default" />
             </div>
         </div>
     </xsl:template>
@@ -459,7 +520,7 @@ ikirillov@mitre.org
                 </xsl:attribute>
                 -->
                 
-                <div>CONTENT HERE</div>
+                <!-- <div>CONTENT HERE</div> -->
                 
                 <!-- set empty class for non-composition observables -->
                 <!-- <xsl:if test="not(cybox:Observable_Composition)"><xsl:attribute name="class" select="'baseobserv'" /></xsl:if> -->
@@ -821,6 +882,14 @@ ikirillov@mitre.org
         </div>
     </xsl:template>
 
+    <xsl:template match="cybox:Object[@idref]|cybox:Event[@idref]|cybox:Related_Object[@idref]|cybox:Associated_Object[@idref]">
+        <!-- [object link here - - <xsl:value-of select="fn:data(@idref)" />] -->
+        
+        <xsl:call-template name="headerAndExpandableContent">
+            <xsl:with-param name="targetId" select="fn:data(@idref)" />
+            <xsl:with-param name="relationshipOrAssociationType" select="()" />
+        </xsl:call-template>
+    </xsl:template>
     <!--
       This is the consolidated Swiss Army knife template that prints object
       type data.
@@ -833,7 +902,53 @@ ikirillov@mitre.org
        
        It also prints out either original inline objects (with an id) or object references (with and idref).
     -->
-    <xsl:template match="cybox:Object|cybox:Event|cybox:Related_Object|cybox:Associated_Object">
+    <xsl:template match="cybox:Object[@id]|cybox:Event[@id]|cybox:Related_Object[@id]|cybox:Associated_Object[@id]">
+        <xsl:variable name="localName" select="local-name()"/>
+        <xsl:variable name="identifierName" select="if ($localName = 'Object') then 'object' else if ($localName = 'Event') then 'event' else if ($localName = 'Related_Object') then 'relatedObject' else if ($localName = 'Associated_Object') then 'associatedObject' else ''" />
+        <xsl:variable name="friendlyName" select="fn:replace($localName, '_', ' ')" />
+        <xsl:variable name="headingName" select="fn:upper-case($friendlyName)" />
+        
+        <div class="container {$identifierName}Container {$identifierName}">
+            <div class="contents {$identifierName}Contents {$identifierName}">
+                <!-- Print the description if one is available (often they are not) -->
+                <xsl:if test="cybox:Description">
+                    <div class="{$identifierName}Description description">
+                        <xsl:value-of select="cybox:Description"/>
+                    </div>
+                </xsl:if>
+                
+                <!--
+                  If this is an Event, we need to print out the list of Actions
+                -->
+                <xsl:if test="cybox:Actions/cybox:Action">
+                    <div class="container">
+                        <div class="heading actions">Actions</div>
+                        <div class="contents actions">
+                            <xsl:apply-templates select="cybox:Actions/cybox:Action"></xsl:apply-templates>
+                        </div>
+                    </div>
+                </xsl:if>
+                
+                <!-- print out defined object type information if it's available -->
+                <xsl:if test="cybox:Defined_Object/@xsi:type">
+                    <div id="defined_object_type_label">defined object type: <xsl:value-of select="cybox:Defined_Object/@xsi:type"/></div>
+                </xsl:if>
+                
+                <!--
+                  print out the all-important cybox:Properties.  Lots of details in here!!
+                -->
+                <div>
+                    <xsl:apply-templates select="cybox:Properties"></xsl:apply-templates>
+                </div>
+                
+                <!--
+                  Associated Objects need to have any Related Objects printed out
+                -->
+                <xsl:apply-templates select="cybox:Related_Objects"></xsl:apply-templates>
+            </div>
+        </div>
+    </xsl:template>
+    <xsl:template match="cybox:Object|cybox:Event|cybox:Related_Object|cybox:Associated_Object" mode="DISABLED">
         <xsl:param name="isObservableDirectChild" select="fn:true()" />
         <xsl:param name="includeHeading" select="fn:true()" />
         

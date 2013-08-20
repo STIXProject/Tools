@@ -8,7 +8,10 @@
     xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
     
     xmlns:stix='http://stix.mitre.org/stix-1'
+    xmlns:stixCommon='http://stix.mitre.org/common-1'
     xmlns:cybox='http://cybox.mitre.org/cybox-2'
+    
+    xmlns:ttp='http://stix.mitre.org/TTP-1'
     
     exclude-result-prefixes="xs xd"
     version="2.0"
@@ -86,10 +89,12 @@
         <!-- for debugging, label each element with an attribute indicating if
              it's the top level or a descendant
         -->
+        <!--
         <xsl:attribute name="level">
             <xsl:if test="$isTopLevel">TOP</xsl:if>
             <xsl:if test="not($isTopLevel)">DESCENDENT</xsl:if>
         </xsl:attribute>
+        -->
         
         <!-- pull in all the attributes -->
         <xsl:apply-templates select="@*" mode="createReference">
@@ -125,6 +130,27 @@
             <xsl:attribute name="id" select="fn:data(.)" />
         </xsl:otherwise>
     </xsl:choose>
+</xsl:template>        
+
+<xsl:template match="@object_reference" mode="createReference" priority="20.0">
+    <xsl:attribute name="idref" select="fn:data(.)" />
+</xsl:template>        
+
+<!--
+<xsl:template match="stix:TTPs/stix:Kill_Chains/stixCommon:Kill_Chain/stixCommon:Kill_Chain_Phase[@phase_id]" mode="createReference" priority="20.0">
+    <xsl:copy copy-namespaces="no">
+      <xsl:apply-templates select="@*|node()" mode="createReference" />
+    </xsl:copy>
+</xsl:template>        
+
+<xsl:template match="@phase_id" mode="createReference" priority="20.0">
+  <xsl:attribute name="id" select="fn:data(.)" />
+</xsl:template>
+-->
+  
+  
+<xsl:template match="stix:TTPs/stix:TTP/ttp:Kill_Chain_Phases/stixCommon:Kill_Chain_Phase[@phase_id]" mode="createReference" priority="20.0">
+    <!-- <xsl:attribute name="idref" select="fn:data(.)" /> -->
 </xsl:template>        
 
 <xsl:template match="@*|node()" mode="oneDeepMain">
