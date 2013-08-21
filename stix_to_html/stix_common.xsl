@@ -421,11 +421,13 @@
         </div>
     </xsl:template>
     
+    <!--
     <xsl:template match="stixCommon:Kill_Chain_Phase">
         <div>
             * name = "<xsl:value-of select="fn:data(@name)"/>" | phase id = "<xsl:value-of select="fn:data(@phase_id)"/>"
         </div>
     </xsl:template>
+    -->
     
     <xsl:template match="stixCommon:TTP|stix:TTP">
         <div>
@@ -474,6 +476,7 @@
        - "Observable"
        - "Other"
     -->
+    <!--
     <xsl:template name="processTTP">
         <xsl:param name="evenOrOdd" />
         
@@ -495,7 +498,7 @@
         <TR><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
             <TD colspan="2">
                 <div id="{$contentVar}"  class="collapsibleContent" style="overflow:hidden; display:none; padding:0px 0px;">
-                    <!-- create hidden div which will contain a fresh copy of the object at runtime -->
+                    <!- - create hidden div which will contain a fresh copy of the object at runtime - ->
                     <xsl:if test="@id">
                         <div style="overflow:hidden; display:none; padding:0px 0px;" class="copyobj">
                             <xsl:attribute name="id">copy-<xsl:value-of select="@id" />
@@ -508,6 +511,7 @@
             </TD>
         </TR>
     </xsl:template>
+    -->
   
     <xsl:template name="processTTPContents">
       <div>
@@ -571,11 +575,24 @@
                     <td>Related TTPs</td>
                     <td>
                       <xsl:apply-templates select="ttp:Related_TTPs/ttp:Related_TTP" />
-                      <!--
-                                                <xsl:for-each select="indicator:Composite_Indicator_Expression">
-                                                    <xsl:call-template name="processObservableCompositionSimple" />
-                                                </xsl:for-each>
-                                                -->
+                    </td>
+                  </tr>
+                </tbody>
+              </table> 
+            </div>
+          </xsl:if>
+          <xsl:if test="ttp:Kill_Chain_Phases/stixCommon:Kill_Chain_Phase">
+            <div id="section">
+              <table class="one-column-emphasis indicator-sub-table">
+                <colgroup>
+                  <col class="oce-first-obs heading-column" />
+                  <col class="details-column" />
+                </colgroup>
+                <tbody>
+                  <tr>
+                    <td>Kill Chain Phases</td>
+                    <td>
+                      <xsl:apply-templates select="ttp:Kill_Chain_Phases/stixCommon:Kill_Chain_Phase" />
                     </td>
                   </tr>
                 </tbody>
@@ -654,7 +671,16 @@
     </div> <!-- end of div container -->
   </xsl:template>
   
-  <xsl:template match="stixCommon:Kill_Chain_Phase[@idref]">
+  <xsl:template match="ttp:Related_TTP">
+    <div>
+      Related TTP Relationship: <xsl:value-of select="stixCommon:Relationship/text()" />
+    </div>
+    <div>
+      <xsl:apply-templates select="stixCommon:TTP" />
+    </div>
+  </xsl:template>
+  
+  <xsl:template match="stixCommon:Kill_Chain_Phase[@idref]|stixCommon:TTP[@idref]">
     <div class="debug">DEBUG kill chain phase w/ idref</div>
     <!-- [object link here - - <xsl:value-of select="fn:data(@idref)" />] -->
     
@@ -664,12 +690,6 @@
     </xsl:call-template>
   </xsl:template>
 
-  <xsl:template match="stixCommon:Kill_Chain_Phase[@id]" mode="contents">
-    <div>
-    KILL CHAIN PHASE CONTENTS
-    </div>
-  </xsl:template>
-    
   <xsl:template name="printNameValue" >
     <xsl:param name="identifier" select="''" as="xs:string?" />
     <xsl:param name="label" select="''" as="xs:string?" />

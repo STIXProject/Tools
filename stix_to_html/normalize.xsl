@@ -174,35 +174,6 @@
 </xsl:template>
 -->
 
-<xsl:template match="@*|node()" mode="oneDeepMain">
-    <xsl:copy copy-namespaces="no">
-        <xsl:apply-templates select="@*|node()" mode="oneDeepDescendant" />
-    </xsl:copy>
-</xsl:template>
-
-<xsl:template match="@*|node()[not(@id) and not(@idref)]" mode="oneDeep">
-    <xsl:copy copy-namespaces="no">
-        <xsl:apply-templates select="@*|node()" mode="oneDeepDescendant" />
-    </xsl:copy>
-</xsl:template>
-    
-<!--
-<xsl:template match="*[@id]" mode="oneDeepDescendant">
-    <xsl:copy copy-namespaces="no">
-        <xsl:attribute name="status" select="'SKIPPED'" />
-        <xsl:attribute name="idref" select="fn:data(@id)" />
-        <xsl:apply-templates select="(@*[not(self::id) and not(self::idref)])" mode="oneDeepDescendant" />
-    </xsl:copy>
-</xsl:template>
-
-<xsl:template match="*[@idref]" mode="oneDeepDescendant">
-    <xsl:copy copy-namespaces="no">
-        <xsl:attribute name="status" select="'SKIPPED'" />
-        <xsl:apply-templates select="(@*[not(self::id) and not(self::idref)])" mode="oneDeepDescendant" />
-    </xsl:copy>
-</xsl:template>
--->
-    
 <xsl:template match="@*|node()" mode="verbatim">
     <xsl:copy copy-namespaces="no">
         <xsl:apply-templates select="@*|node()" mode="verbatim" />
