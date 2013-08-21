@@ -535,6 +535,7 @@ mdunn@mitre.org
                     .debug
                     {
                       display: none;
+                      /*display: block;*/
                     }
                     
                     .indicator-sub-table > colgroup > col.heading-column

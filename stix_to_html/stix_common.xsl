@@ -11,6 +11,7 @@
     
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:fn="http://www.w3.org/2005/xpath-functions"
     
     xmlns:stixCommon="http://stix.mitre.org/common-1"
@@ -587,35 +588,103 @@
     
   <xsl:template match="stixCommon:Kill_Chain[@id]" priority="30.0">
     <xsl:variable name="localName" select="local-name()"/>
-    <xsl:variable name="identifierName" select="if ($localName = 'Object') then 'object' else if ($localName = 'Event') then 'event' else if ($localName = 'Related_Object') then 'relatedObject' else if ($localName = 'Associated_Object') then 'associatedObject' else ''" />
+    <xsl:variable name="identifierName" select="'killChain'" />
     <xsl:variable name="friendlyName" select="fn:replace($localName, '_', ' ')" />
     <xsl:variable name="headingName" select="fn:upper-case($friendlyName)" />
     
     <div class="container {$identifierName}Container {$identifierName}">
       <div class="contents {$identifierName}Contents {$identifierName}">
         <!-- Print the description if one is available (often they are not) -->
-        KILL CHAIN
         
-        <div>
-          name: <xsl:value-of select="fn:data(@name)" />
-        </div>
-        <div>
-          definer: <xsl:value-of select="fn:data(@definer)" />
-        </div>
-        <div>
-          reference: <xsl:value-of select="fn:data(@reference)" />
-        </div>
+        <xsl:call-template name="printNameValue">
+          <xsl:with-param name="identifier" select="$identifierName" />
+          <xsl:with-param name="label" select="'Name'" as="xs:string?" />
+          <xsl:with-param name="value" select="@name" as="xs:string?" />
+        </xsl:call-template>
         
-        <xsl:if test="cybox:Description">
-          <div class="{$identifierName}Description description">
-            <xsl:value-of select="cybox:Description"/>
-          </div>
+        <xsl:call-template name="printNameValue">
+          <xsl:with-param name="identifier" select="$identifierName" />
+          <xsl:with-param name="label" select="'Definer'" as="xs:string?" />
+          <xsl:with-param name="value" select="@definer" as="xs:string?" />
+        </xsl:call-template>
+        
+        <xsl:call-template name="printNameValue">
+          <xsl:with-param name="identifier" select="$identifierName" />
+          <xsl:with-param name="label" select="'Reference'" as="xs:string?" />
+          <xsl:with-param name="value" select="@reference" as="xs:string?" />
+        </xsl:call-template>
+        
+        <xsl:if test="stixCommon:Kill_Chain_Phase">
+          <xsl:apply-templates select="stixCommon:Kill_Chain_Phase" />
         </xsl:if>
+        
+        
         
       </div>
     </div>
   </xsl:template>
   
   
+  <xsl:template match="stixCommon:Kill_Chain_Phase[@id]">
+    <div class="debug">DEBUG kill chain phase w/ id</div>
+    <div class="container killChainPhase">
+      <div class="heading killChainPhase">
+        Kill Chain Phase
+      </div>
+      <div class="contents killChainPhase killChainPhaseContents">
+        <div class="contentsCurrent">
+          <xsl:call-template name="printNameValue">
+            <xsl:with-param name="identifier" select="'name'" />
+            <xsl:with-param name="label" select="'Name'" as="xs:string?" />
+            <xsl:with-param name="value" select="@name" as="xs:string?" />
+          </xsl:call-template>
+          
+          <xsl:call-template name="printNameValue">
+            <xsl:with-param name="identifier" select="'ordinality'" />
+            <xsl:with-param name="label" select="'Ordinality'" as="xs:string?" />
+            <xsl:with-param name="value" select="@ordinality" as="xs:string?" />
+          </xsl:call-template>
+          
+          
+        </div>
+        <div class="contentsChildren">
+          <xsl:apply-templates />
+        </div>
+      </div> <!-- end of div contents -->
+    </div> <!-- end of div container -->
+  </xsl:template>
+  
+  <xsl:template match="stixCommon:Kill_Chain_Phase[@idref]">
+    <div class="debug">DEBUG kill chain phase w/ idref</div>
+    <!-- [object link here - - <xsl:value-of select="fn:data(@idref)" />] -->
+    
+    <xsl:call-template name="headerAndExpandableContent">
+      <xsl:with-param name="targetId" select="fn:data(@idref)" />
+      <xsl:with-param name="relationshipOrAssociationType" select="()" />
+    </xsl:call-template>
+  </xsl:template>
+  
+  <xsl:template name="printNameValue" >
+    <xsl:param name="identifier" select="''" as="xs:string?" />
+    <xsl:param name="label" select="''" as="xs:string?" />
+    <xsl:param name="value" select="''" as="xs:string?" />
+    
+    <xsl:if test="@name">
+      <div class="{$identifier}KeyValue keyValue">
+        <span class="key"><xsl:value-of select="$label"/>:</span>
+        <xsl:text> </xsl:text>
+        <span class="key">
+          <xsl:choose>
+            <xsl:when test="fn:starts-with($value, 'http://') or fn:starts-with($value, 'https://') or fn:starts-with($value, 'ftp://')">
+              <a href="{$value}"><xsl:value-of select="$value"/></a>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="$value"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </span>
+      </div>
+    </xsl:if>
+  </xsl:template>  
     
 </xsl:stylesheet>

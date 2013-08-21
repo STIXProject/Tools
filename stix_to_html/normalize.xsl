@@ -140,7 +140,15 @@
 -->
 
 <xsl:template match="@phase_id[../../self::stixCommon:Kill_Chain]" mode="createReference" priority="20.0">
-  <xsl:attribute name="id" select="fn:data(.)" />
+  <xsl:param name="isTopLevel" select="fn:false()" />
+  <xsl:choose>
+    <xsl:when test="$isTopLevel">
+      <xsl:attribute name="id" select="fn:data(.)" />
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:attribute name="idref" select="fn:data(.)" />
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>        
 
 <xsl:template match="@phase_id[not(../../self::stixCommon:Kill_Chain)]" mode="createReference" priority="20.0">
@@ -160,9 +168,11 @@
 -->
   
   
+<!--
 <xsl:template match="stix:TTPs/stix:TTP/ttp:Kill_Chain_Phases/stixCommon:Kill_Chain_Phase[@phase_id]" mode="createReference" priority="20.0">
-    <!-- <xsl:attribute name="idref" select="fn:data(.)" /> -->
-</xsl:template>        
+    <!- - <xsl:attribute name="idref" select="fn:data(.)" /> - ->
+</xsl:template>
+-->
 
 <xsl:template match="@*|node()" mode="oneDeepMain">
     <xsl:copy copy-namespaces="no">
