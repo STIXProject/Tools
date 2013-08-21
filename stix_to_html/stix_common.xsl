@@ -663,7 +663,13 @@
       <xsl:with-param name="relationshipOrAssociationType" select="()" />
     </xsl:call-template>
   </xsl:template>
-  
+
+  <xsl:template match="stixCommon:Kill_Chain_Phase[@id]" mode="contents">
+    <div>
+    KILL CHAIN PHASE CONTENTS
+    </div>
+  </xsl:template>
+    
   <xsl:template name="printNameValue" >
     <xsl:param name="identifier" select="''" as="xs:string?" />
     <xsl:param name="label" select="''" as="xs:string?" />

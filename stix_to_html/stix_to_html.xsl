@@ -550,8 +550,8 @@ mdunn@mitre.org
                     
                     .reference
                     {
-                      display: block;
-                      /*display: none;*/
+                      /*display: block;*/
+                      display: none;
                     }
                 </style>
 
@@ -943,6 +943,9 @@ mdunn@mitre.org
               </xsl:when>
               <xsl:when test="self::stix:TTP">
                 <xsl:call-template name="processTTPContents" />
+              </xsl:when>
+              <xsl:when test="self::stixCommon:Kill_Chain_Phase">
+                <xsl:apply-templates select="." />
               </xsl:when>
               
             </xsl:choose>
