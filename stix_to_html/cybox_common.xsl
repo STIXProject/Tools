@@ -356,7 +356,7 @@ ikirillov@mitre.org
         <xsl:param name="normalized" select="()" />
         
         <xsl:variable name="originalObject" select="." />
-        <xsl:variable name="actualObject"  as="element()" select="if ($originalObject/@id) then $originalObject else if ($originalObject/@idref) then ($reference/*[@id = fn:data($originalObject/@idref)]) else if ($originalObject/@object_reference) then $reference/*[@id = fn:data($originalObject/@object_reference)] else ()" />
+        <xsl:variable name="actualObject"  as="element()?" select="if ($originalObject/@id) then $originalObject else if ($originalObject/@idref) then ($reference/*[@id = fn:data($originalObject/@idref)]) else if ($originalObject/@object_reference) then $reference/*[@id = fn:data($originalObject/@object_reference)] else ()" />
         
         <xsl:variable name="expandedContentId" select="generate-id(.)"/>
         

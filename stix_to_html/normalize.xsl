@@ -105,7 +105,9 @@
              (it will be replaced with an idref)
         -->
         <xsl:if test="$isTopLevel or not(@id)">
-            <xsl:apply-templates select="node()" mode="createReference" />
+            <xsl:apply-templates select="node()" mode="createReference">
+              <xsl:with-param name="isTopLevel" select="fn:false()" />
+            </xsl:apply-templates>
         </xsl:if>
     </xsl:copy>
 </xsl:template>
