@@ -163,16 +163,16 @@
       
       <!-- <span style="color: red; background-color: yellow;">INDICATOR CONTENTS HERE</span> -->
       
-      <xsl:attribute name="class">
-        <xsl:if test="not(indicator:Composite_Indicator_Expression)">baseindicator </xsl:if>
-        <xsl:if test="@id">container baseobj</xsl:if>
-      </xsl:attribute>
-      <xsl:if test="indicator:Title">
-        <xsl:copy-of select="stix:printNameValueTable('Title', indicator:Title)" />
-      </xsl:if>              
-      <xsl:if test="indicator:Description">
-        <xsl:copy-of select="stix:printNameValueTable('Description', indicator:Description)" />
-      </xsl:if>              
+        <xsl:attribute name="class">
+          <xsl:if test="not(indicator:Composite_Indicator_Expression)">baseindicator </xsl:if>
+          <xsl:if test="@id">container baseobj</xsl:if>
+        </xsl:attribute>
+        <xsl:if test="indicator:Title">
+          <xsl:copy-of select="stix:printNameValueTable('Title', indicator:Title)" />
+        </xsl:if>              
+        <xsl:if test="indicator:Description">
+          <xsl:copy-of select="stix:printNameValueTable('Description', indicator:Description)" />
+        </xsl:if>              
         <xsl:if test="indicator:Valid_Time_Position">
           <xsl:copy-of select="stix:printNameValueTable('Valid Time Position', fn:concat('(', indicator:Valid_Time_Position/indicator:Start_Time/text(), ' to ', indicator:Valid_Time_Position/indicator:End_Time/text(), ')'))" />
         </xsl:if>
@@ -183,90 +183,28 @@
           <xsl:copy-of select="stix:printNameValueTable('Suggested COAs', $coaContents)" />
         </xsl:if>
         <xsl:if test="not(indicator:Composite_Indicator_Expression)">
-        <div id="section">
-          <table class="one-column-emphasis indicator-sub-table">
-            <colgroup>
-              <col class="oce-first-obs heading-column" />
-              <col class="details-column" />
-            </colgroup>
-            <tbody>
-              <tr>
-                <td>
-                  <xsl:apply-templates select="indicator:Observable" />
-                </td>
-              </tr>
-            </tbody>
-          </table> 
-        </div>
-      </xsl:if>
-      <xsl:if test="indicator:Composite_Indicator_Expression">
-        <div id="section">
-          <table class="one-column-emphasis indicator-sub-table">
-            <colgroup>
-              <col class="oce-first-obs heading-column" />
-              <col class="details-column" />
-            </colgroup>
-            <tbody>
-              <tr>
-                <td>Indicator Composition</td>
-                <td>
-                  <xsl:apply-templates select="indicator:Composite_Indicator_Expression" />
-                  <!--
-                                                <xsl:for-each select="indicator:Composite_Indicator_Expression">
-                                                    <xsl:call-template name="processObservableCompositionSimple" />
-                                                </xsl:for-each>
-                                                -->
-                </td>
-              </tr>
-            </tbody>
-          </table> 
-        </div>
-      </xsl:if>
+          <xsl:variable name="observableContents">
+            <xsl:apply-templates select="indicator:Observable" />
+          </xsl:variable>
+          <xsl:copy-of select="stix:printNameValueTable('Observable', $observableContents)" />
+        </xsl:if>
+        <xsl:if test="indicator:Composite_Indicator_Expression">
+          <xsl:variable name="contents">
+            <xsl:apply-templates select="indicator:Composite_Indicator_Expression" />
+          </xsl:variable>
+          <xsl:copy-of select="stix:printNameValueTable('Indicator Composition', $contents)" />
+        </xsl:if>
       <xsl:if test="indicator:Indicated_TTP">
-        <div id="section">
-          <table class="one-column-emphasis indicator-sub-table">
-            <colgroup>
-              <col class="oce-first-obs heading-column" />
-              <col class="details-column" />
-            </colgroup>
-            <tbody>
-              <tr>
-                <td>Indicator Indicated TTP</td>
-                <td>
-                  <xsl:apply-templates select="indicator:Indicated_TTP" />
-                  <!--
-                                                <xsl:for-each select="indicator:Composite_Indicator_Expression">
-                                                    <xsl:call-template name="processObservableCompositionSimple" />
-                                                </xsl:for-each>
-                                                -->
-                </td>
-              </tr>
-            </tbody>
-          </table> 
-        </div>
+        <xsl:variable name="contents">
+          <xsl:apply-templates select="indicator:Indicated_TTP" />
+        </xsl:variable>
+        <xsl:copy-of select="stix:printNameValueTable('Indicated TTP', $contents)" />
       </xsl:if>
       <xsl:if test="indicator:Kill_Chain_Phases">
-        <div id="section">
-          <table class="one-column-emphasis indicator-sub-table">
-            <colgroup>
-              <col class="oce-first-obs heading-column" />
-              <col class="details-column" />
-            </colgroup>
-            <tbody>
-              <tr>
-                <td>Indicator Kill Chain Phases</td>
-                <td>
-                  <xsl:apply-templates select="indicator:Kill_Chain_Phases" />
-                  <!--
-                                                <xsl:for-each select="indicator:Composite_Indicator_Expression">
-                                                    <xsl:call-template name="processObservableCompositionSimple" />
-                                                </xsl:for-each>
-                                                -->
-                </td>
-              </tr>
-            </tbody>
-          </table> 
-        </div>
+        <xsl:variable name="contents">
+          <xsl:apply-templates select="indicator:Kill_Chain_Phases" />
+        </xsl:variable>
+        <xsl:copy-of select="stix:printNameValueTable('Kill Chain Phases', $contents)" />
       </xsl:if> 
       </div>
     </xsl:template>
@@ -522,78 +460,28 @@
             <xsl:if test="@id">container baseobj</xsl:if>
           </xsl:attribute>
           <xsl:if test="ttp:Description">
-            <div id="section">
-              <table class="one-column-emphasis indicator-sub-table">
-                <colgroup>
-                  <col class="oce-first-obs heading-column" />
-                  <col class="details-column" />
-                </colgroup>
-                <tbody>
-                  <tr>
-                    <td>Description</td>
-                    <td>
-                      <xsl:for-each select="ttp:Description">
-                        <xsl:value-of select="."/>
-                      </xsl:for-each>
-                    </td>
-                  </tr>
-                </tbody>
-              </table> 
-            </div>
-          </xsl:if>              
+            <xsl:copy-of select="stix:printNameValueTable('Description', ttp:Description)" />
+          </xsl:if>  
+          
           <xsl:if test="ttp:Behavior">
-            <div id="section">
-              <table class="one-column-emphasis indicator-sub-table">
-                <colgroup>
-                  <col class="oce-first-obs heading-column" />
-                  <col class="details-column" />
-                </colgroup>
-                <tbody>
-                  <tr>
-                    <td>
-                      <xsl:apply-templates select="ttp:Behavior" />
-                    </td>
-                  </tr>
-                </tbody>
-              </table> 
-            </div>
+            <xsl:variable name="contents">
+              <xsl:apply-templates select="ttp:Behavior" />
+            </xsl:variable>
+            <xsl:copy-of select="stix:printNameValueTable('Behavior', $contents)" />
           </xsl:if>
           <xsl:if test="ttp:Related_TTPs/ttp:Related_TTP">
-            <div id="section">
-              <table class="one-column-emphasis indicator-sub-table">
-                <colgroup>
-                  <col class="oce-first-obs heading-column" />
-                  <col class="details-column" />
-                </colgroup>
-                <tbody>
-                  <tr>
-                    <td>Related TTPs</td>
-                    <td>
-                      <xsl:apply-templates select="ttp:Related_TTPs/ttp:Related_TTP" />
-                    </td>
-                  </tr>
-                </tbody>
-              </table> 
-            </div>
-          </xsl:if>
+            <xsl:variable name="contents">
+              <xsl:apply-templates select="ttp:Related_TTPs/ttp:Related_TTP" />
+            </xsl:variable>
+            <xsl:copy-of select="stix:printNameValueTable('Related TTPs', $contents)" />
+          </xsl:if> 
           <xsl:if test="ttp:Kill_Chain_Phases/stixCommon:Kill_Chain_Phase">
-            <div id="section">
-              <table class="one-column-emphasis indicator-sub-table">
-                <colgroup>
-                  <col class="oce-first-obs heading-column" />
-                  <col class="details-column" />
-                </colgroup>
-                <tbody>
-                  <tr>
-                    <td>Kill Chain Phases</td>
-                    <td>
-                      <xsl:apply-templates select="ttp:Kill_Chain_Phases/stixCommon:Kill_Chain_Phase" />
-                    </td>
-                  </tr>
-                </tbody>
-              </table> 
-            </div>
-          </xsl:if>
+            <xsl:variable name="contents">
+              <xsl:apply-templates select="ttp:Kill_Chain_Phases" />
+            </xsl:variable>
+            <xsl:copy-of select="stix:printNameValueTable('Kill Chain Phases', $contents)" />
+          </xsl:if> 
+          
         </div>
       </div>
     </xsl:template>
