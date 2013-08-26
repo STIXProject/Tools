@@ -768,7 +768,7 @@ ikirillov@mitre.org
                 <xsl:if test="@xsi:type">
                     (type: <xsl:value-of select="local-name-from-QName(fn:resolve-QName(fn:data(@xsi:type), .))"/>)
                 </xsl:if>
-                <xsl:apply-templates select="@*[not(fn:QName(namespace-uri(), local-name()) = fn:QName('http://www.w3.org/2001/XMLSchema-instance', 'type'))]" mode="cyboxProperties" />
+              <xsl:apply-templates select="@*[not((fn:QName(namespace-uri(), local-name()) = fn:QName('http://www.w3.org/2001/XMLSchema-instance', 'type')) or (fn:QName(namespace-uri(), local-name()) = fn:QName('', 'id')))]" mode="cyboxProperties" />
             </legend>
             <xsl:apply-templates select="*" mode="cyboxProperties"></xsl:apply-templates>
             
