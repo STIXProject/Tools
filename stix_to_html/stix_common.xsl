@@ -98,6 +98,7 @@
        - "Observable"
        - "Other"
     -->
+    <!--
     <xsl:template name="processIndicator">
         <xsl:param name="evenOrOdd" />
         
@@ -117,25 +118,12 @@
                     <xsl:when test="indicator:Type"><xsl:value-of select="indicator:Type/text()"></xsl:value-of></xsl:when>
                     <xsl:otherwise>Other</xsl:otherwise>
                 </xsl:choose>
-                <!--
-                <xsl:choose>
-                    <xsl:when test="indicator:Composite_Indicator_Expression">
-                        Composition
-                    </xsl:when>
-                    <xsl:when test="indicator:Observable">
-                        Observable
-                    </xsl:when>
-                    <xsl:otherwise>
-                        Other
-                    </xsl:otherwise>
-                </xsl:choose>
-                -->
             </TD>
         </TR>
         <TR><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
             <TD colspan="2">
                 <div id="{$contentVar}"  class="collapsibleContent" style="overflow:hidden; display:none; padding:0px 0px;">
-                    <!-- create hidden div which will contain a fresh copy of the object at runtime -->
+                    <!- - create hidden div which will contain a fresh copy of the object at runtime - ->
                     <xsl:if test="@id">
                         <div style="overflow:hidden; display:none; padding:0px 0px;" class="copyobj">
                             <xsl:attribute name="id">copy-<xsl:value-of select="@id" />
@@ -153,6 +141,7 @@
             </TD>
         </TR>
     </xsl:template>
+  -->
   
     <xsl:template name="processIndicatorContents">
       
@@ -299,33 +288,6 @@
         </xsl:choose>
         
         
-        <!--
-        <xsl:variable name="targetId" select="fn:data(@idref)" />
-        <xsl:variable name="targetObject" select="//*[@id=$targetId]" />
-        
-        <div class="expandableContainer expandableSeparate collapsed">
-            <xsl:variable name="idVar" select="generate-id(.)"/>
-            
-            <div class="expandableToggle objectReference">
-                <xsl:attribute name="onclick">embedObject(this.parentElement, 'copy-<xsl:value-of select="$targetId"/>','<xsl:value-of select="$idVar"/>');</xsl:attribute>
-                <xsl:call-template name="clickableIdref">
-                    <xsl:with-param name="targetObject" select="$targetObject" />
-                    <xsl:with-param name="relationshipOrAssociationType" select="''"/>
-                    <xsl:with-param name="idref" select="$targetId"/>
-                </xsl:call-template>
-            </div>
-            
-            <div class="expandableContents">
-                <xsl:attribute name="id"><xsl:value-of select="$idVar"/></xsl:attribute>
-            </div>
-        </div>
-        -->
-        
-        <!--
-        <xsl:for-each select=".">
-            <xsl:call-template name="processObservableInObservableCompositionSimple" />
-        </xsl:for-each>
-        -->
     </xsl:template>
     
     <xsl:template match="indicator:Indicated_TTP">
@@ -354,14 +316,6 @@
         </div>
     </xsl:template>
     
-    <!--
-    <xsl:template match="stixCommon:Kill_Chain_Phase">
-        <div>
-            * name = "<xsl:value-of select="fn:data(@name)"/>" | phase id = "<xsl:value-of select="fn:data(@phase_id)"/>"
-        </div>
-    </xsl:template>
-    -->
-    
     <xsl:template match="stixCommon:TTP|stix:TTP">
         <div>
             TTP (references "<xsl:value-of select="fn:data(@idref)" />")
@@ -370,82 +324,6 @@
     
     
     
-    <!--
-    <xsl:template match="indicator:Composite_Indicator_Expression/indicator:Indicator">
-        <div>(indicator reference inside composition)</div>
-        <xsl:if test="@idref">
-            <div class="foreignObservablePointer">
-                <xsl:variable name="targetId" select="string(@idref)"/>
-                <xsl:variable name="relationshipOrAssociationType" select="''" />
-                
-                <xsl:call-template name="headerAndExpandableContent">
-                    <xsl:with-param name="targetId" select="$targetId"/>
-                    <xsl:with-param name="isComposition" select="fn:true()"/>
-                    <xsl:with-param name="relationshipOrAssociationType" select="''" />
-                </xsl:call-template>
-            </div>
-        </xsl:if>
-        
-        <xsl:for-each select="cybox:Observable_Composition">
-            <xsl:call-template name="processObservableCompositionSimple" />
-        </xsl:for-each>
-    </xsl:template>
-    -->
-    
-    
-    
-    <!--
-      This is the template that produces the rows in the TTP table.
-      These are the TTPs just below the root element of the document.
-      
-      This behavior mimics the behavior in producing the observables table.
-      
-      Each indicator produces two rows.  The first row is the heading and is
-      clickable to expand/collapse the second row with all the details.
-      
-      The heading row contains the indicator id and the indicator type.
-      The type is one of the following categories:
-       - "Compostion"
-       - "Observable"
-       - "Other"
-    -->
-    <!--
-    <xsl:template name="processTTP">
-        <xsl:param name="evenOrOdd" />
-        
-        <xsl:variable name="contentVar" select="concat(count(ancestor::node()), '00000000', count(preceding::node()))"/>
-        <xsl:variable name="imgVar" select="generate-id()"/>
-        
-        
-        
-        <TR><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
-            <TD>
-                <div class="collapsibleLabel" style="cursor: pointer;" onclick="toggleDiv('{$contentVar}','{$imgVar}')">
-                    <span id="{$imgVar}" style="font-weight:bold; margin:5px; color:#BD9C8C;">+</span><xsl:value-of select="@id"/>
-                </div>
-            </TD>
-            <TD>                    
-                <xsl:value-of select="ttp:Title" />
-            </TD>
-        </TR>
-        <TR><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
-            <TD colspan="2">
-                <div id="{$contentVar}"  class="collapsibleContent" style="overflow:hidden; display:none; padding:0px 0px;">
-                    <!- - create hidden div which will contain a fresh copy of the object at runtime - ->
-                    <xsl:if test="@id">
-                        <div style="overflow:hidden; display:none; padding:0px 0px;" class="copyobj">
-                            <xsl:attribute name="id">copy-<xsl:value-of select="@id" />
-                            </xsl:attribute>
-                        </div>
-                    </xsl:if>
-                    
-                    <xsl:call-template name="processTTPContents" />
-                </div>
-            </TD>
-        </TR>
-    </xsl:template>
-    -->
-  
     <xsl:template name="processTTPContents">
       <div>
         <div>
