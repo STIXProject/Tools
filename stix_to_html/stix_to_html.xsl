@@ -817,7 +817,7 @@ mdunn@mitre.org
     </xsl:call-template>
   </xsl:template>
 
-  <xsl:template match="cybox:Object|cybox:Related_Object|stixCommon:Kill_Chain" mode="printReference">
+  <xsl:template match="cybox:Object|cybox:Related_Object|stixCommon:Kill_Chain|stixCommon:Course_Of_Action" mode="printReference">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
     

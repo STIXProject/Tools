@@ -175,7 +175,13 @@
       </xsl:if>              
         <xsl:if test="indicator:Valid_Time_Position">
           <xsl:copy-of select="stix:printNameValueTable('Valid Time Position', fn:concat('(', indicator:Valid_Time_Position/indicator:Start_Time/text(), ' to ', indicator:Valid_Time_Position/indicator:End_Time/text(), ')'))" />
-        </xsl:if>              
+        </xsl:if>
+        <xsl:if test="indicator:Suggested_COAs/indicator:Suggested_COA">
+          <xsl:variable name="coaContents">
+            <xsl:apply-templates select="indicator:Suggested_COAs/indicator:Suggested_COA" />
+          </xsl:variable>
+          <xsl:copy-of select="stix:printNameValueTable('Suggested COAs', $coaContents)" />
+        </xsl:if>
         <xsl:if test="not(indicator:Composite_Indicator_Expression)">
         <div id="section">
           <table class="one-column-emphasis indicator-sub-table">
@@ -265,28 +271,6 @@
       </div>
     </xsl:template>
     
-    <xsl:function name="stix:printNameValueTable">
-      <xsl:param name="title" />
-      <xsl:param name="value" />
-      
-      <div id="section">
-        <table class="one-column-emphasis indicator-sub-table">
-          <colgroup>
-            <col class="oce-first-obs heading-column" />
-            <col class="details-column" />
-          </colgroup>
-          <tbody>
-            <tr>
-              <td><xsl:value-of select="$title" /></td>
-              <td>
-                <xsl:value-of select="$value"/>
-              </td>
-            </tr>
-          </tbody>
-        </table> 
-      </div>
-      
-    </xsl:function>
     
     <!--
     <xsl:template match="indicator:Composite_Indicator_Expression">
@@ -723,5 +707,9 @@
       </div>
     </xsl:if>
   </xsl:template>  
+  
+  <xsl:template match="indicator:Suggested_COA">
+    <xsl:apply-templates />
+  </xsl:template>
     
 </xsl:stylesheet>

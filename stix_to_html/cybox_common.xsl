@@ -38,6 +38,7 @@ ikirillov@mitre.org
     version="2.0"
     xmlns:cybox="http://cybox.mitre.org/cybox-2"
     xmlns:Common="http://cybox.mitre.org/common-2"
+    xmlns:stixCommon="http://stix.mitre.org/common-1"
     
     xmlns:indicator="http://stix.mitre.org/Indicator-2"
     
@@ -883,7 +884,7 @@ ikirillov@mitre.org
         </div>
     </xsl:template>
 
-    <xsl:template match="cybox:Object[@idref]|cybox:Event[@idref]|cybox:Related_Object[@idref]|cybox:Associated_Object[@idref]">
+  <xsl:template match="cybox:Object[@idref]|cybox:Event[@idref]|cybox:Related_Object[@idref]|cybox:Associated_Object[@idref]|stixCommon:Course_Of_Action[@idref]">
         <!-- [object link here - - <xsl:value-of select="fn:data(@idref)" />] -->
         
         <xsl:call-template name="headerAndExpandableContent">
@@ -978,11 +979,12 @@ ikirillov@mitre.org
       
       This is customizable by writing custom templates for specific properties.
     -->
-    <xsl:template match="cybox:Properties|ttp:Behavior">
+    <xsl:template match="cybox:Properties|ttp:Behavior|stixCommon:Course_Of_Action[@id]">
         <fieldset>
             <legend>
                 <xsl:if test="./self::cybox:Properties">cybox properties</xsl:if>
                 <xsl:if test="./self::ttp:Behavior">behavior</xsl:if>
+                <xsl:if test="./self::stixCommon:Course_Of_Action">course of action</xsl:if>
                 <xsl:if test="@xsi:type">
                     (type: <xsl:value-of select="local-name-from-QName(fn:resolve-QName(fn:data(@xsi:type), .))"/>)
                 </xsl:if>
@@ -1066,5 +1068,30 @@ ikirillov@mitre.org
             <xsl:with-param name="targetId" select="$targetId"/>
             <xsl:with-param name="relationshipOrAssociationType" select="$relationshipOrAssociationType" />
         </xsl:call-template>
-    </xsl:template>    
+    </xsl:template>   
+  
+  
+  
+  <xsl:function name="stix:printNameValueTable">
+    <xsl:param name="title" />
+    <xsl:param name="value" />
+    
+    <div id="section">
+      <table class="one-column-emphasis indicator-sub-table">
+        <colgroup>
+          <col class="oce-first-obs heading-column" />
+          <col class="details-column" />
+        </colgroup>
+        <tbody>
+          <tr>
+            <td><xsl:value-of select="$title" /></td>
+            <td>
+              <xsl:copy-of select="$value"/>
+            </td>
+          </tr>
+        </tbody>
+      </table> 
+    </div>
+  </xsl:function>
+  
 </xsl:stylesheet>
