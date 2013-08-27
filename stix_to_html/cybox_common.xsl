@@ -42,6 +42,8 @@ ikirillov@mitre.org
     
     xmlns:indicator="http://stix.mitre.org/Indicator-2"
     
+    xmlns:coa="http://stix.mitre.org/CourseOfAction-1"
+    
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:fn="http://www.w3.org/2005/xpath-functions"
@@ -77,10 +79,13 @@ ikirillov@mitre.org
             <xsl:when test="$genericItem/indicator:Type">
                 <xsl:value-of select="$genericItem/indicator:Type/text()" />
             </xsl:when>
-          <xsl:when test="$genericItem/ttp:Title">
-            <xsl:value-of select="$genericItem/ttp:Title/text()" />
-          </xsl:when>
-          <xsl:otherwise>
+            <xsl:when test="$genericItem/ttp:Title">
+              <xsl:value-of select="$genericItem/ttp:Title/text()" />
+            </xsl:when>
+            <xsl:when test="$genericItem/coa:Type">
+              <xsl:value-of select="$genericItem/coa:Type/text()" />
+            </xsl:when>
+            <xsl:otherwise>
                 Other
             </xsl:otherwise>
         </xsl:choose>
@@ -664,7 +669,7 @@ ikirillov@mitre.org
         </div>
     </xsl:template>
 
-  <xsl:template match="cybox:Object[@idref]|cybox:Event[@idref]|cybox:Related_Object[@idref]|cybox:Associated_Object[@idref]|stixCommon:Course_Of_Action[@idref]">
+  <xsl:template match="cybox:Object[@idref]|cybox:Event[@idref]|cybox:Related_Object[@idref]|cybox:Associated_Object[@idref]|stixCommon:Course_Of_Action[@idref]|stix:Course_Of_Action[@idref]">
         <!-- [object link here - - <xsl:value-of select="fn:data(@idref)" />] -->
         
         <xsl:call-template name="headerAndExpandableContent">
@@ -759,12 +764,12 @@ ikirillov@mitre.org
       
       This is customizable by writing custom templates for specific properties.
     -->
-    <xsl:template match="cybox:Properties|ttp:Behavior|stixCommon:Course_Of_Action[@id]">
+  <xsl:template match="cybox:Properties|ttp:Behavior|stixCommon:Course_Of_Action[@id]|stix:Course_Of_Action[@id]">
         <fieldset>
             <legend>
                 <xsl:if test="./self::cybox:Properties">cybox properties</xsl:if>
                 <xsl:if test="./self::ttp:Behavior">behavior</xsl:if>
-                <xsl:if test="./self::stixCommon:Course_Of_Action">course of action</xsl:if>
+                <xsl:if test="./self::stixCommon:Course_Of_Action|./self::stix:Course_Of_Action">course of action</xsl:if>
                 <xsl:if test="@xsi:type">
                     (type: <xsl:value-of select="local-name-from-QName(fn:resolve-QName(fn:data(@xsi:type), .))"/>)
                 </xsl:if>

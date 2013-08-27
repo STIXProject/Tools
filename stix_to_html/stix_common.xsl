@@ -274,8 +274,8 @@
             </div>
         </xsl:if>
         
-        <xsl:for-each select="cybox:Observable_Composition">
-            <xsl:apply-templates select="." mode="composition" />
+        <xsl:for-each select="cybox:Observable_Composition|indicator:Composite_Indicator_Expression">
+            <xsl:apply-templates select="." mode="#default" />
         </xsl:for-each>
     </xsl:template>
     

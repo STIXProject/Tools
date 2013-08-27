@@ -786,7 +786,11 @@ mdunn@mitre.org
                         <h2><a name="analysis">Incidents</a></h2>
                         <!-- <xsl:call-template name="processIncidents"/> -->
                         <h2><a name="analysis">Courses of Action</a></h2>
-                        <!-- <xsl:call-template name="processCOAs"/> -->
+                        <xsl:call-template name="processTopLevelCategory">
+                          <xsl:with-param name="reference" select="$reference" />
+                          <xsl:with-param name="normalized" select="$normalized" />
+                          <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Courses_Of_Action" />
+                        </xsl:call-template>
                         <h2><a name="analysis">Campaigns</a></h2>
                         <!-- <xsl:call-template name="processCampaigns"/> -->
                         <h2><a name="analysis">Threat Actors</a></h2>
@@ -817,7 +821,7 @@ mdunn@mitre.org
     </xsl:call-template>
   </xsl:template>
 
-  <xsl:template match="cybox:Object|cybox:Related_Object|stixCommon:Kill_Chain|stixCommon:Course_Of_Action" mode="printReference">
+  <xsl:template match="cybox:Object|cybox:Related_Object|stixCommon:Kill_Chain|stixCommon:Course_Of_Action|stix:Course_Of_Action" mode="printReference">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
     
