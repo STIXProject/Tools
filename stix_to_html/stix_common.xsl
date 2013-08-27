@@ -156,6 +156,7 @@
           <xsl:if test="not(indicator:Composite_Indicator_Expression)">baseindicator </xsl:if>
           <xsl:if test="@id">container baseobj</xsl:if>
         </xsl:attribute>
+        
         <xsl:if test="indicator:Title">
           <xsl:copy-of select="stix:printNameValueTable('Title', indicator:Title)" />
         </xsl:if>              
@@ -194,6 +195,12 @@
           <xsl:apply-templates select="indicator:Kill_Chain_Phases" />
         </xsl:variable>
         <xsl:copy-of select="stix:printNameValueTable('Kill Chain Phases', $contents)" />
+      </xsl:if> 
+      <xsl:if test="indicator:Confidence">
+        <xsl:variable name="contents">
+          <xsl:apply-templates select="indicator:Confidence" mode="cyboxProperties" />
+        </xsl:variable>
+        <xsl:copy-of select="stix:printNameValueTable('Confidence', $contents)" />
       </xsl:if> 
       </div>
     </xsl:template>
