@@ -199,6 +199,9 @@
       </xsl:if>
     </div>
   </xsl:template>
+  <xsl:template match="cybox:Observable[not(@id) and not(@idref)]|stixCommon:Observable[not(@id) and not(@idref)]">
+    <xsl:call-template name="processObservableCommon"/>
+  </xsl:template>
   
   <xsl:template match="incident:Related_Observable">
     <div>
@@ -305,10 +308,17 @@
           <xsl:copy-of select="stix:printNameValueTable('Suggested COAs', $coaContents)" />
         </xsl:if>
         <xsl:if test="not(indicator:Composite_Indicator_Expression)">
+          <xsl:variable name="contents">
+            <xsl:apply-templates select="indicator:Observable" mode="cyboxProperties" />
+          </xsl:variable>
+          <xsl:copy-of select="stix:printNameValueTable('Observable', $contents)" />
+
+          <!--
           <xsl:variable name="observableContents">
             <xsl:apply-templates select="indicator:Observable" />
           </xsl:variable>
           <xsl:copy-of select="stix:printNameValueTable('Observable', $observableContents)" />
+          -->
         </xsl:if>
         <xsl:if test="indicator:Composite_Indicator_Expression">
           <xsl:variable name="contents">
