@@ -16,6 +16,10 @@
     
     xmlns:stixCommon="http://stix.mitre.org/common-1"
     xmlns:indicator="http://stix.mitre.org/Indicator-2"
+    xmlns:campaign="http://stix.mitre.org/Campaign-1"
+    xmlns:incident="http://stix.mitre.org/Incident-1"
+    xmlns:ta="http://stix.mitre.org/ThreatActor-1"
+    xmlns:et="http://stix.mitre.org/ExploitTarget-1"
     xmlns:TTP="http://stix.mitre.org/TTP-1"
     xmlns:COA="http://stix.mitre.org/CourseOfAction-1"
     xmlns:capec="http://stix.mitre.org/extensions/AP#CAPEC2.5-1"
@@ -142,7 +146,164 @@
         </TR>
     </xsl:template>
   -->
+  <xsl:template name="processCampaignContents">
+    
+    <div>
+      <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+            
+      <xsl:attribute name="class">
+        <xsl:if test="@id">container baseobj</xsl:if>
+      </xsl:attribute>
+      
+      <xsl:if test="campaign:Title">
+        <xsl:copy-of select="stix:printNameValueTable('Title', campaign:Title)" />
+      </xsl:if>              
+      <xsl:if test="campaign:Status">
+        <xsl:copy-of select="stix:printNameValueTable('Status', campaign:Status)" />
+      </xsl:if>              
+      <xsl:if test="campaign:Related_Incidents/campaign:Related_Incident">
+        <xsl:variable name="contents">
+          <xsl:apply-templates select="campaign:Related_Incidents/campaign:Related_Incident" />
+        </xsl:variable>
+        <xsl:copy-of select="stix:printNameValueTable('Related Incidents', $contents)" />
+      </xsl:if>
+      <xsl:if test="campaign:Related_TTPs/campaign:Related_TTP">
+        <xsl:variable name="contents">
+          <xsl:apply-templates select="campaign:Related_TTPs/campaign:Related_TTP" />
+        </xsl:variable>
+        <xsl:copy-of select="stix:printNameValueTable('Related TTPs', $contents)" />
+      </xsl:if>
+      <xsl:if test="campaign:Related_Indicators/campaign:Related_Indicator">
+        <xsl:variable name="contents">
+          <xsl:apply-templates select="campaign:Related_Indicators/campaign:Related_Indicator" />
+        </xsl:variable>
+        <xsl:copy-of select="stix:printNameValueTable('Related Indicators', $contents)" />
+      </xsl:if>
+      
+    </div>
+  </xsl:template>
+
+  <xsl:template match="campaign:Related_Incident">
+    <div>
+      <xsl:apply-templates select="stixCommon:Incident" />
+    </div>
+  </xsl:template>
+  <xsl:template match="campaign:Related_TTP">
+    <div>
+      <xsl:apply-templates select="stixCommon:TTP" />
+    </div>
+  </xsl:template>
+  <xsl:template match="campaign:Related_Indicator">
+    <div>
+      <xsl:apply-templates select="stixCommon:Indicator" />
+    </div>
+  </xsl:template>
+
+  <xsl:template name="processIncidentContents">
+    
+    <div>
+      <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+      
+      <xsl:attribute name="class">
+        <xsl:if test="@id">container baseobj</xsl:if>
+      </xsl:attribute>
+      
+      <xsl:if test="incident:Description">
+        <xsl:copy-of select="stix:printNameValueTable('Description', incident:Description)" />
+      </xsl:if>              
+      <xsl:if test="incident:Status">
+        <xsl:copy-of select="stix:printNameValueTable('Status', incident:Status)" />
+      </xsl:if>              
+      <xsl:if test="incident:Related_Observables/incident:Related_Observable">
+        <xsl:variable name="contents">
+          <xsl:apply-templates select="incident:Related_Observables/incident:Related_Observable" />
+        </xsl:variable>
+        <xsl:copy-of select="stix:printNameValueTable('Related Observables', $contents)" />
+      </xsl:if>
+      <xsl:if test="incident:Leveraged_TTPs/incident:Leveraged_TTP">
+        <xsl:variable name="contents">
+          <xsl:apply-templates select="incident:Leveraged_TTPs/incident:Leveraged_TTP" />
+        </xsl:variable>
+        <xsl:copy-of select="stix:printNameValueTable('Related TTPs', $contents)" />
+      </xsl:if>
+    </div>
+  </xsl:template>
   
+  <xsl:template match="incident:Related_Observable">
+    <div>
+      <xsl:call-template name="processObservableCommon" />
+    </div>
+  </xsl:template>
+  <xsl:template match="incident:Leveraged_TTP">
+    <div>
+      <xsl:apply-templates select="stixCommon:TTP" />
+    </div>
+  </xsl:template>
+
+  <xsl:template name="processThreatActorContents">
+    <div>
+      <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+      
+      <xsl:attribute name="class">
+        <xsl:if test="@id">container baseobj</xsl:if>
+      </xsl:attribute>
+      
+      <xsl:if test="ta:Title">
+        <xsl:copy-of select="stix:printNameValueTable('Title', ta:Title)" />
+      </xsl:if>              
+      <xsl:if test="ta:Identity">
+        <xsl:variable name="contents">
+          <xsl:apply-templates select="ta:Identity" />
+        </xsl:variable>
+        <xsl:copy-of select="stix:printNameValueTable('Identity', $contents)" />
+      </xsl:if>
+      <xsl:if test="ta:Type">
+        <xsl:variable name="contents">
+          <xsl:apply-templates select="ta:Type" />
+        </xsl:variable>
+        <xsl:copy-of select="stix:printNameValueTable('Types', $contents)" />
+      </xsl:if>
+      <xsl:if test="ta:Motivation">
+        <xsl:variable name="contents">
+          <xsl:apply-templates select="ta:Motivation" />
+        </xsl:variable>
+        <xsl:copy-of select="stix:printNameValueTable('Motivations', $contents)" />
+      </xsl:if>
+      <xsl:if test="ta:Observed_TTPs/ta:Observed_TTP">
+        <xsl:variable name="contents">
+          <xsl:apply-templates select="ta:Observed_TTPs/ta:Observed_TTP" />
+        </xsl:variable>
+        <xsl:copy-of select="stix:printNameValueTable('Observed TTPs', $contents)" />
+      </xsl:if>
+    </div>
+  </xsl:template>
+  <xsl:template match="ta:Observed_TTP">
+    <div>
+      <xsl:apply-templates select="stixCommon:TTP" />
+    </div>
+  </xsl:template>
+  
+  <xsl:template name="processExploitTargetContents">
+    <div>
+      <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+      
+      <xsl:attribute name="class">
+        <xsl:if test="@id">container baseobj</xsl:if>
+      </xsl:attribute>
+      
+      <xsl:if test="et:Title">
+        <xsl:copy-of select="stix:printNameValueTable('Title', et:Title)" />
+      </xsl:if>              
+      <xsl:if test="et:Vulnerability">
+        <xsl:variable name="contents">
+          <xsl:apply-templates select="et:Vulnerability" />
+        </xsl:variable>
+        <xsl:copy-of select="stix:printNameValueTable('Vulnerabilities', $contents)" />
+      </xsl:if>
+    </div>
+  </xsl:template>
+  
+
     <xsl:template name="processIndicatorContents">
       
       <div>
@@ -448,7 +609,7 @@
     </div>
   </xsl:template>
   
-  <xsl:template match="stixCommon:Kill_Chain_Phase[@idref]|stixCommon:TTP[@idref]">
+  <xsl:template match="stixCommon:Kill_Chain_Phase[@idref]|stixCommon:TTP[@idref]|stixCommon:Incident[@idref]|stixCommon:Indicator[@idref]">
     <div class="debug">DEBUG kill chain phase w/ idref</div>
     <!-- [object link here - - <xsl:value-of select="fn:data(@idref)" />] -->
     

@@ -153,11 +153,18 @@ mdunn@mitre.org
                           <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:TTPs" />
                           <xsl:with-param name="headingLabels" select="('ID', 'Title')" />
                         </xsl:call-template>
-                      
                         <h2><a name="analysis">Exploit Targets</a></h2>
-                        <!-- <xsl:call-template name="processExploitTargets"/> -->
+                        <xsl:call-template name="processTopLevelCategory">
+                          <xsl:with-param name="reference" select="$reference" />
+                          <xsl:with-param name="normalized" select="$normalized" />
+                          <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Exploit_Targets" />
+                        </xsl:call-template>
                         <h2><a name="analysis">Incidents</a></h2>
-                        <!-- <xsl:call-template name="processIncidents"/> -->
+                        <xsl:call-template name="processTopLevelCategory">
+                          <xsl:with-param name="reference" select="$reference" />
+                          <xsl:with-param name="normalized" select="$normalized" />
+                          <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Incidents" />
+                        </xsl:call-template>
                         <h2><a name="analysis">Courses of Action</a></h2>
                         <xsl:call-template name="processTopLevelCategory">
                           <xsl:with-param name="reference" select="$reference" />
@@ -165,9 +172,17 @@ mdunn@mitre.org
                           <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Courses_Of_Action" />
                         </xsl:call-template>
                         <h2><a name="analysis">Campaigns</a></h2>
-                        <!-- <xsl:call-template name="processCampaigns"/> -->
+                        <xsl:call-template name="processTopLevelCategory">
+                          <xsl:with-param name="reference" select="$reference" />
+                          <xsl:with-param name="normalized" select="$normalized" />
+                          <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Campaigns" />
+                        </xsl:call-template>
                         <h2><a name="analysis">Threat Actors</a></h2>
-                        <!-- <xsl:call-template name="processThreatActors"/> -->
+                        <xsl:call-template name="processTopLevelCategory">
+                          <xsl:with-param name="reference" select="$reference" />
+                          <xsl:with-param name="normalized" select="$normalized" />
+                          <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Threat_Actors" />
+                        </xsl:call-template>
                    </div>
                 </body>
             </html>
@@ -184,7 +199,7 @@ mdunn@mitre.org
   
   <xsl:template match="node()" mode="printReference" />
   
-  <xsl:template match="cybox:Observable|indicator:Observable|stix:Indicator|stix:TTP|stixCommon:Kill_Chain|stixCommon:Kill_Chain_Phase" mode="printReference">
+  <xsl:template match="cybox:Observable|indicator:Observable|stix:Indicator|stix:TTP|stixCommon:Kill_Chain|stixCommon:Kill_Chain_Phase|stix:Campaign|stix:Incident|stix:Threat_Actor|stixCommon:Exploit_Target" mode="printReference">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
 
@@ -324,7 +339,18 @@ mdunn@mitre.org
               <xsl:when test="self::stixCommon:Kill_Chain_Phase">
                 <xsl:apply-templates select="." />
               </xsl:when>
-              
+              <xsl:when test="self::stix:Campaign">
+                <xsl:call-template name="processCampaignContents" />
+              </xsl:when>
+              <xsl:when test="self::stix:Incident">
+                <xsl:call-template name="processIncidentContents" />
+              </xsl:when>
+              <xsl:when test="self::stix:Threat_Actor">
+                <xsl:call-template name="processThreatActorContents" />
+              </xsl:when>
+              <xsl:when test="self::stixCommon:Exploit_Target">
+                <xsl:call-template name="processExploitTargetContents" />
+              </xsl:when>
             </xsl:choose>
           </div>
         </div>
