@@ -214,7 +214,7 @@
     </div>
   </xsl:template>
   <xsl:template match="cybox:Observable[not(@id) and not(@idref)]|stixCommon:Observable[not(@id) and not(@idref)]">
-    <xsl:call-template name="processObservableCommon"/>
+    <xsl:call-template name="processObservableContents"/>
   </xsl:template>
   
   <xsl:template match="incident:Related_Observable">
