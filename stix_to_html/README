@@ -7,9 +7,9 @@
 
 ****************************************************
 
-BY USING THE CYBOX XML to HTML TRANSFORM, YOU SIGNIFY YOUR ACCEPTANCE OF THE 
+BY USING THE STIX XML to HTML TRANSFORM, YOU SIGNIFY YOUR ACCEPTANCE OF THE 
 TERMS AND CONDITIONS OF USE.  IF YOU DO NOT AGREE TO THESE TERMS, DO NOT USE 
-THE CYBOX XML to HTML TRANSFORM.
+THE STIX XML to HTML TRANSFORM.
 
 For more information, please refer to the terms.txt file.
 
@@ -29,15 +29,51 @@ the handling instructions for this release.  It will include the text contents
 of the simpleMarking:Statement.  The marking:Controlled_Structure with its
 xpath is not used yet. 
 
-Currently we support the following top level "items":
-- Observable
-- Indicator
-- TTP
+Currently we support the following top level entities and sub-entities:
+- Observables
+  --All except for Events (this is true for any embedded Observables also)
+- Indicators
+  --Title
+  --Description
+  --Valid_Time_Position
+  --Suggested_COAs
+  --Observable
+  --Composite_Indicator_Expression
+  --Indicated_TTP
+  --Kill_Chain_Phases
+  --Confidence
+- TTPs
+  --Description
+  --Intended_Effect
+  --Behavior
+  --Resources
+  --Victim_Targeting
+  --Exploit_Targets
+  --Related_TTPs
+  --Kill_Chain_Phases
 - Exploit Targets
+  --Title
+  --Vulnerability
 - Incidents
+  --Description
+  --Status
+  --Related_Observables
+  --Leveraged_TTPs
+  --Observable
 - Courses of Action
+  --All
 - Campaigns
+  --Title
+  --Status
+  --Related_Incidents
+  --Related_TTPs
+  --Related_Indicators
 - Threat Actors
+  --Title
+  --Identity
+  --Type
+  --Motivation
+  --Observed_TTPs
 
 Each category of top level "items" is turned into a main table on the page.
 The item itself is expandable and other nested content pointing to other
@@ -57,7 +93,7 @@ This is a work in progress.  Feedback is most welcome!
 
 requirements:
  - XSLT 2.0 engine (this has been tested with Saxon 9.5)
- - a CybOX 2.0 input xml document
+ - a STIX 1.0 input xml document
 
 v1.0beta1
 2013-08-28
