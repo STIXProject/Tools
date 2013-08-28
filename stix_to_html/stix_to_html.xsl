@@ -22,6 +22,7 @@ requirements:
  - a STIX 2.0 input xml document
  
 Created 2013
+mcoarr@mitre.org
 mdunn@mitre.org
   
 -->
