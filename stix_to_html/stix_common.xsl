@@ -187,7 +187,7 @@
       </xsl:if>              
       <xsl:if test="incident:Related_Observables/incident:Related_Observable">
         <xsl:variable name="contents">
-          <xsl:apply-templates select="incident:Related_Observables/incident:Related_Observable" />
+          <xsl:apply-templates select="incident:Related_Observables/incident:Related_Observable" mode="cyboxProperties" />
         </xsl:variable>
         <xsl:copy-of select="stix:printNameValueTable('Related Observables', $contents)" />
       </xsl:if>
