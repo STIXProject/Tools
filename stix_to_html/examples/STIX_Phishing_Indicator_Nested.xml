@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	STIX Phishing Indicator Example
+	STIX Phishing Indicator (Nested) Example
 	
 	Copyright (c) 2013, The MITRE Corporation. All rights reserved. 
     The contents of this file are subject to the terms of the STIX License located at http://stix.mitre.org/about/termsofuse.html.
@@ -58,17 +58,17 @@ http://cybox.mitre.org/default_vocabularies-2 http://cybox.mitre.org/XMLSchema/d
 "
 	id="example:Indicator-ba1d406e-937c-414f-9231-6e1dbe64fe8b" version="1.0">
 	<stix:STIX_Header>
-		<stix:Title>STIX Phishing Indicator Example</stix:Title>
+		<stix:Title>STIX Phishing Indicator (Nested) Example</stix:Title>
 		<stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Indicators -
 			Phishing</stix:Package_Intent>
 	</stix:STIX_Header>
 	<stix:Indicators>
 	  
-	  <stix:Indicator xsi:type="indicator:IndicatorType" id="example:Indicator-testing-three-level-composition">
-	    <indicator:Title>Three Level Composition Indicator</indicator:Title>
+	  <stix:Indicator xsi:type="indicator:IndicatorType" id="example:Indicator-example-three-level-composition">
+	    <indicator:Title>(Example) Three Level Composition Indicator</indicator:Title>
 	    <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.0">Malicious
 	      E-mail</indicator:Type>
-	    <indicator:Description>testing composition...</indicator:Description>
+	    <indicator:Description></indicator:Description>
 	    
 	    <indicator:Composite_Indicator_Expression operator="AND">
 	      <indicator:Indicator>
