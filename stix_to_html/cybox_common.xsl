@@ -60,7 +60,11 @@ ikirillov@mitre.org
 
     <xsl:output method="html" omit-xml-declaration="yes" indent="yes" media-type="text/html" version="4.0" />
   
-    
+    <!--
+      Shared function that is used to calculate what type or title to show in
+      the top level category table, depending on the type of the generic
+      "item" element.
+    -->
     <xsl:function name="cybox:calculateDisplayTypeGenericItem" as="xs:string">
         <xsl:param name="genericItem" as="element()?" />
 
@@ -93,12 +97,21 @@ ikirillov@mitre.org
         </xsl:choose>
     </xsl:function>
     
-    <xsl:template name="processGenericItem">
+    <!--
+      print one of the "items" (Obserbale, Indicator, TTP, etc) for the top
+      level category table.
+      
+      the same javascript and css logic for expand and collapse that is used
+      for nested indicators and observables is now also used here in the top
+      level category tables.
+    -->
+    <xsl:template name="printGenericItemForTopLevelCategoryTable">
         <xsl:param name="evenOrOdd" />
         <xsl:param name="reference" select="()" />
         <xsl:param name="normalized" select="()" />
 
         <xsl:variable name="originalItem" select="." />
+        <!--
         <xsl:message>
           <processed-item>
             <context-has-id><xsl:value-of select="exists($originalItem/@id)"></xsl:value-of></context-has-id>
@@ -110,6 +123,7 @@ ikirillov@mitre.org
             </looked-up>
           </processed-item>
         </xsl:message>
+        -->
         <xsl:variable name="actualItem"  as="element()?" select="if ($originalItem/@id) then ($originalItem) else ($reference/*[@id = fn:data($originalItem/@idref)])" />
         <xsl:variable name="id" select="fn:data($actualItem/@id)" />
         <xsl:variable name="expandedContentId" select="generate-id(.)"/>
@@ -139,7 +153,7 @@ ikirillov@mitre.org
         </tbody>
     </xsl:template>
     
-    <xsl:template name="processObjectReference">
+    <xsl:template name="printObjectForReferenceList">
         <xsl:param name="reference" select="()" />
         <xsl:param name="normalized" select="()" />
         
@@ -167,7 +181,8 @@ ikirillov@mitre.org
             </div>
         </div>
     </xsl:template>
-    
+  
+    <!-- CANDIDATE FOR DELETION -->
     <xsl:template name="processObservableInline">
         <xsl:variable name="localName" select="local-name()"/>
         <!-- <xsl:variable name="identifierName" select="if ($localName = 'Object') then 'object' else if ($localName = 'Event') then 'event' else if ($localName = 'Related_Object') then 'relatedObject' else if ($localName = 'Associated_Object') then 'associatedObject' else ''" /> -->
@@ -273,7 +288,7 @@ ikirillov@mitre.org
             
         </div>
         
-        <xsl:call-template name="processObservableCommon" />
+        <xsl:call-template name="processObservableContents" />
         
         <div>
             
@@ -294,85 +309,64 @@ ikirillov@mitre.org
             
         </div>
     </xsl:template>
-    
-    <xsl:template name="processObservableCommon">
-        
-        <!--
-        <div style="overflow:hidden; display:none; padding:0px 0px;">
-            <div>
-                <xsl:attribute name="id" select="@id" />
-                <xsl:attribute name="class">
-                    <xsl:text>collapsibleContent </xsl:text>
-                    <xsl:text>container </xsl:text>
-                    <xsl:if test="@id">baseobj </xsl:if>
-                    <xsl:if test="not(cybox:Observable_Composition)">baseobserv </xsl:if>
-                </xsl:attribute>
-                -->
-                
-                <!-- <div>CONTENT HERE</div> -->
-                
-                <!-- set empty class for non-composition observables -->
-                <!-- <xsl:if test="not(cybox:Observable_Composition)"><xsl:attribute name="class" select="'baseobserv'" /></xsl:if> -->
-                
-                <xsl:if test="cybox:Title">
-                    <div id="section">
-                        <table class="one-column-emphasis">
-                            <colgroup>
-                                <col class="oce-first-obs" />
-                            </colgroup>
-                            <tbody>
-                                <tr>
-                                    <td>Title</td>
-                                    <td>
-                                        <xsl:for-each select="cybox:Title">
-                                            <xsl:value-of select="."/>
-                                        </xsl:for-each>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table> 
-                    </div>
-                </xsl:if>              
-                <xsl:if test="not(cybox:Observable_Composition)">
-                    <div id="section">
-                        <table class="one-column-emphasis">
-                            <colgroup>
-                                <col class="oce-first-obs" />
-                            </colgroup>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <xsl:apply-templates select="cybox:Object|cybox:Event"></xsl:apply-templates>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table> 
-                    </div>
-                </xsl:if>
-                <xsl:if test="cybox:Observable_Composition">
-                    <div id="section">
-                        <table class="one-column-emphasis">
-                            <colgroup>
-                                <col class="oce-first-obs" />
-                            </colgroup>
-                            <tbody>
-                                <tr>
-                                    <td>Observable Composition</td>
-                                    <td>
-                                        <xsl:for-each select="cybox:Observable_Composition">
-                                            <xsl:call-template name="processObservableCompositionSimple" />
-                                        </xsl:for-each>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table> 
-                    </div>
-                </xsl:if>
-<!--
-            </div>
+  
+  
+  <xsl:template name="processObservableContents">
+    <xsl:if test="cybox:Title">
+        <div id="section">
+            <table class="one-column-emphasis">
+                <colgroup>
+                    <col class="oce-first-obs" />
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>Title</td>
+                        <td>
+                            <xsl:for-each select="cybox:Title">
+                                <xsl:value-of select="."/>
+                            </xsl:for-each>
+                        </td>
+                    </tr>
+                </tbody>
+            </table> 
         </div>
-        -->
-    </xsl:template>
+    </xsl:if>              
+    <xsl:if test="not(cybox:Observable_Composition)">
+        <div id="section">
+            <table class="one-column-emphasis">
+                <colgroup>
+                    <col class="oce-first-obs" />
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>
+                            <xsl:apply-templates select="cybox:Object|cybox:Event"></xsl:apply-templates>
+                        </td>
+                    </tr>
+                </tbody>
+            </table> 
+        </div>
+    </xsl:if>
+    <xsl:if test="cybox:Observable_Composition">
+        <div id="section">
+            <table class="one-column-emphasis">
+                <colgroup>
+                    <col class="oce-first-obs" />
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>Observable Composition</td>
+                        <td>
+                            <xsl:for-each select="cybox:Observable_Composition">
+                                <xsl:call-template name="processObservableCompositionSimple" />
+                            </xsl:for-each>
+                        </td>
+                    </tr>
+                </tbody>
+            </table> 
+        </div>
+    </xsl:if>
+  </xsl:template>
     
     <!--
       Produce the details for an observable composition.
@@ -422,8 +416,12 @@ ikirillov@mitre.org
     </xsl:template>
     
     <!--
-      Print out the heading for an inline object instance (it has an id
-      attribute and does not have an idref attribute).
+      Print out the heading for an object instance.  This is not expandable or anything.  It can be used in different contexts.
+      
+      It follows the format:
+        [relationship_or_association type] (circle) [current_object_type] (circle)
+        
+      Usually, the object id is printed out immediately before this.
     -->
     <xsl:template name="itemHeadingOnly">
         <xsl:param name="reference" select="()" />
@@ -671,6 +669,13 @@ ikirillov@mitre.org
         </div>
     </xsl:template>
 
+  <!--
+    Template to turn any items with an idref into an expandable content toggle.
+    
+    IMPORTANT: Add elements to the match clause here to expand this functionality to other elements.
+    
+    See also the similar template in cybox_common.xsl.
+  -->
   <xsl:template match="cybox:Object[@idref]|cybox:Event[@idref]|cybox:Related_Object[@idref]|cybox:Associated_Object[@idref]|stixCommon:Course_Of_Action[@idref]|stix:Course_Of_Action[@idref]">
         <!-- [object link here - - <xsl:value-of select="fn:data(@idref)" />] -->
         
@@ -679,6 +684,8 @@ ikirillov@mitre.org
             <xsl:with-param name="relationshipOrAssociationType" select="()" />
         </xsl:call-template>
     </xsl:template>
+  
+  
     <!--
       This is the consolidated Swiss Army knife template that prints object
       type data.
@@ -830,7 +837,7 @@ ikirillov@mitre.org
     </xsl:template>
     
     <!--
-      default template for printint out constraints associated with cybox:Properties entries
+      default template for printing out constraints associated with cybox:Properties entries
     -->
     <xsl:template match="attribute()" mode="cyboxProperties">
         <span class="cyboxPropertiesSingleConstraint">
@@ -862,7 +869,14 @@ ikirillov@mitre.org
     </xsl:template>   
   
   
-  
+  <!--
+    Simple function used all over the place to add a name/value table to the output content.
+    
+    This is used largely in the top level category tables to indicate which
+    field/subelement and its corresponding value.
+    
+    The value can be any complex content.  A complex node can be used to include rich html.
+  -->
   <xsl:function name="stix:printNameValueTable">
     <xsl:param name="title" />
     <xsl:param name="value" />

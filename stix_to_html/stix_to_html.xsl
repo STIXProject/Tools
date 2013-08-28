@@ -64,6 +64,17 @@ mdunn@mitre.org
       surrounding content for the Observables table.
     --> 
     <xsl:template match="/">
+        <!--
+          Perform the normalization to create "normalized" and "reference".
+          "reference" is a sequence with all elements from the source document
+          that have @id attributes.
+          
+          "normalized" has a cleaned up view of the root of the source document
+          down to the first elements with @id attributes, which will be renamed
+          to @idref.
+          
+          These two variables will become the main inputs to the primary transform.
+        -->
         <xsl:variable name="normalized">
           <xsl:apply-templates select="/stix:STIX_Package/*" mode="createNormalized" />
         </xsl:variable>
@@ -74,13 +85,20 @@ mdunn@mitre.org
         </xsl:variable>
       
             <html>
-               <head>
+              <head>
                 <title>STIX Output</title>
                 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+                 
+                <!-- read in the main css -->
                 <style type="text/css">
                     <xsl:value-of select="unparsed-text('common.css')" />
                 </style>
 
+                 <!-- this is a javascript shim to support the javascript
+                   "classList" property in dom elements objects for IE.
+                   
+                   source: http://purl.eligrey.com/github/classList.js
+                 -->
                  <script type="text/javascript">
                    <![CDATA[
                   /*! @source http://purl.eligrey.com/github/classList.js/blob/master/classList.js*/
@@ -88,23 +106,17 @@ mdunn@mitre.org
                   ]]>
                  </script>
                  
+                <!-- read in the main javascript -->
                 <script type="text/javascript">
                   <xsl:value-of select="unparsed-text('common.js')" />
                 </script>
-               </head>
+              </head>
               <body onload="runtimeCopyObjects();">
-                <!--
-                <div>
-                  <div>BEGIN DEBUG</div>
-                  <div>
-                    <xsl:apply-templates select="$normalized" mode="verbatim" />
-                  </div>
-                  <div>END DEBUG</div>
-                </div>
-                -->
                     <div id="wrapper">
                         <div id="header"> 
                             <h1>STIX Output</h1>
+                          
+                            <!-- print out the stix metadata table -->
                             <table class="stixMetadata hor-minimalist-a" width="100%">
                                 <thead>
                                     <tr>
@@ -123,12 +135,26 @@ mdunn@mitre.org
                         <h2><a name="analysis">STIX Header</a></h2>
                           <xsl:call-template name="processHeader"/>
                       
+                        <!--
+                          IMPORTANT
+                          
+                          Transform and print out the "reference" objects
+                          
+                          these objects will be used any time the user clicks
+                          on expandable content that uses ids and idrefs.
+                          
+                          When the user expands content, the appropriate nodes
+                          from here will be cloned and copied into the document
+                        -->
+                          
                         <xsl:call-template name="printReference">
                           <xsl:with-param name="reference" select="$reference" />
                           <xsl:with-param name="normalized" select="$normalized" />
                         </xsl:call-template>
                       
-                      
+                        <!--
+                          MAIN TOP LEVEL CATEGORY TABLES
+                        -->
                       
                         <xsl:if test="$normalized/stix:Observables/*"> 
                           <h2><a name="analysis">Observables</a></h2>
@@ -208,6 +234,19 @@ mdunn@mitre.org
             </html>
     </xsl:template>
   
+  <!--
+    This template prints out the "reference" variable that comes of the the
+    "normalization" transform.
+    
+    The contents are transformed into html and printed out as html elements
+    with corresponding ids.
+    
+    This is contained in a div with class .reference which will be hidden.
+    Its contents are never directly visible to the user.
+    
+    The following templates with mode "printReference" are used in transforming
+    and building this content.
+  -->
   <xsl:template name="printReference">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
@@ -217,23 +256,46 @@ mdunn@mitre.org
     </div>
   </xsl:template>
   
+  <!--
+    For printing reference objects, default to not printing anything.
+    Another template must apply if an element or attribute should be printed
+    out.
+  -->
   <xsl:template match="node()" mode="printReference" />
   
+  <!--
+    Opt in the following nodes to being printed in reference list:
+     - Observable
+     - Indicator
+     - TTP
+     - Kill Chain
+     - Campaign
+     - Incident
+     - Thread Actor
+     - Exploit Target
+  -->
   <xsl:template match="cybox:Observable|indicator:Observable|stix:Indicator|stix:TTP|stixCommon:Kill_Chain|stixCommon:Kill_Chain_Phase|stix:Campaign|stix:Incident|stix:Threat_Actor|stixCommon:Exploit_Target" mode="printReference">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
 
-    <xsl:call-template name="processGenericItemReference">
+    <xsl:call-template name="printGenericItemForReferenceList">
       <xsl:with-param name="reference" select="$reference" />
       <xsl:with-param name="normalized" select="$normalized" />
     </xsl:call-template>
   </xsl:template>
 
+  <!--
+    Opt in the following nodes to being printed in reference list:
+     - Object
+     - Related Object
+     - Kill Chain
+     - Course Of Action
+  -->
   <xsl:template match="cybox:Object|cybox:Related_Object|stixCommon:Kill_Chain|stixCommon:Course_Of_Action|stix:Course_Of_Action" mode="printReference">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
     
-    <xsl:call-template name="processObjectReference">
+    <xsl:call-template name="printObjectForReferenceList">
       <xsl:with-param name="reference" select="$reference" />
       <xsl:with-param name="normalized" select="$normalized" />
     </xsl:call-template>
@@ -243,9 +305,12 @@ mdunn@mitre.org
       draw the main table on the page that represents the list of Observables.
       these are the elements that are directly below the root element of the page.
       
-      each observable will generate two rows in the table.  the first one is the
+      each item will generate two rows in the table.  the first one is the
       heading that's always visible and is clickable to expand/collapse the
       second row.
+      
+      this template will be used to print the table for all top level content
+      (observables, indicators, TTPs, etc).
     -->
   <xsl:template name="processTopLevelCategory">
     <xsl:param name="reference" select="()" />
@@ -272,7 +337,7 @@ mdunn@mitre.org
           <xsl:for-each select="$categoryGroupingElement/*[@idref]">
             <!-- <xsl:sort select="cybox:Observable_Composition" order="descending"/> -->
             <xsl:variable name="evenOrOdd" select="if(position() mod 2 = 0) then 'even' else 'odd'" />
-            <xsl:call-template name="processGenericItem">
+            <xsl:call-template name="printGenericItemForTopLevelCategoryTable">
               <xsl:with-param name="reference" select="$reference" />
               <xsl:with-param name="normalized" select="$normalized" />
               <xsl:with-param name="evenOrOdd" select="$evenOrOdd"/>
@@ -285,7 +350,7 @@ mdunn@mitre.org
                 <!-- <tr><td colspan="2">kill chain <xsl:value-of select="fn:data(./@idref)"/></td></tr> -->
               
               <xsl:variable name="evenOrOdd" select="if(position() mod 2 = 0) then 'even' else 'odd'" />
-              <xsl:call-template name="processGenericItem">
+              <xsl:call-template name="printGenericItemForTopLevelCategoryTable">
                 <xsl:with-param name="reference" select="$reference" />
                 <xsl:with-param name="normalized" select="$normalized" />
                 <xsl:with-param name="evenOrOdd" select="$evenOrOdd"/>
@@ -298,17 +363,28 @@ mdunn@mitre.org
     </div>
   </xsl:template>
   
-  
-  <xsl:template name="processGenericItemReference">
+  <!--
+    Print one of the "items" (Obserbale, Indicator, TTP, etc) for the "reference" list.
+    
+    This will always have the immediate contents of the "item".
+    
+    [This is related to printGenericItemForTopLevelCategoryTable, which prints
+    the generic items for the top level tables.  It should be noted that that
+    template never prints contents, as they will be looked up by id from the
+    reference list, as printed by this template.]
+  -->
+  <xsl:template name="printGenericItemForReferenceList">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
     
     <xsl:variable name="originalItem" select="." />
     <xsl:variable name="originalItemId" as="xs:string?" select="fn:data($originalItem/@id)" />
     <xsl:variable name="originalItemIdref" as="xs:string?" select="fn:data($originalItem/@idref)" />
+    <!--
     <xsl:message>
       original item id: <xsl:value-of select="$originalItemId"/>; original item idref: <xsl:value-of select="$originalItemIdref"/>; 
     </xsl:message>
+    -->
     <xsl:variable name="actualItem"  as="element()?" select="if ($originalItemId) then ($originalItem) else ($reference/*[@id = $originalItemIdref])" />
     
     <xsl:variable name="expandedContentId" select="generate-id(.)"/>
@@ -348,7 +424,7 @@ mdunn@mitre.org
           <div id="{$expandedContentId}" class="expandableContents">
             <xsl:choose>
               <xsl:when test="self::cybox:Observable|self::indicator:Observable">
-                <xsl:call-template name="processObservableCommon" />
+                <xsl:call-template name="processObservableContents" />
               </xsl:when>
               <xsl:when test="self::stix:Indicator">
                 <xsl:call-template name="processIndicatorContents" />

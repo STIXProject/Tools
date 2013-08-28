@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2013 – The MITRE Corporation
+  All rights reserved. See LICENSE.txt for complete terms.
+ -->
 <xsl:stylesheet
     
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -18,10 +22,40 @@
     
     xmlns:saxon="http://saxon.sf.net/"
 >
+  
+<!-- 
+  This stylesheet is responsible for cleaning up a stix document and getting it ready for processing.
+  
+  It creates two data structures that become the main input for the primary transform:
+  
+   - "reference": This is a sequence of all elements with an id in the source
+     document.  Every item from the source document with an id is deep copied
+     down through its descendants until an item with an @id or @idref is
+     reached, then the rest of that tree is pruned (it will itself become an
+     item in this sequence).  At this pruning point, the @id attribute is
+     renamed to @idref.  This means every item in this sequence will have an
+     @id on the top level element and will not have any descendants with @id
+     attributes..   
+
+   - "normalized": This is a copy of the top level content in the original
+     document deep copied down to any element with an @id attribute.  Again,
+     the children of this node are pruned off and the @id attribute is
+     renamed to @idref.  Ths "normalized" variable will be used by the main
+     transform which items should show up in the top level category tables
+     (Observables, Indicators, TTPs, etc).
+-->
 
 <xsl:output method="html" omit-xml-declaration="yes" indent="yes" media-type="text/html" version="4.0" />
 <!-- <xsl:output indent="yes" saxon:indent-spaces="2" method="xml" /> -->
 
+<!--
+  purpose: the following commented out root tranform can be used for
+  development purposes to do an xml-to-xml transform on the source document to
+  see what the "reference" and "normalized" variables look like.
+  
+  To use it, change the output method to xml and apply this tranform to any
+  stix document.
+-->
 <!--
 <xsl:template match="/">
     <root>

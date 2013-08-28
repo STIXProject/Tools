@@ -2,6 +2,9 @@
 <!--
   Copyright (c) 2013 – The MITRE Corporation
   All rights reserved. See LICENSE.txt for complete terms.
+  
+  This styleshseet has logic that can be reused by various components in the
+  stix-to-html transformation.
  -->
 
 <xsl:stylesheet 
@@ -33,9 +36,15 @@
     xmlns:ttp='http://stix.mitre.org/TTP-1'
     >
     
-<xsl:output method="html" omit-xml-declaration="yes" indent="yes" media-type="text/html" version="4.0" />
+    <xsl:output method="html" omit-xml-declaration="yes" indent="yes" media-type="text/html" version="4.0" />
+  
+    <!-- this depends on some of the templates in the cybox-to-html transform -->
     <xsl:include href="cybox_common.xsl"/>
 
+    <!--
+      Print the "stix header" table (this shows up in the output below the
+      metadata table).
+    -->
     <xsl:template name="processHeader">
         <xsl:for-each select="//stix:STIX_Package/stix:STIX_Header">        
             <div class="stixHeader">
@@ -65,7 +74,16 @@
         </xsl:for-each>
     </xsl:template>
 
-    <!-- Designed for use in the STIX_HEADER, at least.  Does not yet take into consideration Handling/Marking complexity -->
+    <!--
+      Designed for use in the STIX_HEADER, at least.
+      
+      Does not yet take into consideration Handling/Marking complexity.
+      
+      For handling, the text value of simpleMarking:Statement is printed.
+      
+      For information source, the whole element is printed out in
+      cyboxProperties mode.
+    -->
     <xsl:template name="processStixHeaderNameValue">
         <xsl:param name="evenOrOdd" />
         <TR><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
@@ -102,21 +120,11 @@
 
 
 
-    <!--
-      This is the template that produces the rows in the indicator table.
-      These are the observables just below the root element of the document.
-      
-      This behavior mimics the behavior in producing the observables table.
-      
-      Each indicator produces two rows.  The first row is the heading and is
-      clickable to expand/collapse the second row with all the details.
-      
-      The heading row contains the indicator id and the indicator type.
-      The type is one of the following categories:
-       - "Compostion"
-       - "Observable"
-       - "Other"
-    -->
+  <!--
+    The process*Contents templates are used to convert the top level catgory "items" into html.
+    
+    This one processes campaigns.
+  -->
   <xsl:template name="processCampaignContents">
     
     <div>
@@ -159,19 +167,25 @@
       <xsl:apply-templates select="stixCommon:Incident" />
     </div>
   </xsl:template>
+  
   <xsl:template match="campaign:Related_TTP">
     <div>
       <xsl:apply-templates select="stixCommon:TTP" />
     </div>
   </xsl:template>
+  
   <xsl:template match="campaign:Related_Indicator">
     <div>
       <xsl:apply-templates select="stixCommon:Indicator" />
     </div>
   </xsl:template>
 
-  <xsl:template name="processIncidentContents">
+  <!--
+    The process*Contents templates are used to convert the top level catgory "items" into html.
     
+    This one processes incidents.
+  -->
+  <xsl:template name="processIncidentContents">
     <div>
       <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
       
@@ -187,7 +201,7 @@
       </xsl:if>              
       <xsl:if test="incident:Related_Observables/incident:Related_Observable">
         <xsl:variable name="contents">
-          <xsl:apply-templates select="incident:Related_Observables/incident:Related_Observable" />
+          <xsl:apply-templates select="incident:Related_Observables/incident:Related_Observable" mode="cyboxProperties" />
         </xsl:variable>
         <xsl:copy-of select="stix:printNameValueTable('Related Observables', $contents)" />
       </xsl:if>
@@ -202,7 +216,7 @@
   
   <xsl:template match="incident:Related_Observable">
     <div>
-      <xsl:call-template name="processObservableCommon" />
+      <xsl:call-template name="processObservableContents" />
     </div>
   </xsl:template>
   <xsl:template match="incident:Leveraged_TTP">
@@ -211,6 +225,11 @@
     </div>
   </xsl:template>
 
+  <!--
+    The process*Contents templates are used to convert the top level catgory "items" into html.
+    
+    This one processes threat actors.
+  -->
   <xsl:template name="processThreatActorContents">
     <div>
       <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
@@ -254,6 +273,11 @@
     </div>
   </xsl:template>
   
+  <!--
+    The process*Contents templates are used to convert the top level catgory "items" into html.
+    
+    This one processes exploit targets.
+  -->
   <xsl:template name="processExploitTargetContents">
     <div>
       <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
@@ -274,7 +298,12 @@
     </div>
   </xsl:template>
   
-
+  <!--
+    The process*Contents templates are used to convert the top level catgory "items" into html.
+    
+    This one processes indicator.
+  -->
+  
     <xsl:template name="processIndicatorContents">
       
       <div>
@@ -339,12 +368,6 @@
     
     
     <!--
-    <xsl:template match="indicator:Composite_Indicator_Expression">
-        <div>(composite indicator)</div>
-    </xsl:template>
-    -->
-    
-    <!--
       This template produces the table displaying composite indicator expressions.
       
       This is similar to how the composite observables are produced.
@@ -388,7 +411,7 @@
     </xsl:template>
     
     <!--
-      This template display the simple indicator within a composit indicator
+      This template display the simple indicator within a composite indicator
       expression (one of the operands).
     -->
     <xsl:template match="indicator:Indicator" mode="composition">
@@ -425,8 +448,6 @@
                 <xsl:call-template name="processObservableInObservableCompositionSimple" />
             </xsl:when>
         </xsl:choose>
-        
-        
     </xsl:template>
     
     <xsl:template match="indicator:Indicated_TTP">
@@ -446,12 +467,21 @@
             </div>
         </div>
     </xsl:template>
-    
+
+    <!--
+      This template makes sure that TTP elements that have neither an id nor
+      an idref are printed out inline.
+    -->
     <xsl:template match="stixCommon:TTP[not(@id) and not(@idref)]|stix:TTP[not(@id) and not(@idref)]">
       <xsl:call-template name="processTTPContents" />
     </xsl:template>
   
     
+    <!--
+      The process*Contents templates are used to convert the top level catgory "items" into html.
+      
+      This one processes TTPs.
+    -->
     <xsl:template name="processTTPContents">
       <div>
         <div>
@@ -521,6 +551,12 @@
       </div>
     </xsl:template>
     
+  <!--
+    Print out the root kill chain and its child kill chain phases.
+    
+    At least within TTPs, this will be for the kill chains mentioned in
+    stix:TTPs/stix:Kill_Chains
+  -->
   <xsl:template match="stixCommon:Kill_Chain[@id]" priority="30.0">
     <xsl:variable name="localName" select="local-name()"/>
     <xsl:variable name="identifierName" select="'killChain'" />
@@ -552,14 +588,22 @@
         <xsl:if test="stixCommon:Kill_Chain_Phase">
           <xsl:apply-templates select="stixCommon:Kill_Chain_Phase" />
         </xsl:if>
-        
-        
-        
       </div>
     </div>
   </xsl:template>
   
   
+  <!--
+    Print out the root kill chain and its child kill chain phases.
+    
+    At least within TTPs, this will be for the kill chains mentioned in
+    stix:TTPs/stix:Kill_Chains/stixCommon:Kill_Chain_Phase.  The normalization
+    process changes those @phase_id attributes to @id attributes.
+    
+    In TTPs, there will also be kill chain phases at
+    stix:TTP/ttp:Kill_Chain_Phases.  The normalization process changes
+    @phase_id attributes to @idref.
+  -->
   <xsl:template match="stixCommon:Kill_Chain_Phase[@id]">
     <div class="debug">DEBUG kill chain phase w/ id</div>
     <div class="container killChainPhase">
@@ -589,6 +633,9 @@
     </div> <!-- end of div container -->
   </xsl:template>
   
+  <!--
+    Display related TTP by showing the relationship and the underlying TTP.
+  -->
   <xsl:template match="ttp:Related_TTP">
     <div>
       Related TTP Relationship: <xsl:value-of select="stixCommon:Relationship/text()" />
@@ -598,6 +645,13 @@
     </div>
   </xsl:template>
   
+  <!--
+    Template to turn any items with an idref into an expandable content toggle.
+    
+    IMPORTANT: Add elements to the match clause here to expand this functionality to other elements.
+    
+    See also the similar template in cybox_common.xsl.
+  -->
   <xsl:template match="stixCommon:Kill_Chain_Phase[@idref]|stixCommon:TTP[@idref]|stixCommon:Incident[@idref]|stixCommon:Indicator[@idref]">
     <div class="debug">DEBUG kill chain phase w/ idref</div>
     <!-- [object link here - - <xsl:value-of select="fn:data(@idref)" />] -->
@@ -608,6 +662,12 @@
     </xsl:call-template>
   </xsl:template>
 
+  <!--
+    Simple template to print a name/value pair in simple html.
+    
+    Also looks to see if the value starts with http://, https://, or ftp://
+    and if so, turns it into a <a href="url">text</a> link.
+  -->
   <xsl:template name="printNameValue" >
     <xsl:param name="identifier" select="''" as="xs:string?" />
     <xsl:param name="label" select="''" as="xs:string?" />
