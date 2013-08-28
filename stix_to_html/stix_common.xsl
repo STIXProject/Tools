@@ -318,13 +318,42 @@
           <xsl:if test="ttp:Description">
             <xsl:copy-of select="stix:printNameValueTable('Description', ttp:Description)" />
           </xsl:if>  
+
+          <xsl:if test="ttp:Intended_Effect">
+            <xsl:variable name="contents">
+              <xsl:apply-templates select="ttp:Intended_Effect" mode="cyboxProperties" />
+            </xsl:variable>
+            <xsl:copy-of select="stix:printNameValueTable('Intended Effect', $contents)" />
+          </xsl:if>  
           
           <xsl:if test="ttp:Behavior">
             <xsl:variable name="contents">
-              <xsl:apply-templates select="ttp:Behavior" />
+              <xsl:apply-templates select="ttp:Behavior" mode="cyboxProperties" />
             </xsl:variable>
             <xsl:copy-of select="stix:printNameValueTable('Behavior', $contents)" />
           </xsl:if>
+          
+          <xsl:if test="ttp:Resources">
+            <xsl:variable name="contents">
+              <xsl:apply-templates select="ttp:Resources" mode="cyboxProperties" />
+            </xsl:variable>
+            <xsl:copy-of select="stix:printNameValueTable('Resources', $contents)" />
+          </xsl:if>  
+          
+          <xsl:if test="ttp:Victim_Targeting">
+            <xsl:variable name="contents">
+              <xsl:apply-templates select="ttp:Victim_Targeting" mode="cyboxProperties" />
+            </xsl:variable>
+            <xsl:copy-of select="stix:printNameValueTable('Victim Targeting', $contents)" />
+          </xsl:if>  
+          
+          <xsl:if test="ttp:Exploit_Targets">
+            <xsl:variable name="contents">
+              <xsl:apply-templates select="ttp:Exploit_Targets" mode="cyboxProperties" />
+            </xsl:variable>
+            <xsl:copy-of select="stix:printNameValueTable('Exploit Targets', $contents)" />
+          </xsl:if>  
+          
           <xsl:if test="ttp:Related_TTPs/ttp:Related_TTP">
             <xsl:variable name="contents">
               <xsl:apply-templates select="ttp:Related_TTPs/ttp:Related_TTP" />
