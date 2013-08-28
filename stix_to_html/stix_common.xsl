@@ -447,21 +447,10 @@
         </div>
     </xsl:template>
     
-    <xsl:template match="stixCommon:TTP">
-        <div>
-            <div>TTP</div> 
-            <xsl:if test="@idref"><div>(reference to "<xsl:value-of select="fn:data(@idref)" />")</div></xsl:if>
-            <xsl:if test="@id"><div>(id "<xsl:value-of select="fn:data(@id)" />")</div></xsl:if>
-        </div>
+    <xsl:template match="stixCommon:TTP[not(@id) and not(@idref)]|stix:TTP[not(@id) and not(@idref)]">
+      <xsl:call-template name="processTTPContents" />
     </xsl:template>
-    
-    <xsl:template match="stixCommon:TTP|stix:TTP">
-        <div>
-            TTP (references "<xsl:value-of select="fn:data(@idref)" />")
-        </div>
-    </xsl:template>
-    
-    
+  
     
     <xsl:template name="processTTPContents">
       <div>
