@@ -3,6 +3,11 @@ body
   font-family: Arial,Helvetica,sans-serif;
 }
 
+td, th
+{
+  vertical-align: top;
+}
+
 .topLevelCategoryTable
 {
   font-weight: bold;
@@ -78,12 +83,24 @@ font-size: 11px;
 color: #039;
 }
 
-#hor-minimalist-a
+.stixHeader
+{
+font-weight:bold; margin:5px; color:#BD9C8C;
+}
+
+.stixHeader > table > tbody > tr:nth-child(even)
+{
+  background-color: lavender;
+}
+
+#hor-minimalist-a,
+.hor-minimalist-a
 {
   font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
   font-size: 12px;
 }
-#hor-minimalist-a > thead > tr > th
+#hor-minimalist-a > thead > tr > th,
+.hor-minimalist-a > thead > tr > th
 {
   border-bottom: 2px solid #6678b1;
   text-align: left;

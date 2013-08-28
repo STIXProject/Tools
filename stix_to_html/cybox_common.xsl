@@ -850,7 +850,7 @@ ikirillov@mitre.org
     <!--
       print out object reference links
     -->
-    <xsl:template match="@object_reference" mode="cyboxProperties">
+    <xsl:template match="@object_reference|@idref" mode="cyboxProperties">
         <xsl:variable name="targetId" select="fn:data(.)"/>
         <xsl:variable name="targetObject" select="//*[@id = $targetId]"/>
         

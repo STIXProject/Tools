@@ -104,8 +104,8 @@ mdunn@mitre.org
                 -->
                     <div id="wrapper">
                         <div id="header"> 
-                            <H1>STIX Output</H1>
-                            <table id="hor-minimalist-a" width="100%">
+                            <h1>STIX Output</h1>
+                            <table class="stixMetadata hor-minimalist-a" width="100%">
                                 <thead>
                                     <tr>
                                         <th scope="col">STIX Version</th>
@@ -113,11 +113,11 @@ mdunn@mitre.org
                                         <th scope="col">Generation Date</th>
                                     </tr>
                                 </thead>
-                                <TR>
-                                    <TD><xsl:value-of select="//stix:STIX_Package/@version"/></TD>
-                                    <TD><xsl:value-of select="tokenize(document-uri(.), '/')[last()]"/></TD>
-                                    <TD><xsl:value-of select="current-dateTime()"/></TD>
-                                </TR>   
+                                <tr>
+                                    <td><xsl:value-of select="//stix:STIX_Package/@version"/></td>
+                                    <td><xsl:value-of select="tokenize(document-uri(.), '/')[last()]"/></td>
+                                    <td><xsl:value-of select="current-dateTime()"/></td>
+                                </tr>   
                             </table>
                         </div>
                         <h2><a name="analysis">STIX Header</a></h2>

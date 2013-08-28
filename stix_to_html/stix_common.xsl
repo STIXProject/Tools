@@ -28,6 +28,7 @@
     xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
     xmlns:cyboxCommon="http://cybox.mitre.org/common-2"
     xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2"
+    xmlns:simpleMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1"
     
     xmlns:ttp='http://stix.mitre.org/TTP-1'
     >
@@ -37,35 +38,35 @@
 
     <xsl:template name="processHeader">
         <xsl:for-each select="//stix:STIX_Package/stix:STIX_Header">        
-            <div id="observablesspandiv" style="font-weight:bold; margin:5px; color:#BD9C8C;">
-                <TABLE class="grid tablesorter" cellspacing="0">
-                    <COLGROUP>
-                        <COL width="30%"/>
-                        <COL width="70%"/>
-                    </COLGROUP>
-                    <THEAD>
-                        <TR>
-                            <TH class="header">
+            <div class="stixHeader">
+                <table class="grid tablesorter" cellspacing="0">
+                    <colgroup>
+                        <col width="30%"/>
+                        <col width="70%"/>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th class="header">
                                 Field
-                            </TH>
-                            <TH class="header">
+                            </th>
+                            <th class="header">
                                 Value
-                            </TH>
-                        </TR>
-                    </THEAD>
-                    <TBODY>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         <xsl:variable name="evenOrOdd" select="if(position() mod 2 = 0) then 'even' else 'odd'" />
                         <xsl:for-each select="child::*">
-                            <xsl:call-template name="processNameValue"><xsl:with-param name="evenOrOdd" select="$evenOrOdd"/></xsl:call-template>
+                            <xsl:call-template name="processStixHeaderNameValue"><xsl:with-param name="evenOrOdd" select="$evenOrOdd"/></xsl:call-template>
                         </xsl:for-each>
-                    </TBODY>
-                </TABLE>    
+                    </tbody>
+                </table>    
             </div>
         </xsl:for-each>
     </xsl:template>
 
     <!-- Designed for use in the STIX_HEADER, at least.  Does not yet take into consideration Handling/Marking complexity -->
-    <xsl:template name="processNameValue">
+    <xsl:template name="processStixHeaderNameValue">
         <xsl:param name="evenOrOdd" />
         <TR><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
                 <TD class="Stix{local-name()}Name">
@@ -78,8 +79,22 @@
                             <xsl:attribute name="class" select="$class"/>
                             <xsl:attribute name="onclick">toggle(this);</xsl:attribute>
                         </xsl:if>
-                        <!-- does not handle markings gracefully -->
-                        <xsl:value-of select="self::node()[text()]"/>
+                        <!--
+                          for now, just show the text of simpleMarking:Statement
+                          TODO: do something with the entire contents of stix:Handling
+                        -->
+                        <xsl:choose>
+                          <xsl:when test="self::stix:Handling">
+                            <xsl:value-of select=".//simpleMarking:Statement/text()"/>
+                          </xsl:when>
+                          <xsl:when test="self::stix:Information_Source">
+                            <xsl:apply-templates mode="cyboxProperties" />
+                          </xsl:when>
+                          <xsl:otherwise>
+                            <xsl:value-of select="self::node()[text()]"/>
+                          </xsl:otherwise>
+                        </xsl:choose>
+                        
                     </div>
                 </TD>
             </TR>
@@ -508,13 +523,42 @@
           <xsl:if test="ttp:Description">
             <xsl:copy-of select="stix:printNameValueTable('Description', ttp:Description)" />
           </xsl:if>  
+
+          <xsl:if test="ttp:Intended_Effect">
+            <xsl:variable name="contents">
+              <xsl:apply-templates select="ttp:Intended_Effect" mode="cyboxProperties" />
+            </xsl:variable>
+            <xsl:copy-of select="stix:printNameValueTable('Intended Effect', $contents)" />
+          </xsl:if>  
           
           <xsl:if test="ttp:Behavior">
             <xsl:variable name="contents">
-              <xsl:apply-templates select="ttp:Behavior" />
+              <xsl:apply-templates select="ttp:Behavior" mode="cyboxProperties" />
             </xsl:variable>
             <xsl:copy-of select="stix:printNameValueTable('Behavior', $contents)" />
           </xsl:if>
+          
+          <xsl:if test="ttp:Resources">
+            <xsl:variable name="contents">
+              <xsl:apply-templates select="ttp:Resources" mode="cyboxProperties" />
+            </xsl:variable>
+            <xsl:copy-of select="stix:printNameValueTable('Resources', $contents)" />
+          </xsl:if>  
+          
+          <xsl:if test="ttp:Victim_Targeting">
+            <xsl:variable name="contents">
+              <xsl:apply-templates select="ttp:Victim_Targeting" mode="cyboxProperties" />
+            </xsl:variable>
+            <xsl:copy-of select="stix:printNameValueTable('Victim Targeting', $contents)" />
+          </xsl:if>  
+          
+          <xsl:if test="ttp:Exploit_Targets">
+            <xsl:variable name="contents">
+              <xsl:apply-templates select="ttp:Exploit_Targets" mode="cyboxProperties" />
+            </xsl:variable>
+            <xsl:copy-of select="stix:printNameValueTable('Exploit Targets', $contents)" />
+          </xsl:if>  
+          
           <xsl:if test="ttp:Related_TTPs/ttp:Related_TTP">
             <xsl:variable name="contents">
               <xsl:apply-templates select="ttp:Related_TTPs/ttp:Related_TTP" />
