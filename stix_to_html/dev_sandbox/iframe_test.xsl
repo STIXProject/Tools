@@ -19,33 +19,31 @@
         <![CDATA[
         function initialize()
         {
-          var target = document.querySelector(".htmlContainer");
-          var rawHtml = target.getAttribute("data-stix-content");
-          var reader = new FileReader();
-          var htmlBlob = new Blob([rawHtml], {type: "text/html"});
-          
-          var targetIframeId = target.getAttribute("data-stix-target-iframe");
-          var targetIframe = document.getElementById(targetIframeId);
-          
-          reader.onloadend = function()
+          var allTargets = document.querySelectorAll(".htmlContainer");
+          for (var i = 0; i < allTargets.length; i++)
           {
-            console.log("inside onloadend -- BEGIN");
-            targetIframe.src = reader.result;
-            console.log("inside onloadend -- END");
-          };
-          reader.onload = function(e)
-          {
-            console.log("inside onload -- BEGIN");
-            targetIframe.src = reader.result;
-            console.log("inside onload -- END");
-          };
-          reader.onerror = function()
-          {
-            console.log("inside onerror! FAILED!!");
-          };
-          console.log("before starting read...");
-          reader.readAsDataURL(htmlBlob);
-          console.log("after starting read...(may still be running)");
+            var target = allTargets[i];
+            var rawHtml = target.getAttribute("data-stix-content");
+            var reader = new FileReader();
+            var htmlBlob = new Blob([rawHtml], {type: "text/html"});
+            
+            var targetIframeId = target.getAttribute("data-stix-target-iframe");
+            var targetIframe = document.getElementById(targetIframeId);
+            
+            reader.onloadend = function()
+            {
+              console.log("inside onloadend -- BEGIN");
+              targetIframe.src = reader.result;
+              console.log("inside onloadend -- END");
+            };
+            reader.onerror = function()
+            {
+              console.log("inside onerror! FAILED!!");
+            };
+            console.log("before starting read...");
+            reader.readAsDataURL(htmlBlob);
+            console.log("after starting read...(may still be running)");
+          }
         }
         
         ]]>
@@ -67,7 +65,7 @@
   
   <xsl:template match="stixCommon:Description" mode="old">
     <fieldset>
-      <legend>description</legend>
+      <legend>escaped html description</legend>
       <div>
         <xsl:value-of select="text()" />
       </div>
@@ -78,7 +76,7 @@
     <xsl:variable name="id" select="generate-id()" />
     <xsl:variable name="iframeId" select="concat($id, '__iframe')" />
     <fieldset>
-      <legend>description</legend>
+      <legend>description in iframe</legend>
       <div>
         <div class="htmlContainer" data-stix-content="{text()}" data-stix-target-iframe="{$iframeId}"></div>
         <iframe id="{$iframeId}" src="" style="width: 400px; height: 300px;"></iframe>
