@@ -82,7 +82,7 @@
       <ttp:Title>TTP with HTML description</ttp:Title>
       <ttp:Intended_Effect>
         <stixCommon:Description structuring_format="HTML5"><![CDATA[<!DOCTYPE html>
-<html><body>
+<html><head><style type="text/css">body { background-color: green; }</style></head><body>
 <p style="margin-top:0px"><span class="bluebold" style="font-size:120%">STIX&trade;</span> is a collaborative community-driven effort to define and develop a standardized language to represent structured cyber threat information. The STIX Language intends to convey the full range of potential cyber threat information and strives to be fully expressive, flexible, extensible, automatable, and as human-readable as possible. All interested parties are welcome to participate in evolving STIX as part of its open, collaborative community.</p>
 <p><a href="http://taxii.mitre.org/" target="_blank">Trusted Automated eXchange of Indicator Information (TAXII&trade;)</a> is the main transport mechanism for cyber threat information represented as STIX. Through the use of TAXII services, organizations can share cyber threat information in a secure and automated manner.</p>
 <!--round box-->
