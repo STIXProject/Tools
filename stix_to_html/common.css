@@ -489,3 +489,16 @@ tbody.expandableSeparate.expandableContainer.collapsed > tr > td > .expandableCo
   /*display: block;*/
   display: none;
 }
+
+.customHeader
+{
+  text-align: center;
+  margin-bottom: 1em;
+  background-color: silver;
+}
+
+.customFooter
+{
+  margin-top: 1em;
+  text-align: right;
+}

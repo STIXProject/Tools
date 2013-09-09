@@ -57,7 +57,48 @@ mdunn@mitre.org
   
   <!-- <xsl:include href="cybox_common.xsl"/> -->
   <xsl:key name="observableID" match="cybox:Observable" use="@id"/>
+  
+  <xsl:template name="customHeader">
+    <div class="customHeader">
+      Approved for Public Release
+    </div>
+  </xsl:template>
+
+  <xsl:template name="customTitle">
+    <div class="customTitle">
+      <h1>STIX report produced by Generic Company</h1>
+    </div>
+  </xsl:template>
+  
+  
+  <xsl:template name="customFooter">
+    <div class="customFooter">
+      &#xA9; Generic Company
+    </div>
+  </xsl:template>
+  
+  <!--
+    if your company wants to customize the css styling, override this template
     
+    the easiest thing to do is to reference an external stylesheet to be included:
+    
+      <style type="text/css">
+        <xsl:value-of select="unparsed-text('custom.css')" />
+      </style>
+
+    OR
+    
+    use inline styles:
+    
+    <style type="text/css">
+    .customHeader { color: red; }
+    .customFooter { color: blue; }
+    </style>
+
+  -->
+  <xsl:template name="customCss">
+  </xsl:template>
+  
     <!--
       This is the main template that sets up the html page that sets up the
       html structure, includes the base css and javascript, and adds the
@@ -94,6 +135,8 @@ mdunn@mitre.org
                 <style type="text/css">
                     <xsl:value-of select="unparsed-text('common.css')" />
                 </style>
+                
+                <xsl:call-template name="customCss" />
 
                  <!-- this is a javascript shim to support the javascript
                    "classList" property in dom elements objects for IE.
@@ -113,9 +156,12 @@ mdunn@mitre.org
                 </script>
               </head>
               <body onload="runtimeCopyObjects();">
+                <xsl:call-template name="customHeader" />
+                
                     <div id="wrapper">
                         <div id="header"> 
-                            <h1>STIX Output</h1>
+                          <xsl:call-template name="customTitle" />
+                            
                           
                             <!-- print out the stix metadata table -->
                             <table class="stixMetadata hor-minimalist-a" width="100%">
@@ -231,6 +277,8 @@ mdunn@mitre.org
                          </xsl:call-template>
                         </xsl:if>
                    </div>
+                
+                  <xsl:call-template name="customFooter" />
                 </body>
             </html>
     </xsl:template>
