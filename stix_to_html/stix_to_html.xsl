@@ -135,6 +135,10 @@ mdunn@mitre.org
                 <style type="text/css">
                     <xsl:value-of select="unparsed-text('common.css')" />
                 </style>
+                <!-- read in the theme css (mainly coloring) -->
+                <style type="text/css">
+                  <xsl:value-of select="unparsed-text('theme_default.css')" />
+                </style>
                 
                 <xsl:call-template name="customCss" />
 
