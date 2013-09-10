@@ -367,7 +367,7 @@ mdunn@mitre.org
     <xsl:if test="$categoryGroupingElement/*">
       <div class="topLevelCategoryContainer {$categoryIdentifier}" id="{categoryIdentifier}TopLevelCategoryContainer">
         <h2><a name="{$categoryIdentifier}TopLevelCategoryHeadingAnchor"><xsl:value-of select="$categoryLabel" /></a></h2>
-        <table class="grid tablesorter topLevelCategory {$categoryIdentifier}" cellspacing="0">
+        <table class="topLevelCategory {$categoryIdentifier}" cellspacing="0">
           <colgroup>
             <col width="70%"/>
             <col width="30%"/>
@@ -381,32 +381,27 @@ mdunn@mitre.org
               </xsl:for-each>
             </tr>
           </thead>
-          <tbody>
-            <xsl:for-each select="$categoryGroupingElement/*[@idref]">
-              <!-- <xsl:sort select="cybox:Observable_Composition" order="descending"/> -->
-              <xsl:variable name="evenOrOdd" select="if(position() mod 2 = 0) then 'even' else 'odd'" />
+          <xsl:for-each select="$categoryGroupingElement/*[@idref]">
+            <!-- <xsl:sort select="cybox:Observable_Composition" order="descending"/> -->
+            <xsl:variable name="evenOrOdd" select="if(position() mod 2 = 0) then 'even' else 'odd'" />
+            <xsl:call-template name="printGenericItemForTopLevelCategoryTable">
+              <xsl:with-param name="reference" select="$reference" />
+              <xsl:with-param name="normalized" select="$normalized" />
+            </xsl:call-template>
+          </xsl:for-each>
+          
+          <xsl:for-each select="$categoryGroupingElement/stix:Kill_Chains">
+            <thead><tr><th colspan="2">Kill Chains</th></tr></thead>
+            <xsl:for-each select="./stixCommon:Kill_Chain">
+                <!-- <tr><td colspan="2">kill chain <xsl:value-of select="fn:data(./@idref)"/></td></tr> -->
+              
               <xsl:call-template name="printGenericItemForTopLevelCategoryTable">
                 <xsl:with-param name="reference" select="$reference" />
                 <xsl:with-param name="normalized" select="$normalized" />
-                <xsl:with-param name="evenOrOdd" select="$evenOrOdd"/>
               </xsl:call-template>
+              
             </xsl:for-each>
-            
-            <xsl:for-each select="$categoryGroupingElement/stix:Kill_Chains">
-              <thead><tr><th colspan="2">Kill Chains</th></tr></thead>
-              <xsl:for-each select="./stixCommon:Kill_Chain">
-                  <!-- <tr><td colspan="2">kill chain <xsl:value-of select="fn:data(./@idref)"/></td></tr> -->
-                
-                <xsl:variable name="evenOrOdd" select="if(position() mod 2 = 0) then 'even' else 'odd'" />
-                <xsl:call-template name="printGenericItemForTopLevelCategoryTable">
-                  <xsl:with-param name="reference" select="$reference" />
-                  <xsl:with-param name="normalized" select="$normalized" />
-                  <xsl:with-param name="evenOrOdd" select="$evenOrOdd"/>
-                </xsl:call-template>
-                
-              </xsl:for-each>
-            </xsl:for-each>
-          </tbody>
+          </xsl:for-each>
         </table>    
       </div>
     </xsl:if>

@@ -106,7 +106,6 @@ ikirillov@mitre.org
       level category tables.
     -->
     <xsl:template name="printGenericItemForTopLevelCategoryTable">
-        <xsl:param name="evenOrOdd" />
         <xsl:param name="reference" select="()" />
         <xsl:param name="normalized" select="()" />
 
@@ -131,7 +130,7 @@ ikirillov@mitre.org
         <xsl:variable name="contentVar" select="concat(count(ancestor::node()), '00000000', count(preceding::node()))"/>
         
         <tbody class="expandableContainer expandableSeparate collapsed">
-            <tr><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
+            <tr>
                 <td>
                     <div class="expandableToggle objectReference" onclick="embedObject()toggle(this.parentNode.parentNode.parentNode)">
                         <xsl:attribute name="onclick">embedObject(this.parentNode.parentNode.parentNode, '<xsl:value-of select="$id"/>','<xsl:value-of select="$expandedContentId"/>');</xsl:attribute>
@@ -143,7 +142,7 @@ ikirillov@mitre.org
                     <xsl:value-of select="cybox:calculateDisplayTypeGenericItem($actualItem)" />
                 </td>
             </tr>
-            <tr><xsl:attribute name="class"><xsl:value-of select="$evenOrOdd" /></xsl:attribute>
+            <tr>
                 <td colspan="2">
                     <div id="{$expandedContentId}" class="expandableContents">
                         EXPANDABLE CONTENT HERE
