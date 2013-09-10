@@ -16,7 +16,7 @@ td, th
 }
 
 /* define table skin */
-table.grid {
+table.topLevelCategory {
 margin: 0px;
 margin-left: 25px;
 padding: 0;
@@ -31,14 +31,14 @@ border-width:1px;
 table.grid thead,
 table.grid .collapsible
 */
-table.grid > thead > tr > th
+table.topLevelCategory > thead > tr > th
 {
 background-color: #c7c3bb;
 }
 
 /* table.grid th */
-table.grid > thead > tr > th,
-table.grid > tbody > tr > th
+table.topLevelCategory > thead > tr > th,
+table.topLevelCategory > tbody > tr > th
 {
 color: #565770;
 padding: 4px 16px 4px 0;
@@ -47,13 +47,68 @@ font-weight: bold;
 text-align: left;
 } 
 
-table.grid td {
+table.topLevelCategory td {
 color: #565770;
 padding: 4px 6px;
 }
 
-table.grid tr.even {
+/*
+table.topLevelCategory tr.even {
 background-color: #EDEDE8;
+}
+*/
+
+/*
+  default to light gray + dark gray for alternating rows in top level category
+  tables unless overridden by other css rules 
+*/
+table.topLevelCategory tbody:nth-child(even)
+{
+background-color: hsl(0, 0%, 90%);
+}
+table.topLevelCategory tbody:nth-child(odd)
+{
+background-color: hsl(0, 0%, 98%);
+}
+
+/*
+ color specific templates for top level tables for specific categories
+ */
+
+table.topLevelCategory.indicators tbody:nth-child(even)
+{
+background-color: hsl(0, 70%, 90%);
+}
+table.topLevelCategory.indicators tbody:nth-child(odd)
+{
+background-color: hsl(0, 90%, 98%);
+}
+
+table.topLevelCategory.ttps tbody:nth-child(even)
+{
+background-color: hsl(240, 70%, 90%);
+}
+table.topLevelCategory.ttps tbody:nth-child(odd)
+{
+background-color: hsl(240, 90%, 98%);
+}
+
+table.topLevelCategory.observables tbody:nth-child(even)
+{
+background-color: hsl(120, 70%, 90%);
+}
+table.topLevelCategory.observables tbody:nth-child(odd)
+{
+background-color: hsl(120, 90%, 98%);
+}
+
+table.topLevelCategory.campaigns tbody:nth-child(even)
+{
+background-color: hsl(30, 70%, 90%);
+}
+table.topLevelCategory.campaigns tbody:nth-child(odd)
+{
+background-color: hsl(30, 90%, 98%);
 }
 
 body {
