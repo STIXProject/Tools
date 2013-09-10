@@ -8,7 +8,7 @@ td, th
   vertical-align: top;
 }
 
-.topLevelCategoryTable
+.topLevelCategoryContainer
 {
   font-weight: bold;
   margin: 5px;

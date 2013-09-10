@@ -203,79 +203,70 @@ mdunn@mitre.org
                           MAIN TOP LEVEL CATEGORY TABLES
                         -->
                       
-                        <xsl:if test="$normalized/stix:Observables/*"> 
-                          <h2><a name="analysis">Observables</a></h2>
-                          <xsl:call-template name="processTopLevelCategory">
-                              <xsl:with-param name="reference" select="$reference" />
-                              <xsl:with-param name="normalized" select="$normalized" />
-                              <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Observables" />
-                          </xsl:call-template>
-                        </xsl:if>
-                      
-                        <xsl:if test="$normalized/stix:Indicators/*">
-                          <h2><a name="analysis">Indicators</a></h2>
-                          <!-- <xsl:call-template name="processIndicators"/> -->
-                          <xsl:call-template name="processTopLevelCategory">
+                        <xsl:call-template name="processTopLevelCategory">
                             <xsl:with-param name="reference" select="$reference" />
                             <xsl:with-param name="normalized" select="$normalized" />
-                            <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Indicators" />
-                          </xsl:call-template>
-                        </xsl:if>
+                            <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Observables" />
+                            <xsl:with-param name="categoryLabel" select="'Observables'" />
+                            <xsl:with-param name="categoryIdentifier" select="'observables'" />
+                        </xsl:call-template>
                       
-                      <xsl:if test="$normalized/stix:TTPs/*">
-                          <h2><a name="analysis">TTPs</a></h2>
-                          <xsl:call-template name="processTopLevelCategory">
-                            <xsl:with-param name="reference" select="$reference" />
-                            <xsl:with-param name="normalized" select="$normalized" />
-                            <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:TTPs" />
-                            <xsl:with-param name="headingLabels" select="('ID', 'Title')" />
-                          </xsl:call-template>
-                        </xsl:if>
+                        <xsl:call-template name="processTopLevelCategory">
+                          <xsl:with-param name="reference" select="$reference" />
+                          <xsl:with-param name="normalized" select="$normalized" />
+                          <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Indicators" />
+                          <xsl:with-param name="categoryLabel" select="'Indicators'" />
+                          <xsl:with-param name="categoryIdentifier" select="'indicators'" />
+                        </xsl:call-template>
                       
-                      <xsl:if test="$normalized/stix:Exploit_Targets/*">  
-                        <h2><a name="analysis">Exploit Targets</a></h2>
-                          <xsl:call-template name="processTopLevelCategory">
-                            <xsl:with-param name="reference" select="$reference" />
-                            <xsl:with-param name="normalized" select="$normalized" />
-                            <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Exploit_Targets" />
-                          </xsl:call-template>
-                        </xsl:if>
+                        <xsl:call-template name="processTopLevelCategory">
+                          <xsl:with-param name="reference" select="$reference" />
+                          <xsl:with-param name="normalized" select="$normalized" />
+                          <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:TTPs" />
+                          <xsl:with-param name="headingLabels" select="('ID', 'Title')" />
+                          <xsl:with-param name="categoryLabel" select="'TTPs'" />
+                          <xsl:with-param name="categoryIdentifier" select="'ttps'" />
+                        </xsl:call-template>
                       
-                      <xsl:if test="$normalized/stix:Incidents/*">
-                        <h2><a name="analysis">Incidents</a></h2>
+                        <xsl:call-template name="processTopLevelCategory">
+                          <xsl:with-param name="reference" select="$reference" />
+                          <xsl:with-param name="normalized" select="$normalized" />
+                          <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Exploit_Targets" />
+                          <xsl:with-param name="categoryLabel" select="'Exploit Targets'" />
+                          <xsl:with-param name="categoryIdentifier" select="'exploitTargets'" />
+                        </xsl:call-template>
+                      
                         <xsl:call-template name="processTopLevelCategory">
                           <xsl:with-param name="reference" select="$reference" />
                           <xsl:with-param name="normalized" select="$normalized" />
                           <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Incidents" />
+                          <xsl:with-param name="categoryLabel" select="'Incidents'" />
+                          <xsl:with-param name="categoryIdentifier" select="'incidents'" />
                         </xsl:call-template>
-                        </xsl:if>
                       
-                      <xsl:if test="$normalized/stix:Courses_Of_Action/*">
-                        <h2><a name="analysis">Courses of Action</a></h2>
                         <xsl:call-template name="processTopLevelCategory">
                           <xsl:with-param name="reference" select="$reference" />
                           <xsl:with-param name="normalized" select="$normalized" />
                           <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Courses_Of_Action" />
+                          <xsl:with-param name="categoryLabel" select="'Courses of Action'" />
+                          <xsl:with-param name="categoryIdentifier" select="'coursesOfAction'" />
                         </xsl:call-template>
-                        </xsl:if>
                       
-                      <xsl:if test="$normalized/stix:Campaigns/*">
-                        <h2><a name="analysis">Campaigns</a></h2>
                         <xsl:call-template name="processTopLevelCategory">
                           <xsl:with-param name="reference" select="$reference" />
                           <xsl:with-param name="normalized" select="$normalized" />
                           <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Campaigns" />
+                          <xsl:with-param name="categoryLabel" select="'Campaigns'" />
+                          <xsl:with-param name="categoryIdentifier" select="'campaigns'" />
                         </xsl:call-template>
-                        </xsl:if>
                       
-                      <xsl:if test="$normalized/stix:Threat_Actors/*">
-                        <h2><a name="analysis">Threat Actors</a></h2>
-                         <xsl:call-template name="processTopLevelCategory">
-                           <xsl:with-param name="reference" select="$reference" />
-                           <xsl:with-param name="normalized" select="$normalized" />
-                           <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Threat_Actors" />
-                         </xsl:call-template>
-                        </xsl:if>
+                       <xsl:call-template name="processTopLevelCategory">
+                         <xsl:with-param name="reference" select="$reference" />
+                         <xsl:with-param name="normalized" select="$normalized" />
+                         <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Threat_Actors" />
+                         <xsl:with-param name="categoryLabel" select="'Threat Actors'" />
+                         <xsl:with-param name="categoryIdentifier" select="'threatActors'" />
+                       </xsl:call-template>
                    </div>
                 
                   <xsl:call-template name="customFooter" />
@@ -366,50 +357,55 @@ mdunn@mitre.org
     <xsl:param name="normalized" select="()" />
     <xsl:param name="categoryGroupingElement" select="()" />
     <xsl:param name="headingLabels" select="('ID', 'Type')" />
+    <xsl:param name="categoryLabel" />
+    <xsl:param name="categoryIdentifier" />
     
-    <div class="topLevelCategoryTable">
-      <table class="grid tablesorter" cellspacing="0">
-        <colgroup>
-          <col width="70%"/>
-          <col width="30%"/>
-        </colgroup>
-        <thead>
-          <tr>
-            <xsl:for-each select="$headingLabels">
-              <th class="header">
-                <xsl:value-of select="." />
-              </th>
-            </xsl:for-each>
-          </tr>
-        </thead>
-        <tbody>
-          <xsl:for-each select="$categoryGroupingElement/*[@idref]">
-            <!-- <xsl:sort select="cybox:Observable_Composition" order="descending"/> -->
-            <xsl:variable name="evenOrOdd" select="if(position() mod 2 = 0) then 'even' else 'odd'" />
-            <xsl:call-template name="printGenericItemForTopLevelCategoryTable">
-              <xsl:with-param name="reference" select="$reference" />
-              <xsl:with-param name="normalized" select="$normalized" />
-              <xsl:with-param name="evenOrOdd" select="$evenOrOdd"/>
-            </xsl:call-template>
-          </xsl:for-each>
-          
-          <xsl:for-each select="$categoryGroupingElement/stix:Kill_Chains">
-            <thead><tr><th colspan="2">Kill Chains</th></tr></thead>
-            <xsl:for-each select="./stixCommon:Kill_Chain">
-                <!-- <tr><td colspan="2">kill chain <xsl:value-of select="fn:data(./@idref)"/></td></tr> -->
-              
+    <xsl:if test="$categoryGroupingElement/*">
+      <div class="topLevelCategoryContainer {$categoryIdentifier}" id="{categoryIdentifier}TopLevelCategoryContainer">
+        <h2><a name="{$categoryIdentifier}TopLevelCategoryHeadingAnchor"><xsl:value-of select="$categoryLabel" /></a></h2>
+        <table class="grid tablesorter topLevelCategory {$categoryIdentifier}" cellspacing="0">
+          <colgroup>
+            <col width="70%"/>
+            <col width="30%"/>
+          </colgroup>
+          <thead>
+            <tr>
+              <xsl:for-each select="$headingLabels">
+                <th class="header">
+                  <xsl:value-of select="." />
+                </th>
+              </xsl:for-each>
+            </tr>
+          </thead>
+          <tbody>
+            <xsl:for-each select="$categoryGroupingElement/*[@idref]">
+              <!-- <xsl:sort select="cybox:Observable_Composition" order="descending"/> -->
               <xsl:variable name="evenOrOdd" select="if(position() mod 2 = 0) then 'even' else 'odd'" />
               <xsl:call-template name="printGenericItemForTopLevelCategoryTable">
                 <xsl:with-param name="reference" select="$reference" />
                 <xsl:with-param name="normalized" select="$normalized" />
                 <xsl:with-param name="evenOrOdd" select="$evenOrOdd"/>
               </xsl:call-template>
-              
             </xsl:for-each>
-          </xsl:for-each>
-        </tbody>
-      </table>    
-    </div>
+            
+            <xsl:for-each select="$categoryGroupingElement/stix:Kill_Chains">
+              <thead><tr><th colspan="2">Kill Chains</th></tr></thead>
+              <xsl:for-each select="./stixCommon:Kill_Chain">
+                  <!-- <tr><td colspan="2">kill chain <xsl:value-of select="fn:data(./@idref)"/></td></tr> -->
+                
+                <xsl:variable name="evenOrOdd" select="if(position() mod 2 = 0) then 'even' else 'odd'" />
+                <xsl:call-template name="printGenericItemForTopLevelCategoryTable">
+                  <xsl:with-param name="reference" select="$reference" />
+                  <xsl:with-param name="normalized" select="$normalized" />
+                  <xsl:with-param name="evenOrOdd" select="$evenOrOdd"/>
+                </xsl:call-template>
+                
+              </xsl:for-each>
+            </xsl:for-each>
+          </tbody>
+        </table>    
+      </div>
+    </xsl:if>
   </xsl:template>
   
   <!--
