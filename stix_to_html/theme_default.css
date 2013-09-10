@@ -1,4 +1,22 @@
 /*
+ * Default coloring of top level category tables
+ * 
+ * To update,
+ * - to change colors, edit the first parameter of hsl() to change the hue
+ * - to change the saturation "color-ness" (red-ness or orange-ness) edit the second parameter
+ *   (saturation closer to 100% are brighter; closer to 0% are closer to gray scale) 
+ * - to change lightness (to make pailer or brighter) edit third parameter
+ *   (50% is the brightest; 100% is white and 0% is black for any hue and saturation)
+ * 
+ * By default, all categories use the same saturation and lightness
+ * - even rows are 70% saturation; 90% lightness (darker)
+ * - odd rows are 90% saturation; 98% lightness (closer to white)
+ * 
+ * For example palettes see:
+ *   http://www.w3.org/TR/css3-color/#hsl-examples
+ */
+
+/*
   default to light gray + dark gray for alternating rows in top level category
   tables unless overridden by other css rules 
 */
@@ -50,3 +68,32 @@ table.topLevelCategory.campaigns tbody:nth-child(odd)
 {
 background-color: hsl(30, 90%, 98%);
 }
+
+table.topLevelCategory.threatActors tbody:nth-child(even)
+{
+background-color: hsl(330, 70%, 90%);
+}
+table.topLevelCategory.threatActors tbody:nth-child(odd)
+{
+background-color: hsl(330, 90%, 98%);
+}
+
+table.topLevelCategory.exploitTargets tbody:nth-child(even)
+{
+background-color: hsl(60, 70%, 90%);
+}
+table.topLevelCategory.exploitTargets tbody:nth-child(odd)
+{
+background-color: hsl(60, 90%, 98%);
+}
+
+table.topLevelCategory.incidents tbody:nth-child(even)
+{
+background-color: hsl(180, 70%, 90%);
+}
+table.topLevelCategory.incidents tbody:nth-child(odd)
+{
+background-color: hsl(180, 90%, 98%);
+}
+
+
