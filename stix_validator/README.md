@@ -21,6 +21,10 @@ Validate using schemaLocation:
 Validate a directory of STIX documents:
 `python sdv.py --input-dir <stix_dir> --schema-dir schema`
 
+## All STIX Documents?
+The STIX Document Validator bundles a schema directory with it, which includes all STIX v1.0 
+schema files. If an instance document uses constructs or languages defined by other schemas
+a user must point the STIX Document Validator at those schemas in order to validate.
 
 ## Terms
 BY USING THE STIX DOCUMENT VALIDATOR, YOU SIGNIFY YOUR ACCEPTANCE OF THE 
