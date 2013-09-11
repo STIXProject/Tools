@@ -8,6 +8,10 @@ The STIX Document Validator has the following dependencies:
 * lxml >= v3.2.0 http://lxml.de/index.html#download
   * libxml2 >= v2.9.1 http://www.xmlsoft.org/downloads.html
 
+**NOTE:** Older versions of libxml2 do not work properly and may result in undesirable behavior.
+To see what version of libxml2 you have installed, execute the `xml2-config --version` command
+and make sure you are running at least v2.9.1.
+
 ## Use
 The STIX Document Validator can validate a STIX v1.0 instance document against STIX v1.0 schemas
 found locally or referenced remotely through the schemaLocation attribute.
