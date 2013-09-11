@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:WinPrefetchObj="http://cybox.mitre.org/objects#WinPrefetchObject-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:DeviceObj="http://cybox.mitre.org/objects#DeviceObject-2" xmlns:WinVolumeObj="http://cybox.mitre.org/objects#WinVolumeObject-2" targetNamespace="http://cybox.mitre.org/objects#WinPrefetchObject-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>Win_Prefetch_Object</schema>
+			<version>2.0</version>
+			<date>02/11/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#WinVolumeObject-2" schemaLocation="Win_Volume_Object.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#DeviceObject-2" schemaLocation="Device_Object.xsd"/>
+	<xs:element name="Windows_Prefetch_Entry" type="WinPrefetchObj:WindowsPrefetchObjectType">
+		<xs:annotation>
+			<xs:documentation>The Windows_Prefetch_Entry object is intended to characterize entries in the Windows prefetch files. Starting with Windows XP, prefetching was introduced to speed up application startup. The prefetch object draws upon the descriptions and XML sample at http://www.forensicswiki.org/wiki/Prefetch_XML</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="WindowsPrefetchObjectType">
+		<xs:annotation>
+			<xs:documentation>The WindowsPrefetchObjectType type is intended to characterize entries in the Windows prefetch files. Starting with Windows XP, prefetching was introduced to speed up application startup. The prefetch object draws upon the descriptions and XML sample at http://www.forensicswiki.org/wiki/Prefetch_XML</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cyboxCommon:ObjectPropertiesType">
+				<xs:sequence>
+					<xs:element name="Application_File_Name" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Name of the executable of the prefetch file.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Prefetch_Hash" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>An eight character hash of the location from which the application was run.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Times_Executed" type="cyboxCommon:LongObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The number of times the prefetch application has executed.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="First_Run" type="cyboxCommon:DateTimeObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Timestamp of when the prefetch application was first run.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Last_Run" type="cyboxCommon:DateTimeObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Timestamp of when the prefetch application was last run.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Volume" type="WinPrefetchObj:VolumeType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The volume from which the prefetch application was run. If the applicatin was run from multiple volumes, there will be a separate prefetch file for each.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Accessed_File_List" type="WinPrefetchObj:AccessedFileListType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Files (e.g., DLLs and other support files) used by the application during startup.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Accessed_Directory_List" type="WinPrefetchObj:AccessedDirectoryListType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Directories accessed by the prefetch application during starup.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AccessedFileListType">
+		<xs:annotation>
+			<xs:documentation>The AccessedFileListType specifies a list of files accessed by a prefetch application.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Accessed_Filename" type="cyboxCommon:StringObjectPropertyType" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Specifies the filename of the accessed file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AccessedDirectoryListType">
+		<xs:annotation>
+			<xs:documentation>The AccessedDirectoryListType specifies a list of directories accessed by a prefetch application.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Accessed_Directory" type="cyboxCommon:StringObjectPropertyType" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Specifies the pathname of the accessed directory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VolumeType">
+		<xs:annotation>
+			<xs:documentation>VolumeType characterizes the volume information in the Windows prefetch file.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="VolumeItem" type="WinVolumeObj:WindowsVolumeObjectType" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The volume that the prefetch application was run from. The only item in the prefecth file is the volume name.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DeviceItem" type="DeviceObj:DeviceObjectType" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The device that the prefetch application was run from. The only item in the prefetch file is the device serial number.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

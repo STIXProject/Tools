@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:WinProcessObj="http://cybox.mitre.org/objects#WinProcessObject-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:MemoryObj="http://cybox.mitre.org/objects#MemoryObject-2" xmlns:WinHandleObj="http://cybox.mitre.org/objects#WinHandleObject-2" xmlns:ProcessObj="http://cybox.mitre.org/objects#ProcessObject-2" targetNamespace="http://cybox.mitre.org/objects#WinProcessObject-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>Win_Process_Object</schema>
+			<version>2.0</version>
+			<date>02/11/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/objects#WinHandleObject-2" schemaLocation="Win_Handle_Object.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#MemoryObject-2" schemaLocation="Memory_Object.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#ProcessObject-2" schemaLocation="Process_Object.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:element name="Windows_Process" type="WinProcessObj:WindowsProcessObjectType" nillable="true">
+		<xs:annotation>
+			<xs:documentation>Windows_Process object is intended to characterize Windows processes.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="WindowsProcessObjectType" mixed="false">
+		<xs:annotation>
+			<xs:documentation>The WindowsProcessObjectType type is intended to characterize Windows processes.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ProcessObj:ProcessObjectType">
+				<xs:sequence>
+					<xs:element name="Handle_List" type="WinHandleObj:WindowsHandleListType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Handle_List field specifies a list of Windows Handles opened or used by the process.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Priority" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Priority field speciifes the current priority of the process in Windows.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Section_List" type="WinProcessObj:MemorySectionListType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Section_List field specifies the memory sections used by the process.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Security_ID" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Security_ID field specifies the Security ID (SID) value assigned to the process.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Startup_Info" type="WinProcessObj:StartupInfoType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Startup_Info field specifies the STARTUP_INFO struct used by the process.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Security_Type" type="cyboxCommon:SIDType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Security_Type field specifies the type of Security ID (SID) assigned to the process.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Window_Title" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Window_Title field specifies the title of the main window of the process.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="aslr_enabled" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>The aslr_enabled field specifies whether Address Space Layout Randomization (ASLR) is enabled for the process.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="dep_enabled" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>The dep_enabled field specifies whether Data Execution Prevention (DEP) is enabled for the process.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MemorySectionListType">
+		<xs:annotation>
+			<xs:documentation>The MemorySectionListType type specifies a list of memory sections used by the process.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Memory_Section" type="MemoryObj:MemoryObjectType" nillable="true" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Memory_Section field specifies a memory section used by the process. It imports and uses the MemoryObjectType from the CybOX Memory Object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StartupInfoType">
+		<xs:annotation>
+			<xs:documentation>The StartupInfoType type encapsulates the information contained in the STARTUPINFO struct for the process.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="lpDesktop" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The lpDesktop field specifies the name of the desktop, or the name of both the desktop and window station for this process. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="lpTitle" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The lpTitle field specifies the title displayed in the title bar if a new console window is created.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dwX" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The dwX field specifies the x offset of the upper left corner of a window if a new window is created, in pixels.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dwY" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The dwY field specifies the y offset of the upper left corner of a window if a new window is created, in pixels.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dwXSize" type="cyboxCommon:PositiveIntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The dwXSize field specifies the width of the window if a new window is created, in pixels.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dwYSize" type="cyboxCommon:PositiveIntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The dwYSize field specifies the height of the window if a new window is created, in pixels.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dwXCountChars" type="cyboxCommon:PositiveIntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The dwXCountChars field specifies the screen buffer width, in character columns.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dwYCountChars" type="cyboxCommon:PositiveIntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The dwYCountChars field specifies the screen buffer height, in character rows. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dwFillAttribute" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The dwFillAttribute field specifies the initial text and background colors if a new console window is created in a console application. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dwFlags" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The dwFlags field specifies a bitfield that determines whether certain STARTUPINFO members are used when the process creates a window.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="wShowWindow" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The wShowWindow field specifies STARTF_USESHOWWINDOW, this member can be any of the values that can be specified in the nCmdShow parameter for the ShowWindow function, except for SW_SHOWDEFAULT.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hStdInput" type="WinHandleObj:WindowsHandleObjectType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The hStdInput field specifies the standard input handle for the process. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hStdOutput" type="WinHandleObj:WindowsHandleObjectType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The hStdOutput field specifies the standard output handle for the process. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hStdError" type="WinHandleObj:WindowsHandleObjectType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The hStdError field specifies the standard error handle for the process. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

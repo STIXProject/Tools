@@ -1,0 +1,755 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:WinTaskObj="http://cybox.mitre.org/objects#WinTaskObject-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:EmailMessageObj="http://cybox.mitre.org/objects#EmailMessageObject-2" targetNamespace="http://cybox.mitre.org/objects#WinTaskObject-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>Win_Task_Object</schema>
+			<version>2.0</version>
+			<date>02/11/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#EmailMessageObject-2" schemaLocation="Email_Message_Object.xsd"/>
+	<xs:element name="Windows_Task" type="WinTaskObj:WindowsTaskObjectType">
+		<xs:annotation>
+			<xs:documentation>The Windows_Task object is intended to characterize Windows task scheduler tasks. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381311(v=vs.85).aspx</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="WindowsTaskObjectType" mixed="false">
+		<xs:annotation>
+			<xs:documentation>The WindowsTaskObjectType type is intended to characterize Windows task scheduler tasks. See Also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381311(v=vs.85).aspx</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cyboxCommon:ObjectPropertiesType">
+				<xs:sequence>
+					<xs:element name="Status" type="WinTaskObj:TaskStatusType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Status field specifies the current status of the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381263(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Priority" type="WinTaskObj:TaskPriorityType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Priority field specifies the priority of the scheduled task. This can either be a free-form string or one the values in the TaskPriorityEnum enumeration. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381876(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Name" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Name field specifies the image name for the task.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Application_Name" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Application_Name specifies the application name associated with the task.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Parameters" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Parameters field specifies the command line parameters used to launch the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381875(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Flags" type="WinTaskObj:TaskFlagType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Flags field specifies any flags that modify the behavior of the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381248(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Account_Name" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Account_Name field specifies the name of the account used to run the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381228(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Account_Run_Level" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Account_Run_Level field specifies the permission level of the account that the task will be run at.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Account_Logon_Type" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Account_Logon_Type field specifies the security logon method required to run the tasks associated with the account. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa383013(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Creator" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Creator field specifies the name of the creator of the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381235(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Creation_Date" type="cyboxCommon:DateTimeObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Creation_Date field specifies the date and time that the task was registered. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa382623(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Most_Recent_Run_Time" type="cyboxCommon:DateTimeObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Most_Recent_Run_Time field specifies the most recent run date/time of this scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381254(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Exit_Code" type="cyboxCommon:LongObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Exit_Code field specifies the last exit code of the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381245(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Max_Run_Time" type="cyboxCommon:UnsignedLongObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Max_Run_Time field specifies the maximum run time of the scheduled task before terminating, in milliseconds. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381874(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Next_Run_Time" type="cyboxCommon:DateTimeObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Next_Run_Time field specifies the next run date/time of the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381257(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Action_List" type="WinTaskObj:TaskActionListType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Action_List field specifies a list of actions to be performed by the scheduled task.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Trigger_List" type="WinTaskObj:TriggerListType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Trigger_List field specifies a set of triggers used by the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa383264(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Comment" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Comment field specifies a comment for the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381232(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Working_Directory" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Working_Directory field specifies the working directory for the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381878(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Work_Item_Data" type="cyboxCommon:Base64BinaryObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Work_Item_Data field specifies application defined data associated with the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381271(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="TriggerListType">
+		<xs:annotation>
+			<xs:documentation>The TriggerListType type specifies a set of triggers associated with the scheduled task.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="1" maxOccurs="1">
+			<xs:element name="Trigger" type="WinTaskObj:TriggerType" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>A trigger associated with this scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381264(v=vs.85).aspx</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TriggerType">
+		<xs:annotation>
+			<xs:documentation>The TriggerType type characterizes task triggers. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa383868(v=vs.85).aspx</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Trigger_Begin" type="cyboxCommon:DateTimeObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Trigger_Begin_Element specifies the date/time that the trigger is activated.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Trigger_Delay" type="cyboxCommon:DurationObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Trigger_Delay field specifies the delay that takes place between when the task is registered and when the task is started.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Trigger_End" type="cyboxCommon:DateTimeObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Trigger_End field specifies the date/time that the trigger is deactivated.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Trigger_Frequency" type="WinTaskObj:TaskTriggerFrequencyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Trigger_Frequency field specifies the frequency at which the trigger repeats.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Trigger_Max_Run_Time" type="cyboxCommon:DurationObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The maximum amount of time that the task launched by the trigger is allowed to run. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa383868(v=vs.85).aspx</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Trigger_Session_Change_Type" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Trigger_Session_Change_Type field specifies the type of Terminal Server session change that would trigger a task launch. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381298(v=vs.85).aspx</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Trigger_Type" type="WinTaskObj:TriggerType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Trigger_Type specifies the type of the task trigger.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="enabled" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>The enabled field specifies whether the trigger is enabled.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="TaskActionListType">
+		<xs:annotation>
+			<xs:documentation>The TaskActionListType type specifies a list of task actions.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Action" type="WinTaskObj:TaskActionType" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The work items performed by a task are called actions. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa383549(v=vs.85).aspx</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TaskActionType">
+		<xs:annotation>
+			<xs:documentation>The TaskActionType type characterizes scheduled task actions.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Action_Type" type="WinTaskObj:TaskActionTypeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Action_Type field specifies the type of the action. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380596(v=vs.85).aspx</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Action_ID" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Action_ID field specifies the user-defined identifier for the action. This identifier is used by the Task Scheduler for logging purposes. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380590(v=vs.85).aspx</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IEmailAction" type="EmailMessageObj:EmailMessageObjectType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The IEmail_Action field specifies an action that sends an e-mail, which in this context refers to actual email message sent. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380693(v=vs.85).aspx</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IComHandlerAction" type="WinTaskObj:IComHandlerActionType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The IComHandlerAction field specifies an action that fires a handler.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IExecAction" type="WinTaskObj:IExecActionType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The IExecAction field specifies an action that executes a command-line operation. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380715(v=vs.85).aspx</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IShowMessageAction" type="WinTaskObj:IShowMessageActionType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The IShowMessageAction field specifies an action that shows a message box when a task is activated. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381302(v=vs.85).aspx</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TaskActionTypeType">
+		<xs:annotation>
+			<xs:documentation>The TaskActionTypeType characterizes the specific types of task actions.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="WinTaskObj:TaskActionTypeEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="IComHandlerActionType">
+		<xs:annotation>
+			<xs:documentation>The IComHandlerActionType type characterizes IComHandler actions.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="COM_Data" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The COM_Data field specifies the data associated with the COM handler. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380613(v=vs.85).aspx</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="COM_Class_ID" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The COM_Class_ID field specifies the ID of the COM action. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380613(v=vs.85).aspx</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IExecActionType">
+		<xs:annotation>
+			<xs:documentation>The IExecActionType type characterizes IExec actions.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Exec_Arguments" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Exec_Arguments field specifies the arguments associated with the command-line operation launched by the action. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380715(v=vs.85).aspx</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Exec_Program_Path" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Exec_Program_Path field specifies the path to the executable file launched by the action. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380715(v=vs.85).aspx</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Exec_Working_Directory" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Exec_Working_Directory field specifies the directory that contains either the executable file or the files that are used by the executable file launched by the action. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380715(v=vs.85).aspx</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Exec_Program_Hashes" type="cyboxCommon:HashListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Exec_Program_Element specifies the hashes of the executable file launched by the action.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IShowMessageActionType">
+		<xs:annotation>
+			<xs:documentation>The IShowMessageActionType type characterizes IShowMessage actions.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Show_Message_Body" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Show_Message_Body field specifies the message text that is displayed in the body of the message box by the action. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381302(v=vs.85).aspx</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Show_Message_Title" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Show_Message_Title field specifies the title of the message box shown by the action. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381302(v=vs.85).aspx</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TaskFlagType">
+		<xs:annotation>
+			<xs:documentation>The TaskFlagType type specifies Windows Task flag types via a union of the TaskFlagEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="WinTaskObj:TaskFlagEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="TaskPriorityType">
+		<xs:annotation>
+			<xs:documentation>The TaskPriorityType type specifies Windows Task priority types via a union of the TaskPriorityEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="WinTaskObj:TaskPriorityEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="TaskTriggerFrequencyType">
+		<xs:annotation>
+			<xs:documentation>The TaskTriggerFrequencyType type specifies Windows Task trigger frequency types via a union of the TriggerFrequencyEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="WinTaskObj:TriggerFrequencyEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="TaskTriggerType">
+		<xs:annotation>
+			<xs:documentation>The TaskTriggerType type specifies Windows Task trigger types via a union of the TriggerTypeEnum enumeration and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="WinTaskObj:TriggerTypeEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="TaskStatusType">
+		<xs:annotation>
+			<xs:documentation>The TaskStatusType type specifies Windows Task states via a union of the TaskStatusEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="WinTaskObj:TaskStatusEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="TaskActionTypeEnum">
+		<xs:annotation>
+			<xs:documentation>An enumeration of action types. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380596(v=vs.85).aspx</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="preserve"/>
+			<xs:enumeration value="TASK_ACTION_EXEC">
+				<xs:annotation>
+					<xs:documentation>This action performs a command-line operation. For example, the action could run a script, launch an executable, or, if the name of a document is provided, find its associated application and launch the application with the document.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TASK_ACTION_COM_HANDLER">
+				<xs:annotation>
+					<xs:documentation>This action fires a handler.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TASK_ACTION_SEND_EMAIL">
+				<xs:annotation>
+					<xs:documentation>This action sends an e-mail.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TASK_ACTION_SHOW_MESSAGE">
+				<xs:annotation>
+					<xs:documentation>This action shows a message box.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaskFlagEnum">
+		<xs:annotation>
+			<xs:documentation>The TaskFlagEnum enumeration specifies the run flags for a task scheduler task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381283(v=vs.85).aspx See Also: http://msdn.microsoft.com/en-us/library/microsoft.office.excel.server.addins.computecluster.taskscheduler.taskflags(v=office.12).aspx</xs:documentation>
+		</xs:annotation>
+		<xs:list>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="TASK_FLAG_ZERO"/>
+					<xs:enumeration value="TASK_FLAG_INTERACTIVE">
+						<xs:annotation>
+							<xs:documentation>This flag is used when converting Windows NT AT service jobs into work items. The Windows NT AT service job refers to At.exe, the Windows NT command-line utility used for creating jobs for the Windows NT Schedule service. The Task Scheduler service replaces the Schedule service and is backwards compatible with it. The conversion occurs when the Task Scheduler is installed on Windows NT/Windows 2000— for example, if you install Internet Explorer 4.0, or upgrade to Windows 2000. During the setup process, the Task Scheduler installation code searches the registry for jobs created for the AT service and creates work items that will accomplish the same operation. For such converted jobs, the interactive flag is set if the work item is intended to be displayed to the user. When this flag is not set, no work items are displayed in the Tasks folder, and no user interface associated with the work item is presented to the user when the work item is executed.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="TASK_FLAG_DELETE_WHEN_DONE">
+						<xs:annotation>
+							<xs:documentation>The work item will be deleted when there are no more scheduled run times.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="TASK_FLAG_DISABLED">
+						<xs:annotation>
+							<xs:documentation>The work item is disabled. This is useful to temporarily prevent a work item from running at the scheduled time(s).</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="TASK_FLAG_HIDDEN">
+						<xs:annotation>
+							<xs:documentation>The work item created will be hidden.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="TASK_FLAG_RUN_ONLY_IF_LOGGED_ON">
+						<xs:annotation>
+							<xs:documentation>The work item runs only if the user specified in IScheduledWorkItem::SetAccountInformation is logged on interactively. This flag has no effect on the work items that are set to run in the local account.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="TASK_FLAG_START_ONLY_IF_IDLE">
+						<xs:annotation>
+							<xs:documentation>The work item begins only if the computer is not in use at the scheduled start time.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="TASK_FLAG_SYSTEM_REQUIRED">
+						<xs:annotation>
+							<xs:documentation>The work item causes the system to be resumed, or awakened, if the system is running on battery power. This flag is supported only on systems that support resume timers.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="TASK_FLAG_KILL_ON_IDLE_END">
+						<xs:annotation>
+							<xs:documentation>The work item terminates if the computer makes an idle to non-idle transition while the work item is running. The computer is not considered idle until the IdleWait triggers' time elapses with no user input. For information regarding idle triggers, see Idle Trigger.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="TASK_FLAG_RESTART_ON_IDLE_RESUME">
+						<xs:annotation>
+							<xs:documentation>The work item starts again if the computer makes a non-idle to idle transition before all the work item's task_triggers elapse. (Use this flag in conjunction with TASK_FLAG_KILL_ON_IDLE_END.)</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="TASK_FLAG_DONT_START_IF_ON_BATTERIES">
+						<xs:annotation>
+							<xs:documentation>The work item does not start if its target computer is running on battery power.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="TASK_FLAG_KILL_IF_GOING_ON_BATTERIES">
+						<xs:annotation>
+							<xs:documentation>The work item ends, and the associated application quits if the work item's target computer switches to battery power.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="TASK_FLAG_RUN_IF_CONNECTED_TO_INTERNET">
+						<xs:annotation>
+							<xs:documentation>The work item runs only if there is currently a valid Internet connection.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:list>
+	</xs:simpleType>
+	<xs:simpleType name="TaskPriorityEnum">
+		<xs:annotation>
+			<xs:documentation>The TaskPriorityEnum enumeration specifies the priority levels of task scheduler tasks. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa383512(v=vs.85).aspx</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="HIGH_PRIORITY_CLASS">
+				<xs:annotation>
+					<xs:documentation>A priority class of high (1)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NORMAL_PRIORITY_CLASS">
+				<xs:annotation>
+					<xs:documentation>A priority class of normal (4-6)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IDLE_PRIORITY_CLASS">
+				<xs:annotation>
+					<xs:documentation>A priority class of idle (9-10)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="REALTIME_PRIORITY_CLASS">
+				<xs:annotation>
+					<xs:documentation>A priority class of realtime (0)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ABOVE_NORMAL_PRIORITY_CLASS">
+				<xs:annotation>
+					<xs:documentation>A priority class of above normal (2-3)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BELOW_NORMAL_PRIORITY_CLASS">
+				<xs:annotation>
+					<xs:documentation>A priority class of below normal (7-8)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TriggerFrequencyEnum">
+		<xs:annotation>
+			<xs:documentation>The TriggerFrequencyEnum enumeration defines the frequency types that a trigger may use. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa383620(v=vs.85).aspx and http://msdn.microsoft.com/en-us/library/windows/desktop/aa383987(v=vs.85).aspx</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TASK_TIME_TRIGGER_ONCE">
+				<xs:annotation>
+					<xs:documentation>Trigger is set to run the task a single time.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TASK_EVENT_TRIGGER_ON_IDLE">
+				<xs:annotation>
+					<xs:documentation>Trigger is set to run the task if the system remains idle for the amount of time specified by the idle wait time of the task.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TASK_EVENT_TRIGGER_AT_SYSTEMSTART">
+				<xs:annotation>
+					<xs:documentation>Trigger is set to run the task at system startup.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TASK_EVENT_TRIGGER_AT_LOGON">
+				<xs:annotation>
+					<xs:documentation>Trigger is set to run the task when a user logs on.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TASK_TIME_TRIGGER_DAILY">
+				<xs:annotation>
+					<xs:documentation>Trigger is set to run the task on a daily interval.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TASK_TIME_TRIGGER_WEEKLY">
+				<xs:annotation>
+					<xs:documentation>Trigger is set to run the work item on specific days of a specific week of a specific month.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TASK_TIME_TRIGGER_MONTHLYDATE">
+				<xs:annotation>
+					<xs:documentation>Trigger is set to run the task on a specific day(s) of the month.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TASK_TIME_TRIGGER_MONTHLYDOW">
+				<xs:annotation>
+					<xs:documentation>Trigger is set to run the task on specific days, weeks, and months.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TriggerTypeEnum">
+		<xs:annotation>
+			<xs:documentation>The TriggerFrequencyEnum enumeration defines the types of triggers associated with a task. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TASK_TRIGGER_EVENT">
+				<xs:annotation>
+					<xs:documentation>Triggers the task when a specific system event occurs.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TASK_TRIGGER_TIME">
+				<xs:annotation>
+					<xs:documentation>Triggers the task at a specific date and time.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TASK_TRIGGER_IDLE">
+				<xs:annotation>
+					<xs:documentation>Triggers the task when the computer enters an idle state.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TASK_TRIGGER_REGISTRATION">
+				<xs:annotation>
+					<xs:documentation>Triggers the task when the task is registered or updated.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TASK_TRIGGER_BOOT">
+				<xs:annotation>
+					<xs:documentation>Triggers the task when the system is booted.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TASK_TRIGGER_LOGON">
+				<xs:annotation>
+					<xs:documentation>Triggers the task when a user logs on.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TASK_TRIGGER_SESSION_STATE_CHANGE">
+				<xs:annotation>
+					<xs:documentation>Triggers the task when a Terminal Server session changes state.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaskStatusEnum">
+		<xs:annotation>
+			<xs:documentation>The TaskStatusEnum enumeration specifies the possible statuses of a scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa383604(v=vs.85).aspx See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381263(v=vs.85).aspx See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381833(v=vs.85).aspx See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa383617(v=vs.85).aspx</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SCHED_S_TASK_READY">
+				<xs:annotation>
+					<xs:documentation>The task is ready to run at its next scheduled time.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_S_TASK_RUNNING">
+				<xs:annotation>
+					<xs:documentation>The task is currently running.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_S_TASK_NOT_SCHEDULED">
+				<xs:annotation>
+					<xs:documentation>One or more of the properties that are needed to run this task on a schedule have not been set.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_E_SERVICE_NOT_RUNNING">
+				<xs:annotation>
+					<xs:documentation>The Task Scheduler service is not running.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_E_UNSUPPORTED_ACCOUNT_OPTION">
+				<xs:annotation>
+					<xs:documentation>The task has been configured with an unsupported combination of account settings and run time options.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_E_UNKNOWN_OBJECT_VERSION">
+				<xs:annotation>
+					<xs:documentation>The task object version is either unsupported or invalid.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_E_NO_SECURITY_SERVICES">
+				<xs:annotation>
+					<xs:documentation>Task Scheduler security services are available only on Windows NT.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_E_ACCOUNT_DBASE_CORRUPT">
+				<xs:annotation>
+					<xs:documentation>Corruption was detected in the Task Scheduler security database; the database has been reset.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_E_ACCOUNT_NAME_NOT_FOUND">
+				<xs:annotation>
+					<xs:documentation>Unable to establish existence of the account specified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_E_ACCOUNT_INFORMATION_NOT_SET">
+				<xs:annotation>
+					<xs:documentation>No account information could be found in the Task Scheduler security database for the task indicated.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_E_INVALID_TASK">
+				<xs:annotation>
+					<xs:documentation>The object is either an invalid task object or is not a task object.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_E_CANNOT_OPEN_TASK">
+				<xs:annotation>
+					<xs:documentation>The task object could not be opened.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_E_SERVICE_NOT_INSTALLED">
+				<xs:annotation>
+					<xs:documentation>The Task Scheduler service is not installed on this computer.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_E_TASK_NOT_RUNNING">
+				<xs:annotation>
+					<xs:documentation>There is no running instance of the task.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_E_TASK_NOT_READY">
+				<xs:annotation>
+					<xs:documentation>One or more of the properties required to run this task have not been set.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_E_TRIGGER_NOT_FOUND">
+				<xs:annotation>
+					<xs:documentation>A task's trigger is not found.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_S_EVENT_TRIGGER">
+				<xs:annotation>
+					<xs:documentation>Event triggers do not have set run times.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_S_TASK_NO_VALID_TRIGGERS">
+				<xs:annotation>
+					<xs:documentation>Either the task has no triggers or the existing triggers are disabled or not set.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_S_TASK_TERMINATED">
+				<xs:annotation>
+					<xs:documentation>The last run of the task was terminated by the user.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_S_TASK_NO_MORE_RUNS">
+				<xs:annotation>
+					<xs:documentation>There are no more runs scheduled for this task.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_S_TASK_HAS_NOT_RUN">
+				<xs:annotation>
+					<xs:documentation>The task has not been run. This value is returned whenever the task has not been run, even if the task is ready to be run at the next scheduled time or the task is a recurring task.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCHED_S_TASK_DISABLED">
+				<xs:annotation>
+					<xs:documentation>The task will not run at the scheduled times because it has been disabled.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TASK_STATE_UNKNOWN">
+				<xs:annotation>
+					<xs:documentation>The state of the task is unknown.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TASK_STATE_QUEUED">
+				<xs:annotation>
+					<xs:documentation>Instances of the task are queued.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

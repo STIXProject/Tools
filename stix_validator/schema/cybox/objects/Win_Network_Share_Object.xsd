@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:WinNetworkShareObj="http://cybox.mitre.org/objects#WinNetworkShareObject-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" targetNamespace="http://cybox.mitre.org/objects#WinNetworkShareObject-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>Win_Network_Share_Object</schema>
+			<version>2.0</version>
+			<date>02/11/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:element name="Windows_Network_Share" type="WinNetworkShareObj:WindowsNetworkShareObjectType" nillable="true">
+		<xs:annotation>
+			<xs:documentation>he Windows_Network_Share object is intended to characterize Windows network shares.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="WindowsNetworkShareObjectType" mixed="false">
+		<xs:annotation>
+			<xs:documentation>he WindowsNetworkShareObjectType type is intended to characterize Windows network shares.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cyboxCommon:ObjectPropertiesType">
+				<xs:sequence>
+					<xs:element name="Current_Uses" type="cyboxCommon:NonNegativeIntegerObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Current_Uses field specifies the current number of uses of the network share.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Local_Path" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Local_Path field specifies the fully-qualified path on the local system to the network share.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Max_Uses" type="cyboxCommon:NonNegativeIntegerObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Max_Uses field specifies the maximum number of concurrent connections to the network share.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Netname" type="cyboxCommon:StringObjectPropertyType" minOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Netname field specifies the network name of the network share.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Type" type="WinNetworkShareObj:SharedResourceType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Type field specifies the type of the network share.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+				<xs:attributeGroup ref="WinNetworkShareObj:AccessPermissionsGroup"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SharedResourceType">
+		<xs:annotation>
+			<xs:documentation>SharedResourceType specifies Windows shared resource types via a union of the SharedResourceTypeEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="WinNetworkShareObj:SharedResourceTypeEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="SharedResourceTypeEnum">
+		<xs:annotation>
+			<xs:documentation>The SharedResourceTypeEnum type is an enumeration of Windows that specifies shared resource types for shared devices. These can be checked via the NetShareCheck function. See http://msdn.microsoft.com/en-us/library/windows/desktop/bb525385(v=vs.85).aspx for more information.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="STYPE_DISKTREE">
+				<xs:annotation>
+					<xs:documentation>Specifies that the shared device is a disk drive.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="STYPE_DISKTREE_SPECIAL">
+				<xs:annotation>
+					<xs:documentation>Specifies that the shared device is a disk drive with special share reserved for interprocess communcation (IPC$) or remote administration of the server (ADMIN$). Can also refer to administrative shares such as C$, D$, E$, and so forth. For more information, see http://msdn.microsoft.com/en-us/library/windows/desktop/bb525391(v=vs.85).aspx.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="STYPE_DISKTREE_TEMPORARY">
+				<xs:annotation>
+					<xs:documentation>Specifies that the shared device is a disk drive and serves as a temporary share.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="STYPE_DISKTREE_SPECIAL_TEMPORARY">
+				<xs:annotation>
+					<xs:documentation>Specifies that the shared device is a disk drive with special share reserved for interprocess communcation (IPC$) or remote administration of the server (ADMIN$) and serves a temporary share. Can also refer to administrative shares such as C$, D$, E$, and so forth. For more information, see http://msdn.microsoft.com/en-us/library/windows/desktop/bb525391(v=vs.85).aspx.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="STYPE_PRINTQ">
+				<xs:annotation>
+					<xs:documentation>Specifies that the shared device is a print queue.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="STYPE_PRINTQ_SPECIAL">
+				<xs:annotation>
+					<xs:documentation>Specifies that the shared device is a disk drive with special share reserved for interprocess communcation (IPC$) or remote administration of the server (ADMIN$). Can also refer to administrative shares such as C$, D$, E$, and so forth. For more information, see http://msdn.microsoft.com/en-us/library/windows/desktop/bb525391(v=vs.85).aspx.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="STYPE_PRINTQ_TEMPORARY">
+				<xs:annotation>
+					<xs:documentation>Specifies that the shared device is a print queue and serves as a temporary share.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="STYPE_PRINTQ_SPECIAL_TEMPORARY">
+				<xs:annotation>
+					<xs:documentation>Specifies that the shared device is a print queue with special share reserved for interprocess communcation (IPC$) or remote administration of the server (ADMIN$) and serves a temporary share. Can also refer to administrative shares such as C$, D$, E$, and so forth. For more information, see http://msdn.microsoft.com/en-us/library/windows/desktop/bb525391(v=vs.85).aspx.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="STYPE_DEVICE">
+				<xs:annotation>
+					<xs:documentation>Specifies that the shared device is a communications device.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="STYPE_DEVICE_SPECIAL">
+				<xs:annotation>
+					<xs:documentation>Specifies that the shared device is a communications device with special share reserved for interprocess communcation (IPC$) or remote administration of the server (ADMIN$). Can also refer to administrative shares such as C$, D$, E$, and so forth. For more information, see http://msdn.microsoft.com/en-us/library/windows/desktop/bb525391(v=vs.85).aspx.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="STYPE_DEVICE_TEMPORARY">
+				<xs:annotation>
+					<xs:documentation>Specifies that the shared device is a communications device and serves as a temporary share.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="STYPE_DEVICE_SPECIAL_TEMPORARY">
+				<xs:annotation>
+					<xs:documentation>Specifies that the shared device is a communications device with special share reserved for interprocess communcation (IPC$) or remote administration of the server (ADMIN$) and serves a temporary share. Can also refer to administrative shares such as C$, D$, E$, and so forth. For more information, see http://msdn.microsoft.com/en-us/library/windows/desktop/bb525391(v=vs.85).aspx.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="STYPE_IPC">
+				<xs:annotation>
+					<xs:documentation>Specifies that the shared device is an Interprocess Communication (IPC) device.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="STYPE_IPC_SPECIAL">
+				<xs:annotation>
+					<xs:documentation>Specifies that the shared device is an Interprocess Communication (IPC) device with special share reserved for interprocess communcation (IPC$) or remote administration of the server (ADMIN$). Can also refer to administrative shares such as C$, D$, E$, and so forth. For more information, see http://msdn.microsoft.com/en-us/library/windows/desktop/bb525391(v=vs.85).aspx.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="STYPE_IPC_TEMPORARY">
+				<xs:annotation>
+					<xs:documentation>Specifies that the shared device is an Interprocess Communication (IPC) device and serves as a temporary share.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="STYPE_IPC_SPECIAL_TEMPORARY">
+				<xs:annotation>
+					<xs:documentation>Specifies that the shared device is an Interprocess Communication (IPC) device with special share reserved for interprocess communcation (IPC$) or remote administration of the server (ADMIN$) and serves a temporary share. Can also refer to administrative shares such as C$, D$, E$, and so forth. For more information, see http://msdn.microsoft.com/en-us/library/windows/desktop/bb525391(v=vs.85).aspx.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:attributeGroup name="AccessPermissionsGroup">
+		<xs:annotation>
+			<xs:documentation>The accesspermissions group specifies the various permissions for Windows network shares.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="ACCESS_READ" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>The ACCESS_READ field specifies the permission to read data from a resource and, by default, to execute the resource.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ACCESS_WRITE" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>The ACCESS_WRITE field specifies the permission to write data to the resource.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ACCESS_CREATE" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>The ACCESS_CREATE field specifies the permission to create an instance of the resource (such as a file); data can be written to the resource as the resource is created.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ACCESS_EXEC" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>The ACCESS_EXEC field specifies the permission to execute the resource.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ACCESS_DELETE" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>The ACCESS_DELETE field specifies the permission to delete the resource.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ACCESS_ATRIB" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>The ACCESS_ATRIB field specifies the permission to modify the resource's attributes (such as the date and time when a file was last modified).</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ACCESS_PERM" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>The ACCESS_PERM field specifies the permission to modify the permissions (read, write, create, execute, and delete) assigned to a resource for a user or application.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ACCESS_ALL" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>The ACCESS_ALL field specifies the permission to read, write, create, execute, and delete resources, and to modify their attributes and permissions.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+</xs:schema>

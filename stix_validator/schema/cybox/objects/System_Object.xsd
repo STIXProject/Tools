@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:SystemObj="http://cybox.mitre.org/objects#SystemObject-2" xmlns:AddressObj="http://cybox.mitre.org/objects#AddressObject-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" targetNamespace="http://cybox.mitre.org/objects#SystemObject-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>System_Object</schema>
+			<version>2.0</version>
+			<date>02/11/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#AddressObject-2" schemaLocation="Address_Object.xsd"/>
+	<xs:element name="System" type="SystemObj:SystemObjectType" nillable="true">
+		<xs:annotation>
+			<xs:documentation>The System object is intended to characterize computer systems (as a combination of both software and hardware).</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="SystemObjectType" mixed="false">
+		<xs:annotation>
+			<xs:documentation>The SystemObjectType type is intended to characterize computer systems (as a combination of both software and hardware).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cyboxCommon:ObjectPropertiesType">
+				<xs:sequence>
+					<xs:element name="Available_Physical_Memory" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Available_Physical_Memory field specifies the amount of physical memory available on the system, in bytes.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="BIOS_Info" type="SystemObj:BIOSInfoType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The BIOS_Info field specifies information about the BIOS on the system.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="cyboxCommon:DateObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Date field specifies the current date on the system.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Hostname" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Hostname field specifies the hostname of the system.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Local_Time" type="cyboxCommon:TimeObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Local_Time field specifies the local time on the system.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Network_Interface_List" type="SystemObj:NetworkInterfaceListType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Network_Interface_List field specifies the list of network interfaces present on the system.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OS" type="SystemObj:OSType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The OS field specifies information about the operating system installed on the system.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Processor" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Processor field specifies the name of the CPU used by the system.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Processor_Architecture" type="SystemObj:ProcessorArchType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Processor_Architecture field specifies the specific architecture (e.g. x86) used by the CPU of the system.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="System_Time" type="cyboxCommon:TimeObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The System_Time field specifies the system, or hardware, time on the system.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Timezone_DST" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Timezone_DST field specifies the time zone used by the system, taking daylight savings time (DST) into account.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Timezone_Standard" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Timezone_Standard field specifies the time zone used by the system, wihtout taking daylight savings time (DST) into account.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Total_Physical_Memory" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Total_Physical_Memory field specifies the total amount of physical memory present on the system, in bytes.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Uptime" type="cyboxCommon:DurationObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Uptime field specifies the duration that represents the current amount of time that the system has been up.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Username" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Username field specifies the name of the user currently logged into the system.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="BIOSInfoType">
+		<xs:annotation>
+			<xs:documentation>The BIOSInfoType type specifies information about a system's BIOS.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="BIOS_Date" type="cyboxCommon:DateObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The BIOS_Date field specifies the date of the bios (e.g. the datestamp of the BIOS revision).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BIOS_Version" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The BIOS_Version field specifies the version of the BIOS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BIOS_Manufacturer" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The BIOS_Manufacturer field specifies the manufacturer of the BIOS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BIOS_Release_Date" type="cyboxCommon:DateObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The BIOS_Release_Date field specifies the date the BIOS was released.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BIOS_Serial_Number" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The BIOS_Serial_Number field specifies the serial number of the BIOS.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NetworkInterfaceListType">
+		<xs:annotation>
+			<xs:documentation>The NetworkInterfaceListType type specifies information about the network interfaces present on the system.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Network_Interface" type="SystemObj:NetworkInterfaceType" nillable="true" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Network_Interface field specifies information about a network interface, such as its MAC address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPGatewayListType">
+		<xs:annotation>
+			<xs:documentation>The IPGatewayListType type specifies the IP Addresses of the gateways used by the system.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="IP_Gateway_Address" type="AddressObj:AddressObjectType" nillable="true" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The IP_Gateway_Address field specifies the IP Address of a gateway used by the system.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NetworkInterfaceType">
+		<xs:annotation>
+			<xs:documentation>The NetworkInterfaceType type specifies information about a network interface, such as its MAC address.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Adapter" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The Adapter field specifies the name of the network adapter used by the network interface.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The Description field specifies the description of the network interface.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DHCP_Lease_Expires" type="cyboxCommon:DateTimeObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The DHCP_Lease_Expires field specifies the date/time that the DHCP lease obtained on the network interface expires.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DHCP_Lease_Obtained" type="cyboxCommon:DateTimeObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The DHCP_Lease_Obtained field specifies the date/time that the DHCP lease was obtained on the network interface.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DHCP_Server_List" type="SystemObj:DHCPServerListType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The DHCP_Server_List field specifies the list of DHCP servers used by the network interface.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IP_Gateway_List" type="SystemObj:IPGatewayListType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The IP_Gateway_List field specifies the list of IP Gateways used by the network interface.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IP_List" type="SystemObj:IPInfoListType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The IP_List field specifies the list of IP addresses used by the network interface.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MAC" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The MAC field specifies the MAC or hardware address of the physical network card. Either a colon (':') or a dash ('-') may be used a separator between the octets. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPInfoListType">
+		<xs:annotation>
+			<xs:documentation>The IPInfoListType type specifies a list of IP address/subnet mask pairs associated with a network interface.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="IP_Info" type="SystemObj:IPInfoType" nillable="true" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The IP_Info field specifies an IP Address/Subnet mask entry in the list.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPInfoType">
+		<xs:annotation>
+			<xs:documentation>The IP_Info type specifies information about the IP address and its associated subnet mask used by a network interface.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="IP_Address" type="AddressObj:AddressObjectType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The IP_Address field specifies an IP address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Subnet_Mask" type="AddressObj:AddressObjectType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The Subnet_Mask field specifies a subnet mask.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DHCPServerListType">
+		<xs:annotation>
+			<xs:documentation>The DHCPServerListType type specifies a list of DHCP Servers, via their IP addresses.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DHCP_Server_Address" type="AddressObj:AddressObjectType" nillable="true" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The DHCP_Server_Address field specifies the IP address of a DHCP server.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OSType">
+		<xs:annotation>
+			<xs:documentation>The OSType type specifies information about an operating system. It imports and extends the PlatformSpecificationType from the CybOX Common Types.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cyboxCommon:PlatformSpecificationType">
+				<xs:sequence>
+					<xs:element name="Bitness" type="SystemObj:BitnessType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Bitness field specifies the bitness of the operating system (i.e. 32 or 64).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Build_Number" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Build_Number field specifies the build number of the operating system.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Environment_Variable_List" type="cyboxCommon:EnvironmentVariableListType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The EnvironmentVariableList field specifies a list of environment variables present on the operating system.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Install_Date" type="cyboxCommon:DateObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Install_Date field specifies the date the operating system was installed.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Patch_Level" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Patch_Level field specifies the patch level of the operating system.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Platform" type="cyboxCommon:PlatformSpecificationType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>This field contains general identifiers for this OS instance..</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ProcessorArchType">
+		<xs:annotation>
+			<xs:documentation>ProcessorArchType specifies CPU architecture types, via a union of the ProcessorArchEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="SystemObj:ProcessorArchEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="BitnessType">
+		<xs:annotation>
+			<xs:documentation>BitnessType specifies CPU architecture bitness, via a union of the BitnessEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="SystemObj:BitnessEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="ProcessorArchEnum">
+		<xs:annotation>
+			<xs:documentation>The ProcessorArchEnum type is a (non-exhaustive) enumeration of computer processor architectures.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="x86-32">
+				<xs:annotation>
+					<xs:documentation>Specifies the 32-bit x86 architecture.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="x86-64">
+				<xs:annotation>
+					<xs:documentation>Specifies the 64-bit x86 architecture.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IA-64">
+				<xs:annotation>
+					<xs:documentation>Specifies the 64-bit IA (Itanium) architecture.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PowerPC">
+				<xs:annotation>
+					<xs:documentation>Specifies the PowerPC IA (Itanium) architecture.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ARM">
+				<xs:annotation>
+					<xs:documentation>Specifies the ARM architecture.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Alpha">
+				<xs:annotation>
+					<xs:documentation>Specifies the Alpha architecture.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SPARC">
+				<xs:annotation>
+					<xs:documentation>Specifies the SPARC architecture.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="z/Architecture">
+				<xs:annotation>
+					<xs:documentation>Specifies the z/architecture, used on IBM mainframes.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="eSi-RISC">
+				<xs:annotation>
+					<xs:documentation>Specifies the eSi-RISC architecture.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MIPS">
+				<xs:annotation>
+					<xs:documentation>Specifies the MIPS architecture.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Motorola 68k">
+				<xs:annotation>
+					<xs:documentation>Specifies the Motorola 68k architecture.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Other">
+				<xs:annotation>
+					<xs:documentation>Specifies a processor architecture other than those defined in this enumeration.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BitnessEnum">
+		<xs:annotation>
+			<xs:documentation>The BitnessEnum type is an enumeration of word sizes that define classes of computer architectures.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="32">
+				<xs:annotation>
+					<xs:documentation>Specifies a 32-bit architecture.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="64">
+				<xs:annotation>
+					<xs:documentation>Specifies a 64-bit architecture.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

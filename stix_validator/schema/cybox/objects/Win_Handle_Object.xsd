@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:WinHandleObj="http://cybox.mitre.org/objects#WinHandleObject-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" targetNamespace="http://cybox.mitre.org/objects#WinHandleObject-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>Win_Handle_Object</schema>
+			<version>2.0</version>
+			<date>02/11/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:element name="Windows_Handle" type="WinHandleObj:WindowsHandleObjectType">
+		<xs:annotation>
+			<xs:documentation>The Windows_Handle object is intended to characterize Windows handles.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="WindowsHandleObjectType" mixed="false">
+		<xs:annotation>
+			<xs:documentation>The WindowsHandleObjectType type is intended to characterize Windows handles.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cyboxCommon:ObjectPropertiesType">
+				<xs:sequence>
+					<xs:element name="ID" type="cyboxCommon:UnsignedIntegerObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The ID field refers to the unique number used to identify the handle.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Name" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Name field specifies the name of the handle.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Type" type="WinHandleObj:HandleType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Type field specifies the handle type, which is equivalent to the type of Windows object that the handle refers to. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Object_Address" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Object_Address field specifies the address of the Windows object that the handle refers to.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Access_Mask" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Access_Mask field specifies the access bitmask of the handle.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Pointer_Count" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Pointer_Count field specifies the count of pointer references to the Windows object that the handle refers to.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="WindowsHandleListType">
+		<xs:annotation>
+			<xs:documentation>The WindowsHandleListType type specifies a list of Windows handles, for re-use in other objects.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Handle" type="WinHandleObj:WindowsHandleObjectType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Handle field characterizes a single Windows handle.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HandleType">
+		<xs:annotation>
+			<xs:documentation>HandleType specifies Windows handle types via a union of the HandleTypeEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="WinHandleObj:HandleTypeEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="HandleTypeEnum">
+		<xs:annotation>
+			<xs:documentation>The WindowsHandleType is a non-exhaustive enumeration of Windows handle types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AccessToken">
+				<xs:annotation>
+					<xs:documentation>Specifies an access token handle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Event">
+				<xs:annotation>
+					<xs:documentation>Specifies an event handle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="File">
+				<xs:annotation>
+					<xs:documentation>Specifies a file handle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FileMapping">
+				<xs:annotation>
+					<xs:documentation>Specifies a file mapping handle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Job">
+				<xs:annotation>
+					<xs:documentation>Specifies a job handle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IOCompletionPort">
+				<xs:annotation>
+					<xs:documentation>Specifies an IO completion port handle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Mailslot">
+				<xs:annotation>
+					<xs:documentation>Specifies a mailslot handle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Mutex">
+				<xs:annotation>
+					<xs:documentation>Specifies a mutex handle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NamedPipe">
+				<xs:annotation>
+					<xs:documentation>Specifies a named pipe handle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Pipe">
+				<xs:annotation>
+					<xs:documentation>Specifies a pipe handle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Process">
+				<xs:annotation>
+					<xs:documentation>Specifies a process handle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Semaphore">
+				<xs:annotation>
+					<xs:documentation>Specifies a semiphore handle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Thread">
+				<xs:annotation>
+					<xs:documentation>Specifies a thread handle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Transaction">
+				<xs:annotation>
+					<xs:documentation>Specifies a transaction handle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WaitableTimer">
+				<xs:annotation>
+					<xs:documentation>Specifies a waitable timer handle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RegistryKey">
+				<xs:annotation>
+					<xs:documentation>Specifies a registry key handle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Window">
+				<xs:annotation>
+					<xs:documentation>Specifies a window handle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ServiceControlManager">
+				<xs:annotation>
+					<xs:documentation>Specifies a service control manager handle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

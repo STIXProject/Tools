@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:NetworkRouteEntryObj="http://cybox.mitre.org/objects#NetworkRouteEntryObject-2" xmlns:WinNetworkRouteEntryObj="http://cybox.mitre.org/objects#WinNetworkRouteEntryObject-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" targetNamespace="http://cybox.mitre.org/objects#WinNetworkRouteEntryObject-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>Win_Network_Route_Entry_Object</schema>
+			<version>2.0</version>
+			<date>02/11/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#NetworkRouteEntryObject-2" schemaLocation="Network_Route_Entry_Object.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#AddressObject-2" schemaLocation="Address_Object.xsd"/>
+	<xs:element name="Windows_Network_Route_Entry" type="WinNetworkRouteEntryObj:WindowsNetworkRouteEntryObjectType">
+		<xs:annotation>
+			<xs:documentation>he Windows_Network_Route_Entry object is intended to characterize Windows network routing table entries.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="WindowsNetworkRouteEntryObjectType" mixed="false">
+		<xs:annotation>
+			<xs:documentation>The WindowsNetworkRouteEntryObjectType type is intended to characterize Windows network routing table entries.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="NetworkRouteEntryObj:NetworkRouteEntryObjectType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="NL_ROUTE_PROTOCOL" type="WinNetworkRouteEntryObj:NLRouteProtocolType">
+						<xs:annotation>
+							<xs:documentation>The NL_ROUTE_PROTOCOL element captures the routing protocol specified for the network route, as detailed in the NL_ROUTE_PROTOCOL enumeration. For more information please see: http://msdn.microsoft.com/en-us/library/windows/desktop/aa814494(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="NL_ROUTE_ORIGIN" type="WinNetworkRouteEntryObj:NLRouteOriginType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The NL_ROUTE_ORIGIN element specifies a network route origination point, as detailed in the NL_ROUTE_ORIGIN enumertaion in the MIB_IPFORWARD_ROW2 structure. For more information, see http://msdn.microsoft.com/en-us/library/windows/desktop/aa814494(v=vs.85).aspx for the MIB_IPFORWARD_ROW2 structure and http://msdn.microsoft.com/en-us/library/windows/hardware/ff568764(v=vs.85).aspx for the NL_ROUTE_ORIGIN enumeration.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="NLRouteOriginType">
+		<xs:annotation>
+			<xs:documentation>NLRouteOriginType specifies Windows-centric network route origination values via a union of the RouteOriginEnum type and the atomic xs:string type. Its base type is the CybOX BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="WinNetworkRouteEntryObj:NLRouteOriginEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="NLRouteOriginEnum">
+		<xs:annotation>
+			<xs:documentation>The NLRouteOriginEnum type is a enumeration of network route origination points, as detailed in the NL_ROUTE_ORIGIN enumertaion in the MIB_IPFORWARD_ROW2 structure. For more information, see http://msdn.microsoft.com/en-us/library/windows/desktop/aa814494(v=vs.85).aspx for the MIB_IPFORWARD_ROW2 structure and http://msdn.microsoft.com/en-us/library/windows/hardware/ff568764(v=vs.85).aspx for the NL_ROUTE_ORIGIN enumeration.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NlroManual">
+				<xs:annotation>
+					<xs:documentation>Specifies that the origin was determined as a result of manual configuration.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NlroWellKnown">
+				<xs:annotation>
+					<xs:documentation>Specifies that the route is well-known.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NlroDHCP">
+				<xs:annotation>
+					<xs:documentation>Specifies that the origin was determined as a result of DHCP configuration.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NlroRouterAdvertisement">
+				<xs:annotation>
+					<xs:documentation>Specifies that the origin was determined as a result of router advertisement.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Nlro6to4">
+				<xs:annotation>
+					<xs:documentation>Specifies that the origin was determined as a result of 6to4 tunneling.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="NLRouteProtocolType">
+		<xs:annotation>
+			<xs:documentation>NLRouteProtocolType specifies Windows-centric network routing protocol values via a union of the NLRouteProtocolEnum type and the atomic xs:string type. Its base type is the CybOX BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="WinNetworkRouteEntryObj:NLRouteProtocolEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="NLRouteProtocolEnum">
+		<xs:annotation>
+			<xs:documentation>The NLRouteProtocolEnum type is a enumeration of network routing protocols, as detailed in the NL_ROUTE_PROTOCOL enumeration in the MIB_IPFORWARD_ROW2 structure. For more information, see http://msdn.microsoft.com/en-us/library/windows/desktop/aa814494(v=vs.85).aspx for the MIB_IPFORWARD_ROW2 structure.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MIB_IPPROTO_OTHER">
+				<xs:annotation>
+					<xs:documentation>Specifies that the routing mechanism was not specified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MIB_IPPROTO_LOCAL">
+				<xs:annotation>
+					<xs:documentation>Specifies a local interface.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MIB_IPPROTO_NETMGMT">
+				<xs:annotation>
+					<xs:documentation>Specifies a static route. This value is used to identify route information for IP routing set through network management such as the Dynamic Host Configuration Protocol (DCHP), the Simple Network Management Protocol (SNMP), or by calls to the CreateIpForwardEntry2, DeleteIpForwardEntry2, or SetIpForwardEntry2 functions.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MIB_IPPROTO_ICMP">
+				<xs:annotation>
+					<xs:documentation>Specifies the result of an ICMP redirect.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MIB_IPPROTO_EGP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Exterior Gateway Protocol (EGP), a dynamic routing protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MIB_IPPROTO_GGP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Gateway-to-Gateway Protocol (GGP), a dynamic routing protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MIB_IPPROTO_HELLO">
+				<xs:annotation>
+					<xs:documentation>Specifies the hellospeak protocol, a dynamic routing protocol. This is a historical entry no longer in use and was an early routing protocol used by the original ARPANET routers that ran special software called the Fuzzball routing protocol, sometimes called Hellospeak, as described in RFC 891 and RFC 1305. For more information, see http://www.ietf.org/rfc/rfc891.txt and http://www.ietf.org/rfc/rfc1305.txt.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MIB_IPPROTO_RIP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Berkeley Routing Information Protocol (RIP) or RIP-II, a dynamic routing protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MIB_IPPROTO_IS_IS">
+				<xs:annotation>
+					<xs:documentation>Specifies the Intermediate System-to-Intermediate System (IS-IS) protocol, a dynamic routing protocol. The IS-IS protocol was developed for use in the Open Systems Interconnection (OSI) protocol suite.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MIB_IPPROTO_ES_IS">
+				<xs:annotation>
+					<xs:documentation>Specifies the End System-to-Intermediate System (ES-IS) protocol, a dynamic routing protocol. The ES-IS protocol was developed for use in the Open Systems Interconnection (OSI) protocol suite.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MIB_IPPROTO_CISCO">
+				<xs:annotation>
+					<xs:documentation>Specifies the Cisco Interior Gateway Routing Protocol (IGRP), a dynamic routing protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MIB_IPPROTO_BBN">
+				<xs:annotation>
+					<xs:documentation>Specifies the Bolt, Beranek, and Newman (BBN) Interior Gateway Protocol (IGP) that used the Shortest Path First (SPF) algorithm. This was an early dynamic routing protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MIB_IPPROTO_OSPF">
+				<xs:annotation>
+					<xs:documentation>Specifies the Open Shortest Path First (OSPF) protocol, a dynamic routing protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MIB_IPPROTO_BGP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Border Gateway Protocol (BGP), a dynamic routing protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MIB_IPPROTO_NT_AUTOSTATIC">
+				<xs:annotation>
+					<xs:documentation>Specifies a Windows specific entry added originally by a routing protocol, but which is now static.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MIB_IPPROTO_NT_STATIC">
+				<xs:annotation>
+					<xs:documentation>Specifies a Windows specific entry added as a static route from the routing user interface or a routing command.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MIB_IPPROTO_NT_STATIC_NON_DOD">
+				<xs:annotation>
+					<xs:documentation>Specifies a Windows specific entry added as an static route from the routing user interface or a routing command, except these routes do not cause Dial On Demand (DOD).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

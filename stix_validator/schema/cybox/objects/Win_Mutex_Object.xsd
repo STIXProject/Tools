@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:WinMutexObj="http://cybox.mitre.org/objects#WinMutexObject-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:WinHandleObj="http://cybox.mitre.org/objects#WinHandleObject-2" xmlns:MutexObj="http://cybox.mitre.org/objects#MutexObject-2" targetNamespace="http://cybox.mitre.org/objects#WinMutexObject-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>Win_Mutex_Object</schema>
+			<version>2.0</version>
+			<date>02/11/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#WinHandleObject-2" schemaLocation="Win_Handle_Object.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#MutexObject-2" schemaLocation="Mutex_Object.xsd"/>
+	<xs:element name="Windows_Mutex" type="WinMutexObj:WindowsMutexObjectType" nillable="true">
+		<xs:annotation>
+			<xs:documentation>The Windows_Mutex object is intended to characterize Windows mutual exclusion (mutex) objects.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="WindowsMutexObjectType" mixed="false">
+		<xs:annotation>
+			<xs:documentation>The WindowsMutexObjectType type is intended to characterize Windows mutual exclusion (mutex) objects.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent mixed="false">
+			<xs:extension base="MutexObj:MutexObjectType">
+				<xs:sequence>
+					<xs:element name="Handle" minOccurs="0" type="WinHandleObj:WindowsHandleObjectType">
+						<xs:annotation>
+							<xs:documentation>The Handle field specifies the open Windows handle to the mutex. It imports and uses the WindowsHandleObjectType from the CybOX Windows Handle Object.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="Security_Attributes" type="cyboxCommon:StringObjectPropertyType">
+						<xs:annotation>
+							<xs:documentation>The Security_Attributes field specifies the Windows security attributes for the mutex.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

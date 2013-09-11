@@ -1,0 +1,2319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://cybox.mitre.org/common-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>CybOX Common</schema>
+			<version>2.0</version>
+			<date>04/08/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Common Types.</short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:complexType name="MeasureSourceType">
+		<xs:annotation>
+			<xs:documentation>The MeasureSourceType is a type representing a description of a single cyber observation source.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Information_Source_Type" type="cyboxCommon:ControlledVocabularyStringType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Information_Source_Type field is optional and utilizes a standardized controlled vocabulary to identify the type of information source leveraged for this cyber observation source.</xs:documentation>
+					<xs:documentation>This field is implemented through the xsi:type controlled vocabulary extension mechanism. The default vocabulary type is InformationSourceTypeVocab in the http://cybox.mitre.org/default_vocabularies-2 namespace. This type is defined in the cybox_default_vocabularies.xsd file or at the URL http://cybox.mitre.org/XMLSchema/default_vocabularies/2.0/cybox_default_vocabularies.xsd.
+						Users may also define their own vocabulary using the type extension mechanism (by specifying a vocabulary name and/or reference using the vocab_name and vocab_reference attributes, respectively) or simply use this as a string field. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Tool_Type" type="cyboxCommon:ControlledVocabularyStringType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Tool_Type field is optional and (when tools are used) enables identification of the type of tool leveraged as part of this cyber observation source, via a standardized controlled vocabulary.</xs:documentation>
+					<xs:documentation>This field is implemented through the xsi:type controlled vocabulary extension mechanism. The default vocabulary type is ToolTypeVocab in the http://cybox.mitre.org/default_vocabularies-2 namespace. This type is defined in the cybox_default_vocabularies.xsd file or at the URL http://cybox.mitre.org/XMLSchema/default_vocabularies/2.0/cybox_default_vocabularies.xsd.
+						Users may also define their own vocabulary using the type extension mechanism (by specifying a vocabulary name and/or reference using the vocab_name and vocab_reference attributes, respectively) or simply use this as a string field. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="cyboxCommon:StructuredTextType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Description field is optional and enables a generalized but structured description of this syber observation source.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Contributors" type="cyboxCommon:PersonnelType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Contributors field is optional and enables description of the individual contributors involved in this cyber observation source.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Time" type="cyboxCommon:TimeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Time field is optional and enables description of various time-related properties for this cyber observation source instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Tools" type="cyboxCommon:ToolsInformationType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Tools field is optional and enables description of the tools utilized for this cyber observation source.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Platform" type="cyboxCommon:PlatformSpecificationType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Platform field is optional and enables a formal, standardized specification of the platform for this cyber observation source. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="System" type="cyboxCommon:ObjectPropertiesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The System field is optional and enables characterization of the system on which the mechanism of cyber observation executed. System should be an object of type SystemObj:SystemObjectType</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Instance" type="cyboxCommon:ObjectPropertiesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Instance field is optional and enables characterization of the process instance in which the mechanism of cyber observation executed. Instance should be of type ProcessObj:ProcessObjectType.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="class" type="cyboxCommon:SourceClassTypeEnum">
+			<xs:annotation>
+				<xs:documentation>The class field is optional and enables identification of the high-level class of this cyber observation source.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="source_type" type="cyboxCommon:SourceTypeEnum">
+			<xs:annotation>
+				<xs:documentation>The source_type field is optional and enables identification of the broad type of this cyber observation source.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="name" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The name field is optional and enables the assignment of a relevant name to a this Discovery Method.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="SourceClassTypeEnum">
+		<xs:annotation>
+			<xs:documentation>The SourceClassTypeEnum is a (non-exhaustive) enumeration of cyber observation source classes.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Network">
+				<xs:annotation>
+					<xs:documentation>Describes a Network-based cyber observation.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="System">
+				<xs:annotation>
+					<xs:documentation>Describes a System-based cyber observation.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Software">
+				<xs:annotation>
+					<xs:documentation>Describes a Software-based cyber observation.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SourceTypeEnum">
+		<xs:annotation>
+			<xs:documentation>The SourceTypeEnum is a (non-exhaustive) enumeration of cyber observation source types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Tool">
+				<xs:annotation>
+					<xs:documentation>Describes a cyber observation made using various tools, such as scanners, firewalls, gateways, protection systems, and detection systems. See ToolTypeEnum for a more complete list of tools that CybOX supports.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Analysis">
+				<xs:annotation>
+					<xs:documentation>Describes a cyber observation made from analysis methods, such as Static and Dynamic methods. See AnalysisMethodTypeEnum for a more complete list of methods that CybOX supports.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Information Source">
+				<xs:annotation>
+					<xs:documentation>Describes a cyber observation made using other information sources, such as logs, Device Driver APIs, and TPM output data. See InformationSourceTypeEnum for a more complete list of information sources that CybOX supports. </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ContributorType">
+		<xs:annotation>
+			<xs:documentation>The ContributorType represents a description of an individual who contributed as a source of cyber observation data.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Role" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field describes the role played by this contributor.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains the name of this contributor.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Email" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains the email of this contributor.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Phone" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains a telephone number of this contributor.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Organization" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains the organization name of this contributor.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Date" type="cyboxCommon:DateRangeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains a description (bounding) of the timing of this contributor's involvement.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Contribution_Location" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains information describing the location at which the contributory activity occured.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DateRangeType">
+		<xs:annotation>
+			<xs:documentation>The DateRangeType specifies a range of dates.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Start_Date" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains the start date for this contributor's involvement. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="End_Date" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains the end date for this contributor's involvement. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PersonnelType">
+		<xs:annotation>
+			<xs:documentation>The PersonnelType is an abstracted data type to standardize the description of sets of personnel.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Contributor" type="cyboxCommon:ContributorType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This field contains information describing the identify, resources and timing of involvement for a single contributor.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TimeType">
+		<xs:annotation>
+			<xs:documentation>The TimeType specifies various time properties for a cyber observation source.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Start_Time" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Start_Time field is optional and describes the starting time for this cyber observation source instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="End_Time" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The End_Time field is optional and describes the ending time for this cyber observation source instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Produced_Time" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Produced_Time field is optional and describes the time that this cyber observation source instance was produced.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Received_Time" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Received_Time field is optional and describes the time that this cyber observation source instance was received.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ToolSpecificDataType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>The ToolSpecificDataType is an Abstract type placeholder within the CybOX schema enabling the inclusion of metadata for a specific type of tool through the use of a custom type defined as an extension of this base Abstract type.</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="ToolsInformationType">
+		<xs:annotation>
+			<xs:documentation>The ToolsInformationType represents a description of a set of automated tools.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Tool" type="cyboxCommon:ToolInformationType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Tool field is optional and enables description of a single tool utilized for this cyber observation source.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ToolInformationType">
+		<xs:annotation>
+			<xs:documentation>The ToolInformationType represens a description of a single automated tool.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains the name of the tool leveraged.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Type" type="cyboxCommon:ControlledVocabularyStringType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>
+						This field contains the type of the tool leveraged.
+						
+						This field is implemented through the xsi:type controlled vocabulary extension mechanism. No default vocabulary type has been defined for CybOX 2.0. Users may either define their own vocabulary using the type extension mechanism (by specifying a vocabulary name and/or reference using the vocab_name and vocab_reference attributes, respectively) or simply use this as a free string field. Additionally, locations where the ToolInformationType is used may define default vocabularies for this field.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="cyboxCommon:StructuredTextType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains general descriptive information for this tool.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="References" type="cyboxCommon:ToolReferencesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains references to instances or additional information for this tool.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Vendor" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains information identifying the vendor organization for this tool.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Version" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains an appropriate version descriptor of this tool.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Service_Pack" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains an appropriate service pack descriptor for this tool.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Tool_Specific_Data" type="cyboxCommon:ToolSpecificDataType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This is an abstract type provided to a flexible mechanism for enabling tool-specific data to be included. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Tool_Hashes" type="cyboxCommon:HashListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains a hash value computed on the tool file content in order to verify its integrity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Tool_Configuration" type="cyboxCommon:ToolConfigurationType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains information describing the configuration and usage of the tool.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Execution_Environment" type="cyboxCommon:ExecutionEnvironmentType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains information describing the execution environment of the tool.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Errors" type="cyboxCommon:ErrorsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field captures any errors generated during the run of the tool.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Metadata" type="cyboxCommon:MetadataType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This field captures other relevant metadata including tool-specific fields.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:QName">
+			<xs:annotation>
+				<xs:documentation>The id field specifies a unique ID for this Tool.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="idref" type="xs:QName">
+			<xs:annotation>
+				<xs:documentation>The idref field specifies reference to a unique ID for this Tool.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ToolReferencesType">
+		<xs:annotation>
+			<xs:documentation>Used to indicate one or more references to tool instances and information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Reference" type="cyboxCommon:ToolReferenceType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Contains one reference to information or instances of a given tool</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ToolReferenceType">
+		<xs:annotation>
+			<xs:documentation>Contains one reference to information or instances of a given tool</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:anyURI">
+				<xs:attribute name="reference_type" type="cyboxCommon:ToolReferenceTypeEnum">
+					<xs:annotation>
+						<xs:documentation>Indicates the nature of the referenced material (documentation, source, executable, etc.)</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="ToolReferenceTypeEnum">
+		<xs:annotation>
+			<xs:documentation>The nature of referenced material regarding a tool</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Documentation">
+				<xs:annotation>
+					<xs:documentation>The reference is to documentation about the identified tool</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Source">
+				<xs:annotation>
+					<xs:documentation>The reference is to source code for the identified tool</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Download">
+				<xs:annotation>
+					<xs:documentation>The reference is to where an executable version of the tool can be downloaded</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Execute">
+				<xs:annotation>
+					<xs:documentation>The reference is to the tool implemented as an online service.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Other">
+				<xs:annotation>
+					<xs:documentation>The reference is to material about the tool not covered by other values in this enumeration.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ToolConfigurationType">
+		<xs:annotation>
+			<xs:documentation>The ToolConfigurationType characterizes the configuration for a tool used as a cyber observation source.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Configuration_Settings" type="cyboxCommon:ConfigurationSettingsType">
+				<xs:annotation>
+					<xs:documentation>This field describes the configuration settings of this tool instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Dependencies" type="cyboxCommon:DependenciesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains information describing the relevant dependencies for this tool.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Usage_Context_Assumptions" type="cyboxCommon:UsageContextAssumptionsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains descriptions of the various relevant usage context assumptions for this tool .</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Internationalization_Settings" type="cyboxCommon:InternationalizationSettingsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains information describing relevant internationalization setting for this tool .</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Build_Information" type="cyboxCommon:BuildInformationType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains information describing how this tool was built.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ConfigurationSettingsType">
+		<xs:annotation>
+			<xs:documentation>The ConfigurationSettingsType is a modularized data type used to provide a consistent approach to describing configuration settings for a tool, application or other cyber object</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0">
+			<xs:element name="Configuration_Setting" type="cyboxCommon:ConfigurationSettingType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This field contains a single configuration setting instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ConfigurationSettingType">
+		<xs:annotation>
+			<xs:documentation>The ConfigurationSettingType is a modularized data type used to provide a consistent approach to describing a particular configuration setting for a tool, application or other cyber object</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Item_Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This field contains the name of the configuration item referenced by this configuration setting instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Item_Value" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This field contains the value of this configuration setting instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Item_Type" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains the type of the configuration item referenced in this configuration setting instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Item_Description" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains a description of the configuration item referenced in this configuration setting instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DependenciesType">
+		<xs:annotation>
+			<xs:documentation>The DependenciesType contains information describing a set of dependencies for this tool.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Dependency" type="cyboxCommon:DependencyType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This field contains information describing a single dependency for this tool.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DependencyType">
+		<xs:annotation>
+			<xs:documentation>The DependencyType contains information describing a single dependency for this tool.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Dependency_Type" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field describes the type of this dependency instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Dependency_Description" type="cyboxCommon:StructuredTextType">
+				<xs:annotation>
+					<xs:documentation>This field contains a description of this dependency instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UsageContextAssumptionsType">
+		<xs:annotation>
+			<xs:documentation>The UsageContextAssumptionsType contains descriptions of the various relevant usage context assumptions for this tool</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Usage_Context_Assumption" type="cyboxCommon:StructuredTextType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This field contains a single usage context assumption for this tool.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InternationalizationSettingsType">
+		<xs:annotation>
+			<xs:documentation>The InternationalizationSettingsType contains information describing relevant internationalization setting for this tool</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Internal_Strings" type="cyboxCommon:InternalStringsType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This field contains a single internal string instance for this internationalization setting instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InternalStringsType">
+		<xs:annotation>
+			<xs:documentation>The InternalStringsType contains a single internal string instance for this internationalization setting instance.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Key" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This field contains the actual key of this internal string instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Content" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This field contains the actual content of this internal string instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BuildInformationType">
+		<xs:annotation>
+			<xs:documentation>The BuildInformationType contains information describing how this tool was built.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Build_ID" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains an externally defined unique identifier of this build of this application instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Build_Project" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains the project name of this build of this application instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Build_Utility" type="cyboxCommon:BuildUtilityType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains information identifying the utility used to build this application.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Build_Version" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains the appropriate version descriptor of this build of this application instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Build_Label" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains any relevant label for this build of this application instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Compilers" type="cyboxCommon:CompilersType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field describes the compilers utilized during this build of this application.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Compilation_Date" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field identifies the compilation date for the build of the tool.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Build_Configuration" type="cyboxCommon:BuildConfigurationType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field describes how the build utility was configured for this build of this application.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Build_Script" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains the actual build script for this build of this application instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Libraries" type="cyboxCommon:LibrariesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field identifies the libraries incorporated into the build of the tool.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Build_Output_Log" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains a capture of the output log of the build process.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BuildUtilityType">
+		<xs:annotation>
+			<xs:documentation>The BuildUtilityType contains information identifying the utility used to build this application.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Build_Utility_Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This field contains the informally defined name of the utility used to build this application instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Build_Utility_Platform_Specification" type="cyboxCommon:PlatformSpecificationType">
+				<xs:annotation>
+					<xs:documentation>This field identifies the build utility used to build this application.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CompilersType">
+		<xs:annotation>
+			<xs:documentation>The CompilersType describes the compilers utilized during this build of this application.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Compiler" type="cyboxCommon:CompilerType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This field describes a single compiler utilized during this build of this application.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CompilerType">
+		<xs:annotation>
+			<xs:documentation>The CompilerType describes a single compiler utilized during this build of this application.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Compiler_Informal_Description" type="cyboxCommon:CompilerInformalDescriptionType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains the informal description of this compiler instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Compiler_Platform_Specification" type="cyboxCommon:PlatformSpecificationType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field identifies this compiler instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CompilerInformalDescriptionType">
+		<xs:annotation>
+			<xs:documentation>The CompilerInformalDescriptionType contains the informal description of this compiler instance.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Compiler_Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This field contains the name of the compiler.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Compiler_Version" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains the version of the compiler.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BuildConfigurationType">
+		<xs:annotation>
+			<xs:documentation>The BuildConfigurationType describes how the build utility was configured for this build of this application.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Configuration_Setting_Description" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains the description of the configuration settings for this build of this application instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Configuration_Settings" type="cyboxCommon:ConfigurationSettingsType">
+				<xs:annotation>
+					<xs:documentation>This field contains the configuration settings for this build of this application instance.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LibrariesType">
+		<xs:annotation>
+			<xs:documentation>The LibrariesType identifies the libraries incorporated into the build of the tool.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Library" type="cyboxCommon:LibraryType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field identifies a library incorporated into the build of the tool.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LibraryType">
+		<xs:annotation>
+			<xs:documentation>The LibraryType identifies a single library incorporated into the build of the tool.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="name" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>This field identifies the name of the library.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="version" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>This field identifies the version of the library.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ExecutionEnvironmentType">
+		<xs:annotation>
+			<xs:documentation>The ExecutionEnvironmentType contains information describing the execution environment of the tool.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="System" type="cyboxCommon:ObjectPropertiesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains information describing the system on which the tool was executed. System should be of type SystemObj:SystemObjectType.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="User_Account_Info" type="cyboxCommon:ObjectPropertiesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field contains information describing the user account that executed the tool. User_Account_Info should be of type UserAccountObj:UserAccountObjectType.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Command_Line" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field specifies the command line string used to run the tool.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Start_Time" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Thie field specifies when the tool was run.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ErrorsType">
+		<xs:annotation>
+			<xs:documentation>The ErrorsType captures any errors generated during the run of the tool.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Error" type="cyboxCommon:ErrorType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This field captures a single type of error generated during the run of the tool.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ErrorType">
+		<xs:annotation>
+			<xs:documentation>The ErrorType captures a single error generated during the run of the tool.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Error_Type" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>This field specifies the the type for this tool run error.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Error_Count" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field specifies the count of instances for this error in the tool run.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Error_Instances" type="cyboxCommon:ErrorInstancesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field captures the actual error output for each instance of this type of error.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ErrorInstancesType">
+		<xs:annotation>
+			<xs:documentation>The ErrorInstancesType captures the actual error output for each instance of this type of error.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Error_Instance" type="xs:string" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This field captures the actual error output for a single instance of this type of error.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!---->
+	<xs:complexType name="ObjectPropertiesType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>The ObjectPropertiesType is an Abstract type placeholder within the CybOX schema enabling the inclusion of contextually varying object properties descriptions. This Abstract type is leveraged as the extension base for all predefined CybOX object properties schemas. Through this extension mechanism any object instance data based on an object properties schema extended from ObjectPropertiesType (e.g. File_Object, Address_Object, etc.) can be directly integrated into any instance document where a field is defined as ObjectPropertiesType. For flexibility and extensibility purposes any user of CybOX can specify their own externally defined object properties schemas (outside of or derived from the set of predefined objects) extended from ObjectPropertiesType and utilize them as part of their CybOX content.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Custom_Properties" type="cyboxCommon:CustomPropertiesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Custom_Properties construct is optional and enables the specification of a set of custom Object Properties that may not be defined in existing Properties schemas. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="object_reference" type="xs:QName">
+			<xs:annotation>
+				<xs:documentation>The object_reference field specifies a unique ID reference to an Object defined elsewhere. This construct allows for the re-use of the defined Properties of one Object within another, without the need to embed the full Object in the location from which it is being referenced. Thus, this ID reference is intended to resolve to the Properties of the Object that it points to.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="CustomPropertiesType">
+		<xs:annotation>
+			<xs:documentation>The CustomPropertiesType enables the specification of a set of custom Object Properties that may not be defined in existing Properties schemas. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Property" type="cyboxCommon:PropertyType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Property construct enables the specification of a single Object Property.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PropertyType">
+		<xs:annotation>
+			<xs:documentation>The PropertyType is a type representing the specification of a single Object Property.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="cyboxCommon:BaseObjectPropertyType">
+				<xs:attribute name="name" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>The name field specifies a name for this property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="description" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>A description of what this property represents.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!---->
+	<xs:complexType name="BaseObjectPropertyType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>The BaseObjectPropertyType is a type representing a common typing foundation for the specification of a single Object Property.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:anySimpleType">
+				<xs:attributeGroup ref="cyboxCommon:BaseObjectPropertyGroup"/>
+				<xs:attributeGroup ref="cyboxCommon:PatternFieldGroup"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="IntegerObjectPropertyType">
+		<xs:annotation>
+			<xs:documentation>The IntegerObjectPropertyType is a type (extended from BaseObjectPropertyType) representing the specification of a single Object property whose core value is of type Int. This type will be assigned to any property of a CybOX object that should contain content of type Integer and enables the use of relevant metadata for the property.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="int">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="StringObjectPropertyType">
+		<xs:annotation>
+			<xs:documentation>The StringObjectPropertyType is a type (extended from BaseObjectPropertyType) representing the specification of a single Object property whose core value is of type String. This type will be assigned to any property of a CybOX object that should contain content of type String and enables the use of relevant metadata for the property.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="NameObjectPropertyType">
+		<xs:annotation>
+			<xs:documentation>The NameObjectPropertyType is a type (extended from BaseObjectPropertyType) representing the specification of a single Object property whose core value is of type Name. This type will be assigned to any property of a CybOX object that should contain content of type Name and enables the use of relevant metadata for the property.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" use="optional" fixed="name">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="DateObjectPropertyType">
+		<xs:annotation>
+			<xs:documentation>The DateObjectPropertyType is a type (extended from BaseObjectPropertyType) representing the specification of a single Object property whose core value is of type Date. This type will be assigned to any property of a CybOX object that should contain content of type Date and enables the use of relevant metadata for the property.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="date">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="DateTimeObjectPropertyType">
+		<xs:annotation>
+			<xs:documentation>The DateTimeObjectPropertyType is a type (extended from BaseObjectPropertyType) representing the specification of a single Object property whose core value is of type DateTime. This type will be assigned to any property of a CybOX object that should contain content of type DateTime and enables the use of relevant metadata for the property.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" use="optional" fixed="dateTime">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="FloatObjectPropertyType">
+		<xs:annotation>
+			<xs:documentation>The FloatObjectPropertyType is a type (extended from BaseObjectPropertyType) representing the specification of a single Object property whose core value is of type Float. This type will be assigned to any property of a CybOX object that should contain content of type Float and enables the use of relevant metadata for the property.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" use="optional" fixed="float">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="DoubleObjectPropertyType">
+		<xs:annotation>
+			<xs:documentation>The DoubleObjectPropertyType is a type (extended from BaseObjectPropertyType) representing the specification of a single Object property whose core value is of type Double. This type will be assigned to any property of a CybOX object that should contain content of type Double and enables the use of relevant metadata for the property.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="double">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="UnsignedLongObjectPropertyType">
+		<xs:annotation>
+			<xs:documentation>The UnsignedLongObjectPropertyType is a type (extended from BaseObjectPropertyType) representing the specification of a single Object property whose core value is of type UnsignedLong. This type will be assigned to any property of a CybOX object that should contain content of type UnsignedLong and enables the use of relevant metadata for the property.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="unsignedLong">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="UnsignedIntegerObjectPropertyType">
+		<xs:annotation>
+			<xs:documentation>The UnsignedIntegerObjectPropertyType is a type (extended from BaseObjectPropertyType) representing the specification of a single Object property whose core value is of type UnsignedInt. This type will be assigned to any property of a CybOX object that should contain content of type UnsignedInteger and enables the use of relevant metadata for the property.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="unsignedInt">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="PositiveIntegerObjectPropertyType">
+		<xs:annotation>
+			<xs:documentation>The PositiveIntegerObjectPropertyType is a type (extended from BaseObjectPropertyType) representing the specification of a single Object property whose core value is of type PositveInteger. This type will be assigned to any property of a CybOX object that should contain content of type PositiveInteger and enables the use of relevant metadata for the property.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="positiveInteger">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="HexBinaryObjectPropertyType">
+		<xs:annotation>
+			<xs:documentation>The HexBinaryObjectPropertyType is a type (extended from BaseObjectPropertyType) representing the specification of a single Object property whose core value is of type HexBinary. This type will be assigned to any property of a CybOX object that should contain content of type HexBinary and enables the use of relevant metadata for the property.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="hexBinary">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="LongObjectPropertyType">
+		<xs:annotation>
+			<xs:documentation>The LongObjectPropertyType is a type (extended from BaseObjectPropertyType) representing the specification of a single Object property whose core value is of type Long. This type will be assigned to any property of a CybOX object that should contain content of type Long and enables the use of relevant metadata for the property.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="long">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="NonNegativeIntegerObjectPropertyType">
+		<xs:annotation>
+			<xs:documentation>The NonNegativeIntegerObjectPropertyType is a type (extended from BaseObjectPropertyType) representing the specification of a single Object property whose core value is of type nonNegativeInteger. This type will be assigned to any property of a CybOX object that should contain content of type NonNegativeInteger and enables the use of relevant metadata for the property.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="nonNegativeInteger">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="AnyURIObjectPropertyType">
+		<xs:annotation>
+			<xs:documentation>The AnyURIObjectPropertyType is a type (extended from BaseObjectPropertyType) representing the specification of a single Object property whose core value is of type anyURI. This type will be assigned to any property of a CybOX object that should contain content of type AnyURI and enables the use of relevant metadata for the property.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="anyURI">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="DurationObjectPropertyType">
+		<xs:annotation>
+			<xs:documentation>The DurationObjectPropertyType is a type (extended from BaseObjectPropertyType) representing the specification of a single Object property whose core value is of type duration. This type will be assigned to any property of a CybOX object that should contain content of type Duration and enables the use of relevant metadata for the property.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="duration">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="TimeObjectPropertyType">
+		<xs:annotation>
+			<xs:documentation>The TimeObjectPropertyType is a type (extended from BaseObjectPropertyType) representing the specification of a single Object property whose core value is of type time. This type will be assigned to any property of a CybOX object that should contain content of type Time and enables the use of relevant metadata for the property.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="time">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Base64BinaryObjectPropertyType">
+		<xs:annotation>
+			<xs:documentation>The Base64BinaryObjectPropertyType is a type (extended from BaseObjectPropertyType) representing the specification of a single Object property whose core value is of type base64Binary. This type will be assigned to any property of a CybOX object that should contain content of type Base64Binary and enables the use of relevant metadata for the property.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="base64Binary">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:attributeGroup name="BaseObjectPropertyGroup">
+		<xs:annotation>
+			<xs:documentation>The ObjectPropertyGroup is a simple field group aggregating a set of fields for Object Properties.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="id" type="xs:QName">
+			<xs:annotation>
+				<xs:documentation>The id field specifies a unique ID for this Object Property.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="idref" type="xs:QName">
+			<xs:annotation>
+				<xs:documentation>The idref field specifies a unique ID reference for this Object Property.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" default="string">
+			<xs:annotation>
+				<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="appears_random" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>This field is optional and conveys whether the associated object property value appears to somewhat random in nature. An object property with this field set to TRUE need not provide any further information including a value. If more is known about the particular variation of randomness, a regex value could be provided to outline what is known of the structure.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="is_obfuscated" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>This field is optional and conveys whether the associated Object property has been obfuscated.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="obfuscation_algorithm_ref" type="xs:anyURI">
+			<xs:annotation>
+				<xs:documentation>This field is optional and conveys a reference to a description of the algorithm used to obfuscate this Object property.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="is_defanged" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>This field is optional and conveys whether the associated Object property has been defanged (representation changed to prevent malicious effects of handling/processing).</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="defanging_algorithm_ref" type="xs:anyURI">
+			<xs:annotation>
+				<xs:documentation>This field is optional and conveys a reference to a description of the algorithm used to defang (representation changed to prevent malicious effects of handling/processing) this Object property.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="refanging_transform_type" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>This field is optional and specifies the type (e.g. RegEx) of refanging transform specified in the optional accompanying refangingTransform property.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="refanging_transform" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>This field is optional and specifies an automated transform that can be applied to the Object property content in order to refang it to its original format.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="PatternFieldGroup">
+		<xs:annotation>
+			<xs:documentation>The PatternFieldGroup is a simple field group aggregating a set of fields for application of patterns.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="condition" type="cyboxCommon:ConditionTypeEnum">
+			<xs:annotation>
+				<xs:documentation>This field is optional and defines the relevant condition to apply to the value.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="apply_condition" type="cyboxCommon:ConditionApplicationEnum" default="ANY">
+			<xs:annotation>
+				<xs:documentation>This field indicates how a condition should be applied when the field body contains a list of values. (Its value is moot if the field value contains only a single value - both possible values for this field would have the same behavior.) If this field is set to ANY, then a pattern is considered to be matched if the provided condition successfully evaluates for any of the values in the field body. If the field is set to ALL, then the patern only matches if the provided condition successfully evaluates for every value in the field body.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="bit_mask" type="xs:hexBinary">
+			<xs:annotation>
+				<xs:documentation>Used to specify a bit_mask in conjunction with one of the defined binary conditions (bitwiseAnd, bitwiseOr, and bitwiseXor). This bitmask is then uses as one operand in the indicated bitwise computation.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="pattern_type" type="cyboxCommon:PatternTypeEnum">
+			<xs:annotation>
+				<xs:documentation>This field is optional and defines the type of pattern used if one is specified for the field value. This is applicable only if the Condition field is set to 'FitsPattern'. </xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="regex_syntax" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>This field is optional and defines the syntax format used for a regular expression, if one is specified for the field value. This is applicable only if the Condition field is set to 'FitsPattern'.
+					
+					Setting this attribute with an empty value (e.g., "") or omitting it entirely notifies CybOX consumers and pattern evaluators that the corresponding regular expression utilizes capabilities, character classes, escapes, and other lexical tokens defined by the CybOX Language Specification. 
+					
+					Setting this attribute with a non-empty value notifies CybOX consumers and pattern evaluators that the corresponding regular expression utilizes capabilities not definied by the CybOX Language Specification. The regular expression must be evaluated through a compatible regular expression engine in this case.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="has_changed" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>This field is optional and conveys a targeted observation pattern of whether the associated field value has changed. This field would be leveraged within a pattern observable triggering on whether the value of a single field value has changed.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="trend" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>This field is optional and conveys a targeted observation pattern of the nature of any trend in the associated field value. This field would be leveraged within a pattern observable triggering on the matching of a specified trend in the value of a single specified field.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:simpleType name="ConditionTypeEnum">
+		<xs:annotation>
+			<xs:documentation>ConditionTypeEnum is a (non-exhaustive) enumeration of condition types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Equals">
+				<xs:annotation>
+					<xs:documentation>Specifies the equality or = condition.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DoesNotEqual">
+				<xs:annotation>
+					<xs:documentation>Specifies the "does not equal" or != condition.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Contains">
+				<xs:annotation>
+					<xs:documentation>Specifies the "contains" condition.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DoesNotContain">
+				<xs:annotation>
+					<xs:documentation>Specifies the "does not contain" condition.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="StartsWith">
+				<xs:annotation>
+					<xs:documentation>Specifies the "starts with" condition.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EndsWith">
+				<xs:annotation>
+					<xs:documentation>Specifies the "ends with" condition.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GreaterThan">
+				<xs:annotation>
+					<xs:documentation>Specifies the "greater than" condition.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GreaterThanOrEqual">
+				<xs:annotation>
+					<xs:documentation>Specifies the "greater than or equal to" condition.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LessThan">
+				<xs:annotation>
+					<xs:documentation>Specifies the "less than" condition.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LessThanOrEqual">
+				<xs:annotation>
+					<xs:documentation>Specifies the "less than or equal" condition.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="InclusiveBetween">
+				<xs:annotation>
+					<xs:documentation>The pattern is met if the given value lies between the values indicated in the field value body, inclusive of the bounding values themselves. The field value body MUST contain at least 2 values to be valid. If the field value body contains more than 2 values, then only the greatest and least values are considered. (I.e., If the body contains "2,4,6", then an InclusiveBetween condition would be satisfied if the observed value fell between 2 and 6, inclusive. Since this is an inclusive range, an observed value of 2 or 6 would fit the pattern in this example.) As such, always treat the InclusiveBetween condition as applying to a single range for the purpose of evaluating the apply_condition attribute.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ExclusiveBetween">
+				<xs:annotation>
+					<xs:documentation>The pattern is met if the given value lies between the values indicated in the field value body, exclusive of the bounding values themselves. The field value body MUST contain at least 2 values to be valid. If the field value body contains more than 2 values, then only the greatest and least values are considered. (I.e., If the body contains "2,4,6", then an InclusiveBetween condition would be satisfied if the observed value fell between 2 and 6, exclusive. Since this is an exclusive range, an observed value of 2 or 6 would not fit the pattern in this example.) As such, always treat the ExclusiveBetween condition as applying to a single range for the purpose of evaluating the apply_condition attribute.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FitsPattern">
+				<xs:annotation>
+					<xs:documentation>Specifies the condition that a value fits a given pattern.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BitwiseAnd">
+				<xs:annotation>
+					<xs:documentation>Specifies the condition of bitwise AND. Specifically, when applying this pattern, a given value is bitwise-ANDed with the bit_mask attribute value (which must be present). If the result is identical to the value provided in the body of this field value, the pattern is considered fulfilled.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BitwiseOr">
+				<xs:annotation>
+					<xs:documentation>Specifies the condition of bitwise OR. Specifically, when applying this pattern, a given value is bitwise-ORed with the bit_mask attribute value (which must be present). If the result is identical to the value provided in the body of this field value, the pattern is considered fulfilled.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BitwiseXor">
+				<xs:annotation>
+					<xs:documentation>Specifies the condition of bitwise XOR. Specifically, when applying this pattern, a given value is bitwise-XORed with the bit_mask attribute value (which must be present). If the result is identical to the value provided in the body of this field value, the pattern is considered fulfilled.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ConditionApplicationEnum">
+		<xs:annotation>
+			<xs:documentation>Used to indicate how a condition should be applied to a list of values.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ANY">
+				<xs:annotation>
+					<xs:documentation>Indicates that a pattern holds if the given condition can be successfully applied to any of the field values.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ALL">
+				<xs:annotation>
+					<xs:documentation>Indicates that a pattern holds only if the given condition can be successfully applied to all of the field values.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NONE">
+				<xs:annotation>
+					<xs:documentation>Indicates that a pattern holds only if the given condition can be successfully applied to none of the field values.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DatatypeEnum">
+		<xs:annotation>
+			<xs:documentation>DataTypeEnum is a (non-exhaustive) enumeration of data types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="string">
+				<xs:annotation>
+					<xs:documentation>Specifies the string datatype as it applies to the W3C standard. See http://www.w3.org/TR/xmlschema-2/#string for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="int">
+				<xs:annotation>
+					<xs:documentation>Specifies the int datatype as it applies to the W3C standard for int. See http://www.w3.org/TR/xmlschema-2/#int for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="float">
+				<xs:annotation>
+					<xs:documentation>Specifies the float datatype as it apples to the W3C standard. See http://www.w3.org/TR/xmlschema-2/#float for more information. </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="date">
+				<xs:annotation>
+					<xs:documentation>Specifies a date, which is usually in the form yyyy-mm--dd as it applies to the W3C standard. See http://www.w3.org/TR/xmlschema-2/#date for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="positiveInteger">
+				<xs:annotation>
+					<xs:documentation>Specifies a positive integer in the infinite set {1,2,...} as it applies to the W3C standard. See http://www.w3.org/TR/xmlschema-2/#positiveInteger for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="unsignedInt">
+				<xs:annotation>
+					<xs:documentation>Specifies an unsigned integer, which is a nonnegative integer in the set {0,1,2,...,4294967295} as it applies to the W3C standard. See http://www.w3.org/TR/xmlschema-2/#unsignedInt for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="dateTime">
+				<xs:annotation>
+					<xs:documentation>Specifies a date in full format including both date and time as it applies to the W3C standard. See http://www.w3.org/TR/xmlschema-2/#dateTime for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="time">
+				<xs:annotation>
+					<xs:documentation>Specifies a time as it applies to the W3C standard. See http://www.w3.org/TR/xmlschema-2/#time for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="boolean">
+				<xs:annotation>
+					<xs:documentation>Specifies a boolean value in the set {true,false,1,0} as it applies to the W3C standard. See http://www.w3.org/TR/xmlschema-2/#boolean for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="name">
+				<xs:annotation>
+					<xs:documentation>Specifies a name (which represents XML Names) as it applies to the W3C standard. See http://www.w3.org/TR/xmlschema-2/#Name and http://www.w3.org/TR/2000/WD-xml-2e-20000814#dt-name for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="long">
+				<xs:annotation>
+					<xs:documentation>Specifies a long integer, which is an integer whose maximum value is 9223372036854775807 and minimum value is -9223372036854775808 as it applies to the W3C standard. See http://www.w3.org/TR/xmlschema-2/#long for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="unsignedLong">
+				<xs:annotation>
+					<xs:documentation>Specifies an unsigned long integer, which is an integer whose maximum value is 18446744073709551615 and minimum value is 0 as it applies to the W3C standard. See http://www.w3.org/TR/xmlschema-2/#unsignedLong for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="duration">
+				<xs:annotation>
+					<xs:documentation>Specifies a length of time in the extended format PnYn MnDTnH nMnS, where nY represents the number of years, nM the number of months, nD the number of days, 'T' is the date/time separator, nH the number of hours, nM the number of minutes and nS the number of seconds, as it applies to the W3 standard. See http://www.w3.org/TR/xmlschema-2/#duration for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="double">
+				<xs:annotation>
+					<xs:documentation>Specifies a decimal of datatype double as it is patterned after the IEEE double-precision 64-bit floating point type (IEEE 754-1985) and as it applies to the W3C standard. See http://www.w3.org/TR/xmlschema-2/#double for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="nonNegativeInteger">
+				<xs:annotation>
+					<xs:documentation>Specifies a non-negative integer in the infinite set {0,1,2,...} as it applies to the W3C standard. See http://www.w3.org/TR/xmlschema-2/#nonNegativeInteger for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="hexBinary">
+				<xs:annotation>
+					<xs:documentation>Specifies arbitrary hex-encoded binary data as it applies to the W3C standard. See http://www.w3.org/TR/xmlschema-2/#hexBinary for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="anyURI">
+				<xs:annotation>
+					<xs:documentation>Specifies a Uniform Resource Identifier Reference (URI) as it applies to the W3C standard and to RFC 2396, as amended by RFC 2732. See http://www.w3.org/TR/xmlschema-2/#anyURI for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="base64Binary">
+				<xs:annotation>
+					<xs:documentation>Specifies base64-encoded arbitrary binary data as it applies to the W3C standard. See http://www.w3.org/TR/xmlschema-2/#base64Binary for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IPv4 Address">
+				<xs:annotation>
+					<xs:documentation>Specifies an IPV4 address in dotted decimal form. CIDR notation is also accepted.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IPv6 Address">
+				<xs:annotation>
+					<xs:documentation>Specifies an IPV6 address, which is represented by eight groups of 16-bit hexadecimal values separated by colons (:) in the form a:b:c:d:e:f:g:h. CIDR notation is also accepted.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Host Name">
+				<xs:annotation>
+					<xs:documentation>Specifies a host name. For compatability reasons, this could be any string. Even so, it is best to use the proper notation for the given host type. For example, web hostnames should be written as fully qualified hostnames in practice.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MAC Address">
+				<xs:annotation>
+					<xs:documentation>Specifies a MAC address, which is represented by six groups of 2 hexdecimal digits, separated by hyphens (-) or colons (:) in transmission order.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Domain Name">
+				<xs:annotation>
+					<xs:documentation>Specifies a domain name, which is represented by a series of labels concatenated with dots comforming to the rules in RFC 1035, RFC 1123, and RFC 2181.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="URI">
+				<xs:annotation>
+					<xs:documentation>Specifies a Uniform Resource Identifier, which identifies a name or resource and can act as a URL or URN.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TimeZone">
+				<xs:annotation>
+					<xs:documentation>Specifies a timezone in UTC notation (UTC+number).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Octal">
+				<xs:annotation>
+					<xs:documentation>Specifies arbitrary octal (base-8) encoded data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Binary">
+				<xs:annotation>
+					<xs:documentation>Specifies arbitrary binary encoded data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BinHex">
+				<xs:annotation>
+					<xs:documentation>Specifies arbitrary data encoded in the Mac OS-originated BinHex format.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Subnet Mask">
+				<xs:annotation>
+					<xs:documentation>Specifies a subnet mask in IPv4 or IPv6 notation.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UUID/GUID">
+				<xs:annotation>
+					<xs:documentation>Specifies a globally/universally unique ID represented as a 32-character hexadecimal string. See ISO/IEC 11578:1996 Information technology -- Open Systems Interconnection -- Remote Procedure Call - http://www.iso.ch/cate/d2229.html</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Collection">
+				<xs:annotation>
+					<xs:documentation>Specifies data represented as a container of multiple data of a shared elemental type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CVE ID">
+				<xs:annotation>
+					<xs:documentation>Specifies a CVE ID, expressed as CVE- appended by a four-digit integer, a - and another four-digit integer, as in CVE-2012-1234.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CWE ID">
+				<xs:annotation>
+					<xs:documentation>Specifies a CWE ID, expressed as CWE- appended by an integer.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CAPEC ID">
+				<xs:annotation>
+					<xs:documentation>Specifies a CAPEC ID, expressed as CAPEC- appended by an integer.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CCE ID">
+				<xs:annotation>
+					<xs:documentation>Specifies a CCE ID, expressed as CCE- appended by an integer.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CPE Name">
+				<xs:annotation>
+					<xs:documentation>Specifies a CPE Name. See http://cpe.mitre.org/specification/archive/version2.0/cpe-specification_2.0.pdf for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PatternTypeEnum">
+		<xs:annotation>
+			<xs:documentation>The PatternTypeEnum type is a non-exhaustive enumeration of potentially relevant pattern types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Regex">
+				<xs:annotation>
+					<xs:documentation>Specifies the regular expression pattern type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Binary">
+				<xs:annotation>
+					<xs:documentation>Specifies the binary (bit operations) pattern type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="XPath">
+				<xs:annotation>
+					<xs:documentation>Specifies the XPath 1.0 expression pattern type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<!---->
+	<xs:complexType name="ExtractedFeaturesType">
+		<xs:annotation>
+			<xs:documentation>The ExtractedFeaturesType is a type representing a description of features extracted from an object such as a file.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Strings" type="cyboxCommon:ExtractedStringsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field enables description of a set of static strings extracted from a raw cyber object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Imports" type="cyboxCommon:ImportsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field enables description of a set of references to external resources imported by a raw cyber object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Functions" type="cyboxCommon:FunctionsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field enables description of a set of references to functions called by a raw cyber object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Code_Snippets" type="cyboxCommon:CodeSnippetsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field enables description of a set of code snippets extracted from a raw cyber object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExtractedStringsType">
+		<xs:annotation>
+			<xs:documentation>The ExtractedStringsType type is intended as container for strings extracted from CybOX objects.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="String" type="cyboxCommon:ExtractedStringType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This field enables description of a single static string extracted from a raw cyber object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExtractedStringType">
+		<xs:annotation>
+			<xs:documentation>The ExtractedStringType type is intended as container a single string extracted from a CybOX object.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Encoding" type="cyboxCommon:ControlledVocabularyStringType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Encoding field refers to the encoding method used for the string extracted from the CybOX object, via a standardized controlled vocabulary.</xs:documentation>
+					<xs:documentation>This field is implemented through the xsi:type controlled vocabulary extension mechanism. The default vocabulary type is CharacterEncodingVocab in the http://cybox.mitre.org/default_vocabularies-2 namespace. This type is defined in the cybox_default_vocabularies.xsd file or at the URL http://cybox.mitre.org/XMLSchema/default_vocabularies/2.0/cybox_default_vocabularies.xsd.
+						Users may also define their own vocabulary using the type extension mechanism (by specifying a vocabulary name and/or reference using the vocab_name and vocab_reference attributes, respectively) or simply use this as a string field. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="String_Value" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The String_Value field specifies the actual value of the string extracted from the CybOX object, if it is capable of being represented in the encoding scheme used in the document (most commonly UTF-8).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Byte_String_Value" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Byte_String_Value field specifies the raw, byte-string representation of the string extracted from the CybOX object, in hexadecimal format.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Hashes" type="cyboxCommon:HashListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Hashes field is used to include any hash values computed using the string extracted from the CybOX object as input.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Address" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Address field specifies the location or offset of the specified string in the CybOX objects.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Length" type="cyboxCommon:PositiveIntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Length field specifies the length, in characters, of the string extracted from the CybOX object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Language" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Language field specifies the language the string is written in, e.g. English.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="English_Translation" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The English_Translation field specifies the English translation of the string, if it is not written in English.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ImportsType">
+		<xs:annotation>
+			<xs:documentation>The ImportsType is intended to represent an extracted list of imports specified within a CybOX object.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Import" type="cyboxCommon:StringObjectPropertyType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This field enables description of a single reference to an external resource imported by a raw cyber object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FunctionsType">
+		<xs:annotation>
+			<xs:documentation>The FunctionsType is intended to represent an extracted list of functions leveraged within a CybOX object.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Function" type="cyboxCommon:StringObjectPropertyType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This field enables description of a single reference to a function called by a raw cyber object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CodeSnippetsType">
+		<xs:annotation>
+			<xs:documentation>The CodeSnippetsType is intended to represent an set of code snippets extracted from within a CybOX object.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Code_Snippet" type="cyboxCommon:ObjectPropertiesType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This field enables description of a single code snippet extracted from a raw cyber object. Code_Snippet should be of CodeObj:CodeObjectType.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!---->
+	<xs:complexType name="ByteRunsType">
+		<xs:annotation>
+			<xs:documentation>The ByteRunsType is used for representing a list of byte runs from within a raw object.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Byte_Run" type="cyboxCommon:ByteRunType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Byte_Run field contains a single byte run from the raw object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ByteRunType">
+		<xs:annotation>
+			<xs:documentation>The ByteRunType is used for representing a single byte run from within a raw object.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Offset" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Offset field specifies the offset of the beginning of the byte run as measured from the beginning of the object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="File_System_Offset" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The File_System_Offset field is relevant only for byte runs of files in forensic analysis.It specifies the offset of the beginning of the byte run as measured from the beginning of the relevant file system.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Image_Offset" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Image_Offset field is provided for forensic analysis purposes and specifies the offset of the beginning of the byte run as measured from the beginning of the relevant forensic image.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Length" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Length field specifies the number of bytes in the byte run.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Hashes" type="cyboxCommon:HashListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Hashes field contains computed hash values for this the data in this byte run.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Byte_Run_Data" type="xs:anyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Byte_Run_Data field contains a raw dump of the byte run data, typically enclosed within an XML CDATA section.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!---->
+	<xs:complexType name="HashListType">
+		<xs:annotation>
+			<xs:documentation>The HashListType type is used for representing a list of hash values.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Hash" type="cyboxCommon:HashType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Hash field specifies a single calculated hash value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HashValueType">
+		<xs:annotation>
+			<xs:documentation>The HashValueType is used for specifying the resulting value from a hash calculation.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="Simple_Hash_Value" type="cyboxCommon:SimpleHashValueType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Simple_Hash_Value field specifies a single result value of a basic cryptograhic hash function outputing a single hexbinary hash value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Fuzzy_Hash_Value" type="cyboxCommon:FuzzyHashValueType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Fuzzy_Hash_Value field specifies a single result value of a cryptograhic fuzzy hash function outputing a single complex string based hash value. (e.g. SSDEEP's Block1hash:Block2hash format).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="SimpleHashValueType">
+		<xs:annotation>
+			<xs:documentation>The SimpleHashValueType is used for characterizing the output of basic cryptograhic hash functions outputing a single hexbinary hash value.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cyboxCommon:HexBinaryObjectPropertyType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="FuzzyHashValueType">
+		<xs:annotation>
+			<xs:documentation>The FuzzyHashValueType is used for characterizing the output of cryptograhic fuzzy hash functions outputing a single complex string based hash value.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cyboxCommon:StringObjectPropertyType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="FuzzyHashStructureType">
+		<xs:annotation>
+			<xs:documentation>The FuzzyHashStructureType is used for characterizing the internal components of a cryptograhic fuzzy hash algorithmic calculation.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Block_Size" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Block_Size field is optional and specifies the calculated block size for this fuzzy hash calculation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Block_Hash" type="cyboxCommon:FuzzyHashBlockType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Block_Hash field is optional and enables specification of the elemental components utilized for a fuzzy hash calcuation on the hashed object utilizing Block_Size to calculate trigger points.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FuzzyHashBlockType">
+		<xs:annotation>
+			<xs:documentation>The FuzzyHashBlockType is used for characterizing the internal components of a single block in a cryptograhic fuzzy hash algorithmic calculation.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Block_Hash_Value" type="cyboxCommon:HashValueType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Block_Hash_Value field is optional and specifies a fuzzy hash calculation result value for this Block.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Segment_Count" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Segment_Count field is optional and specifies the number of segments identified and utlized within this fuzzy hash calculation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Segments" type="cyboxCommon:HashSegmentsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Segments field is optional and specifies the set of segments identified and utlized within this fuzzy hash calculation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HashSegmentsType">
+		<xs:annotation>
+			<xs:documentation>The HashSegmentsType is used for characterizing the internal components of a set of trigger point-delimited segments in a cryptograhic fuzzy hash algorithmic calculation.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Segment" type="cyboxCommon:HashSegmentType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Segment field is optional and specifies a single segment identified and utlized within this fuzzy hash calculation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HashSegmentType">
+		<xs:annotation>
+			<xs:documentation>The HashSegmentType is used for characterizing the internal components of a single trigger point-delimited segment in a cryptograhic fuzzy hash algorithmic calculation.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Trigger_Point" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Trigger_point field is optional and specifies the offset within the hashed object of the trigger point for this segment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Segment_Hash" type="cyboxCommon:HashValueType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Segment_Hash field is optional and specifies a calculated hash value for this segment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Raw_Segment_Content" type="xs:anyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Raw_Segment_Content field is optional and contains the raw content of this segment of the hashed object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HashType">
+		<xs:annotation>
+			<xs:documentation>The HashType type is intended to characterize hash values.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Type" type="cyboxCommon:ControlledVocabularyStringType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Type field utilizes a standardized controlled vocabulary to capture the type of hash used in the Simple_Hash_Value or Fuzzy_Hash_Value elements.</xs:documentation>
+					<xs:documentation>This field is implemented through the xsi:type controlled vocabulary extension mechanism. The default vocabulary type is HashNameVocab in the http://cybox.mitre.org/default_vocabularies-2 namespace. This type is defined in the cybox_default_vocabularies.xsd file or at the URL http://cybox.mitre.org/XMLSchema/default_vocabularies/2.0/cybox_default_vocabularies.xsd.
+						Users may also define their own vocabulary using the type extension mechanism (by specifying a vocabulary name and/or reference using the vocab_name and vocab_reference attributes, respectively) or simply use this as a string field. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="Simple_Hash_Value" type="cyboxCommon:SimpleHashValueType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The Simple_Hash_Value field specifies a single result value of a basic cryptograhic hash function outputing a single hexbinary hash value.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Fuzzy_Hash_Value" type="cyboxCommon:FuzzyHashValueType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The Fuzzy_Hash_Value field specifies a single result value of a cryptograhic fuzzy hash function outputing a single complex string based hash value. (e.g. SSDEEP's Block1hash:Block2hash format).</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="Fuzzy_Hash_Structure" type="cyboxCommon:FuzzyHashStructureType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Fuzzy_Hash_Structure field is optional and enables the characterization of the key internal components of a fuzzy hash calculation with a given block size. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!---->
+	<xs:complexType name="StructuredTextType">
+		<xs:annotation>
+			<xs:documentation>The StructuredTextType is a type representing a generalized structure for capturing structured or unstructured textual information such as descriptions of things.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="structuring_format" type="xs:string" use="optional">
+					<xs:annotation>
+						<xs:documentation>Used to indicate a particular structuring format (e.g., HTML5) used within an instance of StructuredTextType. Note that if the markup tags used by this format would be interpreted as XML information (such as the bracket-based tags of HTML) the text area should be enclosed in a CDATA section to prevent the markup from interferring with XML validation of the CybOX document. If this attribute is absent, the implication is that no markup is being used.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="ReferenceListType">
+		<xs:annotation>
+			<xs:documentation>The ReferencesListType contains one or more Reference elements, each of which provide further reading and insight into the item. This should be filled out as appropriate.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Reference" type="cyboxCommon:ReferenceType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation> Each Reference subelement should provide a single source from which more information and deeper insight can be obtained, such as a research paper or an excerpt from a publication. Multiple Reference subelements can exist. The sole component of this field is the id. The id is optional and translates to a preceding footnote below the context notes if the author of the entry wants to cite a reference. Not all subelements need to be completed, since some are designed for web references and others are designed for book references. The fields Reference_Author and Reference_Title should be filled out for all references if possible. Reference_Section and Reference_Date can be included for either book references or online references. Reference_Edition, Reference_Publication, Reference_Publisher, and Reference_PubDate are intended for book references, however they can be included where appropriate for other types of references. Reference_Link is intended for web references, however it can be included for book references as well if applicable. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReferenceType">
+		<xs:annotation>
+			<xs:documentation>The ReferenceType is a type representing a single reference to a source of information.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Reference_Description" type="cyboxCommon:StructuredTextType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field provides a description of the reference.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reference_Author" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation> This field identifies an individual author of the material being referenced. It is not required, but may be repeated sequentially in order to identify multiple authors for a single piece of material.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reference_Title" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation> This field identifies the title of the material being referenced. It is not required if the material does not have a title.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reference_Section" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation> This field is intended to provide a means of identifying the exact location of the material inside of the publication source, such as the relevant pages of a research paper, the appropriate chapters from a book, etc. This is useful for both book references and internet references.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reference_Edition" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation> This field identifies the edition of the material being referenced in the event that multiple editions of the material exist. This will usually only be useful for book references. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reference_Publication" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation> This field identifies the publication source of the reference material, if one exists. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reference_Publisher" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation> This field identifies the publisher of the reference material, if one exists. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reference_Date" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation> This field identifies the date when the reference was included in the entry. This provides the reader with a time line for when the material in the reference, usually the link, was valid. The date should be of the format YYYY-MM-DD. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reference_PubDate" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation> This field describes the date when the reference was published YYYY. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reference_Link" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation> This field should hold the URL for the material being referenced, if one exists. This should always be used for web references, and may optionally be used for book and other publication references.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="reference_id" type="xs:string">
+			<xs:annotation>
+				<xs:documentation> The id field is optional and is used as a mechanism for citing text in the entry. If an id is provided, it is placed between brackets and precedes this reference and the matching id should be used inside of the text for the entry itself where this reference is applicable. All reference ids assigned within an entry must be unique. </xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<!---->
+	<xs:complexType name="DataSegmentType">
+		<xs:annotation>
+			<xs:documentation>The DataSegmentType is intended to provide a relatively abstract way of characterizing data segments that may be written/read/transmitted or otherwise utilized in actions or behaviors. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Data_Format" type="cyboxCommon:DataFormatEnum" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Data_Format field refers to the type of data contained in the Data_Segment element. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Data_Size" type="cyboxCommon:DataSizeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Data_Size field contains the size of the data contained in this element.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Data_Segment" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Data_Segment field contains the actual segment of data being characterized.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Offset" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Offset field allows for the specification of where to start searching for the specified data segment in an object, in bytes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Search_Distance" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Search_Distance field specifies how far into an object should be ignored, in bytes, before starting to search for the specified data segment relative to the end of the previous data segment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Search_Within" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Search_Within field specifies that at most N bytes are between data segments in related objects.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:QName">
+			<xs:annotation>
+				<xs:documentation>The id field specifies a unique id for this data segment.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="DataFormatEnum">
+		<xs:annotation>
+			<xs:documentation>The DataFormatEnum is a (non-exhaustive) enumeration of data formats.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Binary">
+				<xs:annotation>
+					<xs:documentation>Specifies binary data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Hexadecimal">
+				<xs:annotation>
+					<xs:documentation>Specifies hexadecimal data.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Text">
+				<xs:annotation>
+					<xs:documentation>Specifies text.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Other">
+				<xs:annotation>
+					<xs:documentation>Specifies any other type of data from the ones listed.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="DataSizeType">
+		<xs:annotation>
+			<xs:documentation>The DataSizeType specifies the size of the data segment.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="cyboxCommon:StringObjectPropertyType">
+				<xs:attribute name="units" type="cyboxCommon:DataSizeUnitsEnum" use="required">
+					<xs:annotation>
+						<xs:documentation>This field represents the Units used in the object size element. Possible values are: Bytes, Kilobytes, Megabytes.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="DataSizeUnitsEnum">
+		<xs:annotation>
+			<xs:documentation>The DataSizeUnitsEnum is a (non-exhaustive) enumeration of data size units.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Bytes">
+				<xs:annotation>
+					<xs:documentation>Specifies an object size in Bytes.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Kilobytes">
+				<xs:annotation>
+					<xs:documentation>Specifies an object size in Kilobytes.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Megabytes">
+				<xs:annotation>
+					<xs:documentation>Specifies an object size in Megabytes.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<!---->
+	<xs:complexType name="PlatformSpecificationType">
+		<xs:annotation>
+			<xs:documentation>PlatformSpecificationType is a modularized data type intended for providing a consistent approach to uniquely specifying the identity of a specific platform.</xs:documentation>
+			<xs:documentation>In addition to capturing basic information, this type is intended to be extended to enable the structured description of a platform instance using the XML Schema extension feature. The CybOX default extension uses the Common Platform Enumeration (CPE) Applicability Language schema to do so. The extension that defines this is captured in the CPE23PlatformSpecificationType in the http://cybox.mitre.org/extensions/platform#CPE2.3-1 namespace. This type is defined in the extensions/platform/cpe2.3.xsd file.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Description" type="cyboxCommon:StructuredTextType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A prose description of the indicated platform.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Identifier" type="cyboxCommon:PlatformIdentifierType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Indicates a pre-defined name for the given platform using some naming scheme. For example, one could provide a CPE (Common Platform Enumeration) name using the CPE naming format.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PlatformIdentifierType">
+		<xs:annotation>
+			<xs:documentation>Used to specify a name for a platform using a particular naming system and also allowing a reference pointing to more information about that naming scheme. For example, one could provide a CPE (Common Platform Enumeration) name using the CPE naming format. In this case, the system value could be "CPE" while the system_ref value could be "http://scap.nist.gov/specifications/cpe/".</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="cyboxCommon:StringObjectPropertyType">
+				<xs:attribute name="system" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Indicates the naming system from which the indicated name was drawn.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="system-ref" type="xs:anyURI">
+					<xs:annotation>
+						<xs:documentation>A reference to information about the naming system from which the indicated name was drawn.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!---->
+	<xs:complexType name="MetadataType">
+		<xs:annotation>
+			<xs:documentation>The MetadataType is intended as mechanism to capture any non-context-specific metadata</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Value" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field specifies the value of name of a single metadata field.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SubDatum" type="cyboxCommon:MetadataType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>This field uses recursion of the MetadataType specify subdatum structures for this metadata field.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="type" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>This field specifies the type of name of a single metadata field.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<!---->
+	<xs:complexType name="EnvironmentVariableListType">
+		<xs:annotation>
+			<xs:documentation>The EnvironmentVariableListType type is used for representing a list of environment variables.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Environment_Variable" type="cyboxCommon:EnvironmentVariableType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Environment_Variable field is used for representing environment variables using a name/value pair.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EnvironmentVariableType">
+		<xs:annotation>
+			<xs:documentation>The EnvironmentVariableType type is used for representing environment variables using a name/value pair.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Name field specifies the name of the environment variable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Value" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Value field specifies the value of the environment variable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!---->
+	<xs:complexType name="DigitalSignaturesType">
+		<xs:annotation>
+			<xs:documentation>The DigitalSignaturesType is used for representing a list of digital signatures.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Digital_Signature" type="cyboxCommon:DigitalSignatureInfoType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Digital_Signature field is optional and captures a single digital signature for this Object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DigitalSignatureInfoType">
+		<xs:annotation>
+			<xs:documentation>The DigitalSignatureInfoType type is used as a way to represent some of the basic information about a digital signature.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Certificate_Issuer" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The certificate issuer of the digital signature.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Certificate_Subject" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The certificate subject of the digital signature.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Signature_Description" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A description of the digital signature.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="signature_exists" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Specifies whether the digital signature exists.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="signature_verified" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Specifies if the digital signature is verified.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<!---->
+	<xs:complexType name="PatternableFieldType">
+		<xs:annotation>
+			<xs:documentation>The PatternableFieldType is a grouping of attributes applicable to defining patterns on a specific field.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:anySimpleType">
+				<xs:attributeGroup ref="cyboxCommon:PatternFieldGroup"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!---->
+	<xs:complexType name="ControlledVocabularyStringType">
+		<xs:annotation>
+			<xs:documentation>The ControlledVocabularyStringType is used as the basis for defining controlled vocabularies.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="cyboxCommon:PatternableFieldType">
+				<xs:attribute name="vocab_name" type="xs:string" use="optional">
+					<xs:annotation>
+						<xs:documentation>The vocab_name field specifies the name of the controlled vocabulary.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="vocab_reference" type="xs:anyURI" use="optional">
+					<xs:annotation>
+						<xs:documentation>The vocab_reference field specifies the URI to the location of where the controlled vocabulary is defined, e.g., in an externally located XML schema file.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!---->
+	<xs:complexType name="SIDType">
+		<xs:annotation>
+			<xs:documentation>SIDType specifies Windows Security ID (SID) types via a union of the SIDTypeEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+			<xs:documentation>Properties that use this type can express multiple values by providing them using a comma separated list. As such, a comma is a reserved character in all uses of this type. Commas in values should be expressed as &amp;comma; (that is, ampersand-"comma"-semicolon). Such expressions should be converted back to a comma before displaying to users or handing off values to tools for processing. Note that whitespace is preserved and so, when specifying a list of values, do not include a space following a comma in a list unless the first character of the next list item should, in fact, be a space.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="cyboxCommon:SIDTypeEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" use="optional" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="SIDTypeEnum">
+		<xs:annotation>
+			<xs:documentation>The SIDTypeEnum type is an enumeration of Windows Security ID (SID) types. These correspond to the values specified by the SID_NAME_USE enumeration--see http://msdn.microsoft.com/en-us/library/windows/desktop/aa379601(v=vs.85).aspx for more information.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SidTypeUser">
+				<xs:annotation>
+					<xs:documentation>Indicates a SID of type User.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SidTypeGroup">
+				<xs:annotation>
+					<xs:documentation>Indicates a SID of type Group.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SidTypeDomain">
+				<xs:annotation>
+					<xs:documentation>Indicates a SID of type Domain.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SidTypeAlias">
+				<xs:annotation>
+					<xs:documentation>Indicates a SID of type Alias.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SidTypeWellKnownGroup">
+				<xs:annotation>
+					<xs:documentation>Indicates a SID for a well-known group.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SidTypeDeletedAccount">
+				<xs:annotation>
+					<xs:documentation>Indicates a SID for a deleted account.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SidTypeInvalid">
+				<xs:annotation>
+					<xs:documentation>Indicates an invalid SID.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SidTypeUnknown">
+				<xs:annotation>
+					<xs:documentation>Indicates a SID of unknown type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SidTypeComputer">
+				<xs:annotation>
+					<xs:documentation>Indicates a SID for a computer.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SidTypeLabel">
+				<xs:annotation>
+					<xs:documentation>Indicates a mandatory integrity label SID.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

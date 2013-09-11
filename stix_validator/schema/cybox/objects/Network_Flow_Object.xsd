@@ -1,0 +1,1559 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:SocketAddressObj="http://cybox.mitre.org/objects#SocketAddressObject-1" xmlns:NetFlowObj="http://cybox.mitre.org/objects#NetworkFlowObject-2" xmlns:PacketObj="http://cybox.mitre.org/objects#PacketObject-2" xmlns:AddressObj="http://cybox.mitre.org/objects#AddressObject-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" targetNamespace="http://cybox.mitre.org/objects#NetworkFlowObject-2" elementFormDefault="qualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>Network_Flow_Object</schema>
+			<version>2.0</version>
+			<date>03/27/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/objects#PacketObject-2" schemaLocation="Network_Packet_Object.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#AddressObject-2" schemaLocation="Address_Object.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#SocketAddressObject-1" schemaLocation="Socket_Address_Object.xsd"/>
+	<xs:element name="Network_Flow_Object" type="NetFlowObj:NetworkFlowObjectType">
+		<xs:annotation>
+			<xs:documentation>The Network_Flow_Object object provides a summary of network traffic, expressed as flows of multiple packets instead of individual packets, without the packet payload data (i.e. the actual data that was uploaded/downloaded to and from the Dest IP to Source IP as included in ppaacket monitoring tools, such as Wireshark).</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="NetworkFlowObjectType">
+		<xs:annotation>
+			<xs:documentation>Defines the fields necessary to summarize network traffic, expressed as flows of multiple packets. Does not include the packet payload data (i.e. the actual data that was uploaded/downloaded to and from the Dest IP to Source IP as included in packet monitoring tools, such as Wireshark).</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cyboxCommon:ObjectPropertiesType">
+				<xs:sequence>
+					<xs:element name="Network_Flow_Label" type="NetFlowObj:NetworkFlowLabelType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Represents elements common to all flow records formats - either expressed as a 5-tuple or an extended 7-tuple (actually an 8-tuple because for organizational reasons, we include the egress interface index). Because these fields are defined here, they are excluded from the fields associated directly with each different flow record format type.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:choice minOccurs="0" maxOccurs="1">
+						<xs:element name="Unidirectional_Flow_Record" type="NetFlowObj:UnidirectionalRecordType" minOccurs="0" maxOccurs="1">
+							<xs:annotation>
+								<xs:documentation>Represents flow-record formats that capture data in one direction only (e.g., Netflow v9).</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Bidirectional_Flow_Record" type="NetFlowObj:BidirectionalRecordType" minOccurs="0" maxOccurs="1">
+							<xs:annotation>
+								<xs:documentation>Represents flow-record formats that capture data in both directions (e.g., YAF).</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="NetworkLayerInfoType">
+		<xs:annotation>
+			<xs:documentation>Network layer information (relative to the OSI network model) which is typically captured in all types of network flow records.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Src_Socket_Address" type="SocketAddressObj:SocketAddressObjectType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Represents the source IP socket addres, consisting of an IP address and port number, for the network flow expressed. Note that not all flow protocols support IPv6 addresses.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Dest_Socket_Address" type="SocketAddressObj:SocketAddressObjectType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Represents the destination IP socket addres, consisting of an IP address and port number, for the network flow expressed. Note that not all flow protocols support IPv6 addresses.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IP_Protocol" type="PacketObj:IANAAssignedIPNumbersType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The IP Protocol of the network flow. This is usually TCP, UDP, or SCTP, but can include others as represented in NetFlow as an integer from 0 to 255. Please refer to http://www.iana.org/assignments/protocol-numbers/protocol-numbers.xml for reference.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NetworkFlowLabelType">
+		<xs:annotation>
+			<xs:documentation>The NetworkFlowLabelType contains elements that are common to all flow record formats. It builds off of network layer information (a 5-tuple that commonly defines a flow) and includes ingress and egress interface indexes and IP protocol information (not present if all flow record formats). Egress information is usually not thought of as part of the extended 7-tuple, but we include it for organizational purposes. Because these fields are defined here, they are excluded from the fields associated directly with each different flow record format type.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="NetFlowObj:NetworkLayerInfoType">
+				<xs:sequence minOccurs="0" maxOccurs="1">
+					<xs:element name="Ingress_Interface_Index" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Represents the index (in SNMP, by default) of the network interface card where the flows entered the router.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Egress_Interface_Index" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Represents the index (in SNMP, by default) of the network interface card where the flows leave the router.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IP_Type_Of_Service" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Type of service field from the IP header. Specifies the IP Type of Service (ToS). See RFC 1349 for more information.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="UnidirectionalRecordType">
+		<xs:annotation>
+			<xs:documentation>Netflow record formats that capture traffic in one direction.</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="1">
+			<xs:element name="IPFIX_Message" type="NetFlowObj:IPFIXMessageType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Represents an Internet Protocol Flow Information eXport (IPFIX) protocol. IPFIX is based on NetFlow v9. Has several extensions such as Enterprise-defined fields types and variable length fields. See RFC 5101 for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NetflowV9_Export_Packet" type="NetFlowObj:NetflowV9ExportPacketType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Represents the Netflow V9 flow record format. See RFC 3954 (Netflow v9) for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NetflowV5_Packet" type="NetFlowObj:NetflowV5PacketType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Represents the NetFlow v5 flow record format, which is commonly used to represent network flow data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SiLK_Record" type="NetFlowObj:SiLKRecordType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Represents a network flow record in the System for Internet-Level Knowledge (SiLK) format, developed by CERT at Carnegie Mellon University (CMU)'s Software Engineering Institute (SEI) as part of the NetSA security suite. See http://tools.netsa.cert.org/silk/analysis-handbook.pdf for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="BidirectionalRecordType">
+		<xs:annotation>
+			<xs:documentation>Network record formats that capture traffic in both directions. Later, we plan to add Argus as a network flow format type. Argus supports bidirectional flows, and as such, is usually used as an alternative to NetFlow v5 analysis via SiLK (http://www.qosient.com/argus/).</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="1">
+			<xs:element name="YAF_Record" type="NetFlowObj:YAFRecordType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Represents flow records generated via YAF (Yet Another Flowmeter), a bidirectional network flow meter. See http://www.usenix.org/event/lisa10/tech/full_papers/Inacio.pdf or http://tools.netsa.cert.org/yaf/index.html for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="IPFIXMessageType">
+		<xs:annotation>
+			<xs:documentation>The IPFIX protocol provides IP flow information. http://tools.ietf.org/html/rfc5101</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Message_Header" type="NetFlowObj:IPFIXMessageHeaderType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The Message Header is the first part of an IPFIX Message, which provides basic information about the message, such as the IPFIX version, length of the message, message sequence number, etc. http://tools.ietf.org/html/rfc5101</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:sequence minOccurs="0" maxOccurs="1">
+				<xs:element name="Set" type="NetFlowObj:IPFIXSetType" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Set is a generic term for a collection of records that have a similar structure. In an IPFIX Message, one or more Sets follow the Message Header. http://tools.ietf.org/html/rfc5101 </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPFIXMessageHeaderType">
+		<xs:annotation>
+			<xs:documentation>This type represents the message header for the IPFIX format. For more information about each of the fields, please refer to RFC 5101 (http://tools.ietf.org/html/rfc5101) under the heading, "Message Header Field Descriptions." Note that common elements are included in the Network_Flow_Label.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0">
+			<xs:element name="Version" type="cyboxCommon:HexBinaryObjectPropertyType" fixed="0a" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates the version number of Flow Record format exported in this message. The value of this field is 0x000a for the current version, incrementing by one the version used in the NetFlow services export version 9 [see RFC3954].</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Byte_Length" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates the total byte length of the IPFIX Message, measured in octets, including Message Header and Set(s).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Export_Timestamp" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates the time, in seconds, since 0000 UTC Jan 1, 1970, at which the IPFIX message header leaves the Exporter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Sequence_Number" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates the incremental sequence counter modulo 2^32 of all IPFIX Data Records sent on this PR-SCTP stream from the current Observation Domain by the Exporting Process. This value SHOULD be used by the Collecting Process to identify whether any IPFIX Data Records have been missed. Template and Options Template Records do not increase the Sequence Number.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Observation_Domain_ID" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates a 32-bit identifier of the Observation Domain that is locally unique to the Exporting Process. See RFC 5101 under Observation Domain ID for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPFIXSetType">
+		<xs:annotation>
+			<xs:documentation>Represents the possible sets of records that can be represented in an IPFIX message. See RFC 5101 and look for the terms "Template Set", "Options Template Set", and "Data Set", for more information.</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Template_Set" type="NetFlowObj:IPFIXTemplateSetType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates a collection of one or more Template Records that have been grouped together in an IPFIX message.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Options_Template_Set" type="NetFlowObj:IPFIXOptionsTemplateSetType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates a collection of one or more Options Template Records that have been grouped together in an IPFIX message.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Data_Set" type="NetFlowObj:IPFIXDataSetType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates one or more Data Records, of the same type, that have been grouped together in an IPFIX message. Each Data Record is previously defined by a Template Record or an Options Template Record.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="IPFIXTemplateSetType">
+		<xs:annotation>
+			<xs:documentation>Specifies the regions of a Template Set, of which there are three: the Set Header, the collection of Template Records, and the optional padding at the end of the Template Set. See RFC 5101 under Set Format, which is section 3.3.1, for more information.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Set_Header" type="NetFlowObj:IPFIXSetHeaderType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates the Set Header region, which is 32-bit region containing the 16-bit fields Set ID and Length.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Template_Record" type="NetFlowObj:IPFIXTemplateRecordType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Indicates the region of Template Records. These are the same fields referenced in the IPFIXTemplateRecordType.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Padding" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates the optional Padding at the end of a Template Set. As mentioned in RFC 5101, the Exporting Process MAY insert some padding octets, so that the subsequent Set starts at an aligned boundary. For security reasons, the padding octet(s) MUST be composed of zero (0) valued octets, and the padding length MUST be shorter than any allowable record in this Set. For more information see RFC 5101 under Padding.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPFIXOptionsTemplateSetType">
+		<xs:annotation>
+			<xs:documentation>Specifies the regions of an Options Template Set, of which there are three: the Set Header, the collection of Options Template Records, and the optional padding at the end of the Options Template Set. See RFC 5101 under Set Format, which is section 3.3.1, for more information.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Set_Header" type="NetFlowObj:IPFIXSetHeaderType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates the Set Header region, which is 32-bit region containing the 16-bit fields Set ID and Length, in that order. These are the same fields referenced in the IPFIXSetHeaderType.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Options_Template_Record" type="NetFlowObj:IPFIXOptionsTemplateRecordType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Indicates the region of Options Template Records. These are the same fields referenced in the IPFIXOptionsTemplateRecordType.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Padding" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates the optional Padding at the end of an Options Template Set. As mentioned in RFC 5101, the Exporting Process MAY insert some padding octets, so that the subsequent Set starts at an aligned boundary. For security reasons, the padding octet(s) MUST be composed of zero (0) valued octets, and the padding length MUST be shorter than any allowable record in this Set. For more information see RFC 5101 under Padding.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPFIXDataSetType">
+		<xs:annotation>
+			<xs:documentation>Specifies the regions of a Data Set, of which there are three: the Set Header, the collection of Data Records, and the optional padding at the end of the Data Set. See RFC 5101 under Set Format, which is section 3.3.1, for more information.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Set_Header" type="NetFlowObj:IPFIXSetHeaderType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates the Set Header region, which is 32-bit region containing the 16-bit fields Set ID and Length, appended in that order. These are the same fields referenced in the IPFIXSetHeaderType.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Data_Record" type="NetFlowObj:IPFIXDataRecordType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Indicates the region of Data Records, which consist of a series of field values without a header, according to RFC 5101, section 3.4.3.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Padding" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates the optional Padding at the end of a Data Set. As mentioned in RFC 5101, the Exporting Process MAY insert some padding octets, so that the subsequent Set starts at an aligned boundary. For security reasons, the padding octet(s) MUST be composed of zero (0) valued octets, and the padding length MUST be shorter than any allowable record in this Set. For more information see RFC 5101 under Padding.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPFIXSetHeaderType">
+		<xs:annotation>
+			<xs:documentation>Defines the elements of the IPFIX set header.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Set_ID" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates a 16-bit value that identifies the set. The values of 0 and 1 are not used for historical reasons according to RFC 3954. Otherwise, a value of 2 is reserved for the Template Set and 3 is reserved for the Option Template Set. All other values from 4 to 255 are reserved for future use.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Length" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Total length of the set, in octets, including the set header, all records, and the optional padding. Because an individual Set MAY contain multiple records, the Length value MUST be used to determine the position of the next Set. http://tools.ietf.org/html/rfc5101</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPFIXTemplateRecordType">
+		<xs:annotation>
+			<xs:documentation>Specifies the regions of a Template Record, of which there are two: the Template Record Header, and the Field Specifiers. See RFC 5101 under Template Record Format, section 3.4.1, for more information.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Template_Record_Header" type="NetFlowObj:IPFIXTemplateRecordHeaderType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates the Template Record Header region, which is a 32-bit region containing the 16-bit fields Template ID (&gt; 255) and Field Count, appended in that order. These are the same fields referenced in the IPFIXTemplateRecordHeaderType.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Field_Specifier" type="NetFlowObj:IPFIXTemplateRecordFieldSpecifiersType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Indicates the region of Field Specifiers. These are the same fields referenced in the IPFIXTemplateRecordFieldSpecifiersType.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPFIXTemplateRecordHeaderType">
+		<xs:annotation>
+			<xs:documentation>Specifies the fields in a Template Record Header, Template_ID and Field_Count, as explained in RFC 5101, section 3.4.1.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Template_ID" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies a unique Template ID which is numbered 256-65535 since IDs 0-255 are reserved for Template Sets, Options Template Sets, and other reserved Sets yet to be created.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Field_Count" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the number of fields in this Template Record.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPFIXTemplateRecordFieldSpecifiersType">
+		<xs:annotation>
+			<xs:documentation>Specifies the fields in a Template Record Field Specifier, as explained in RFC 5101, section 3.2.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Enterprise_Bit" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the Enterprise bit, either 0 or 1. If this bit is zero, the Information Element Identifier identifies an IETF-specified Information Element, and the four-octet Enterprise Number field SHOULD NOT be present. If this bit is one, the Information Element identifier identifies an enterprise-specific Information Element, and the Enterprise Number filed SHOULD be present. NOTE: While it is legal to use "true" and "false" here, this value SHOULD be set to 0 or 1 for consistency with RFC 5101.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Information_Element_ID" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the 15-bit (NOT 16-bit) Information Element ID referring to the type of Information Element, as shown in RFC 5102.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Field_Length" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the 16-bit Field Length, in octets, of the corresponding encoded Information Element as defined in RFC 5102. The field length may be smaller than the definition in RFC 5102 if the reduced size encoding is used (see Section 6.2 of RFC 5101). The value 65535 is reserved for variable length Information Elements.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Enterprise_Number" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the 32-bit IANA Enterprise Number of the authority defining the Information Element identifier in this Template Record. Information Element Identifiers 1.2 and 2.1 are defined by the IETF (Enterprise bit = 0) and, therefore, do not need an Enterprise Number to identify them.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPFIXOptionsTemplateRecordType">
+		<xs:annotation>
+			<xs:documentation>Specifies the regions of an Options Template Record, of which there are two: the Options Template Record Header, and the Field Specifiers. See RFC 5101 under Options Template Record Format, section 3.4.2.2, for more information.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Options_Template_Record_Header" type="NetFlowObj:IPFIXOptionsTemplateRecordHeaderType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indicates the Options Template Record Header region, which is a 48-bit region containing the 16-bit fields Template ID, Field Count, and Scope Field Count, appended in that order. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Field_Specifier" type="NetFlowObj:IPFIXOptionsTemplateRecordFieldSpecifiersType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Indicates the region of Field Specifiers. These are the same fields referenced in the IPFIXOptionsTemplateRecordFieldSpecifiersType.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPFIXOptionsTemplateRecordHeaderType">
+		<xs:annotation>
+			<xs:documentation>Defines the ehader of an options template record.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Template_ID" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies a unique Template ID which is numbered 256-65535 since IDs 0-255 are reserved for Template Sets, Options Template Sets, and other reserved Sets yet to be created.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Field_Count" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the number of fields in this Options Template Record, INCLUDING the Scope Fields.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Scope_Field_Count" type="cyboxCommon:PositiveIntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the number of scope fields in this Options Template Record, which is NONZERO. The Scope Fields are normal Fields except that they are interpreted as scope at the Collector.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPFIXOptionsTemplateRecordFieldSpecifiersType">
+		<xs:annotation>
+			<xs:documentation>Specifies the fields in an Options Template Record Field Specifier, as explained in RFC 5101, sections 3.2 and 3.4.2.2. It consists of two sequences: Scope Fields and Option Fields, appended together.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="Scope_Enterprise_Bit" type="xs:boolean" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Specifies the Scope Enterprise bit, either 0 or 1. If this bit is zero, the Information Element Identifier identifies an IETF-specified Information Element, and the four-octet Enterprise Number field SHOULD NOT be present. If this bit is one, the Information Element identifier identifies an enterprise-specific Information Element, and the Enterprise Number filed SHOULD be present. NOTE: While it is legal to use "true" and "false" here, this value SHOULD be set to 0 or 1 for consistency with RFC 5101.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Scope_Information_Element_ID" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Specifies the 15-bit (NOT 16-bit) Scope Information Element ID referring to the type of Information Element, as shown in RFC 5102.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Scope_Field_Length" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Specifies the 16-bit Scope Field Length, in octets, of the corresponding encoded Information Element as defined in RFC 5102. The field length may be smaller than the definition in RFC 5102 if the reduced size encoding is used (see Section 6.2 of RFC 5101). The value 65535 is reserved for variable length Information Elements.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Scope_Enterprise_Number" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Specifies the 32-bit IANA Scope Enterprise Number of the authority defining the Information Element identifier in this Template Record. Information Element Identifiers 1.2 and 2.1 are defined by the IETF (Enterprise bit = 0) and, therefore, do not need an Enterprise Number to identify them.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="Option_Enterprise_Bit" type="xs:boolean" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Specifies the Option Enterprise bit, either 0 or 1. If this bit is zero, the Information Element Identifier identifies an IETF-specified Information Element, and the four-octet Enterprise Number field SHOULD NOT be present. If this bit is one, the Information Element identifier identifies an enterprise-specific Information Element, and the Enterprise Number filed SHOULD be present. NOTE: While it is legal to use "true" and "false" here, this value SHOULD be set to 0 or 1 for consistency with RFC 5101.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Option_Information_Element_ID" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Specifies the 15-bit (NOT 16-bit) Option Information Element ID referring to the type of Information Element, as shown in RFC 5102.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Option_Field_Length" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Specifies the 16-bit Option Field Length, in octets, of the corresponding encoded Information Element as defined in RFC 5102. The field length may be smaller than the definition in RFC 5102 if the reduced size encoding is used (see Section 6.2 of RFC 5101). The value 65535 is reserved for variable length Information Elements.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Option_Enterprise_Number" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Specifies the 32-bit IANA Option Enterprise Number of the authority defining the Information Element identifier in this Template Record. Information Element Identifiers 1.2 and 2.1 are defined by the IETF (Enterprise bit = 0) and, therefore, do not need an Enterprise Number to identify them.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IPFIXDataRecordType">
+		<xs:annotation>
+			<xs:documentation>Data records are sent in data sets. A data record consists of only one more more Field values.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Field_Value" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Indicates the individual Field Value, which need not be 16-bit. The Template ID to which the Field Values belong to is encoded in the Data Set Header field "Set ID", i.e. "Set ID" = "Template ID".</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NetflowV9ExportPacketType">
+		<xs:annotation>
+			<xs:documentation>Netflow v9 was developed by Cisco and provides acess to IP flow information. http://www.ietf.org/rfc/rfc3954.txt</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Packet_Header" type="NetFlowObj:NetflowV9PacketHeaderType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the Packet Header, which is the first part of an Export Packet. The Packet Header provides basic information about the packet such as the NetFlow version, number of records contained within the packet, and sequence numbering. See RFC 3954 for more information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:sequence>
+				<xs:element name="Flow_Set" type="NetFlowObj:NetflowV9FlowSetType" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Specifies a FlowSet, which is a collection of Flow Records that have similar structure. In an Export Packet, one or more FlowSets follow the Packet Header. There are three differnet types of FlowSets, as defined in RFC 3954: a Template FlowSet, Options Template FlowSet and Data FlowSet.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NetflowV9PacketHeaderType">
+		<xs:annotation>
+			<xs:documentation>Header fields defined for Netflow v9. Note that common elements are included in the Network_Flow_Label. http://www.ietf.org/rfc/rfc3954.txt</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Version" type="cyboxCommon:HexBinaryObjectPropertyType" fixed="09" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the version of flow record format exported in this packet. The value of this field is 9 for the Netflow v9.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Record_Count" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the total number of records in the Export Packet, which is the sum of Options FlowSet records, Template FlowSet records, and Data FlowSet records. http://www.ietf.org/rfc/rfc3954.txt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Sys_Up_Time" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the time in milliseconds since this device was first booted.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Unix_Secs" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the time in seconds since 0000 UTC 1970 at which the Export Packet leaves the Exporter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Sequence_Number" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Incremental sequence counter of all Export Packets sent from the current Observation Domain by the Exporter. This value MUST be cumulative, and SHOULD be used by the Collector toidentify whether any Export Packets have been missed. http://www.ietf.org/rfc/rfc3954.txt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Source_ID" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies a 32-bit value that identifies the Exporter Observation Domain. NetFlow Collectors SHOULD use the combination of the source IP address and the Source ID field to separate different export streams originating from the same Exporter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NetflowV9FlowSetType">
+		<xs:annotation>
+			<xs:documentation>In an Export Packet, one or more FlowSets follow the Packet Header. There are three differnet types of FlowSets, as defined in RFC 3954: a Template FlowSet, Options Template FlowSet and Data FlowSet.</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Template_Flow_Set" type="NetFlowObj:NetflowV9TemplateFlowSetType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>One of the essential elements in the NetFlow format is the Template FlowSet. Templates greatly enhance the flexibility of the Flow Record format because they allow the NetFlow Collector to process Flow Records without necessarily knowing the interpretation of all the data in the Flow Record. http://www.ietf.org/rfc/rfc3954.txt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Options_Template_Flow_Set" type="NetFlowObj:NetflowV9OptionsTemplateFlowSetType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies an Options Template FlowSet, which is one or more Options Template Records that have been grouped together in an Export Packet.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Data_Flow_Set" type="NetFlowObj:NetflowV9DataFlowSetType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies a Data FlowSet, which is one or more records, of the same type, that are grouped together in an Export Packet. Each record is either a Flow Data Record or an Options Data Record previously defined by a Template Record or an Options Template Record.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="NetflowV9TemplateFlowSetType">
+		<xs:annotation>
+			<xs:documentation>Provides the format of the Template FlowSet.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Flow_Set_ID" type="cyboxCommon:HexBinaryObjectPropertyType" fixed="00" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the FlowSet ID, which is fixed to 0 for the Template FlowSet.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Length" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Length is the sum of the lengths of the FlowSet ID, the Length itself, and all Template Records within this FlowSet. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Template_Record" type="NetFlowObj:NetflowV9TemplateRecordType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Specifies the Template Record region, which includes the template ID, field count, field type, and field length.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NetflowV9TemplateRecordType">
+		<xs:annotation>
+			<xs:documentation>Specifies the Template Record region, which includes the template ID, field count, field type, and field length.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Template_ID" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies a unique Template ID for the Template Record. IDs in the range 0-255 are reserved for Template FlowSets, Options FlowSets, and other reserved Sets yet to be created. http://www.ietf.org/rfc/rfc3954.txt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Field_Count" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the number of fields in this Template Record.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Number of fields corresponds to Count field.</xs:documentation>
+				</xs:annotation>
+				<xs:element name="Field_Type" type="NetFlowObj:NetflowV9FieldType" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Specifies a numeric value that represents the type of the field. Refer to the "Field Type Definitions" section in RFC 3954 for descriptions of these types.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Field_Length" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Specifies the length of the corresponding field type, in bytes.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NetflowV9FieldType">
+		<xs:annotation>
+			<xs:documentation>NetflowV9FieldType specifies possible fields types for Netflow v9, via a union of the NetflowV9FieldTypeEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="NetFlowObj:NetflowV9FieldTypeEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="NetflowV9FieldTypeEnum">
+		<xs:annotation>
+			<xs:documentation>This enumeration describe the field types in NetFlow Version 9. Only the first 20 have been enumerated so far. Please see Section 8 in http://www.ietf.org/rfc/rfc3954.txt for the complete list (79 in total).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="IN_BYTES(1)">
+				<xs:annotation>
+					<xs:documentation>The IN_BYTES(1) field represents the incoming counter with length N x 8 bits for number of bytes associated with an IP Flow.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IN_PKTS(2)">
+				<xs:annotation>
+					<xs:documentation>The IN_PKTS(2) field represents the incoming counter with length N x 8 bits for the number of packets associated with an IP Flow.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FLOWS(3)">
+				<xs:annotation>
+					<xs:documentation>The FLOWS(3) field represents the number of flows that were aggregated; default for N is 4.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PROTOCOL(4)">
+				<xs:annotation>
+					<xs:documentation>The PROTOCOL(4) field represents the IP protocol byte.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SRC_TOS(5)">
+				<xs:annotation>
+					<xs:documentation>The TOS(5) field represents the Type of Service byte setting when entering incoming interface.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TCP_FLAGS(6)">
+				<xs:annotation>
+					<xs:documentation>The TCP_FLAGS(6) field is cumulative of all the TCP flags seen for this flow.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="L4_SRC_PORT(7)">
+				<xs:annotation>
+					<xs:documentation>The L4_SRC_PORT(7) field represents the TCP/UDP source port number i.e.: FTP, Telnet, or equivalent.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IPV4_SRC_ADDR(8)">
+				<xs:annotation>
+					<xs:documentation>The IPV4_SRC_ADDR(8) field represents the IPv4 source address.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SRC_MASK(9)">
+				<xs:annotation>
+					<xs:documentation>The SRC_MASK(9) field represents the number of contiguous bits in the source address subnet mask i.e.: the submask in slash notation.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="INPUT_SNMP(10)">
+				<xs:annotation>
+					<xs:documentation>The INPUT_SNMP(10) field represents the number of contiguous bits in the source address subnet mask i.e.: the submask in slash notation.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="L4_DST_PORT(11)">
+				<xs:annotation>
+					<xs:documentation>The LP_DST_PORT(11) field represents the TCP/UDP destination port number i.e.: FTP, Telnet, or equivalent.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IPV4_DST_ADDR(12)">
+				<xs:annotation>
+					<xs:documentation>The IPV4_DST_ADDR(12) field represents the IPv4 destination address.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DST_MASK(13)">
+				<xs:annotation>
+					<xs:documentation>The DST_MASK(13) field represents the number of contiguous bits in the destination address subnet mask i.e.: the submask in slash notation.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OUTPUT_SNMP(14)">
+				<xs:annotation>
+					<xs:documentation>The OUTPUT_SNMP(14) field represents the output interface index; default for N is 2 but higher values could be used.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IPV4_NEXT_HOP(15)">
+				<xs:annotation>
+					<xs:documentation>The IPV4_NEXT_HOP(15) field represents the IPv4 address of next-hop router.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SRC_AS(16)">
+				<xs:annotation>
+					<xs:documentation>The SRC_AS(16) field represents the source BGP autonomous system number where N could be 2 or 4.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DST_AS(17)">
+				<xs:annotation>
+					<xs:documentation>The DST_AS(17) field represents the destination BGP autonomous system number where N could be 2 or 4.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BGP_IPV4_NEXT_HOP(18)">
+				<xs:annotation>
+					<xs:documentation>The BGP_IPV4_NEXT_HOP(18) field represents the next-hop router's IP in the BGP domain.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MUL_DST_PKTS(19)">
+				<xs:annotation>
+					<xs:documentation>The MUL_DST_PKTS(19) field represents the IP multicast outgoing packet counter with length N x 8 bits for packets associated with the IP Flow.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MUL_DST_BYTES(20)">
+				<xs:annotation>
+					<xs:documentation>The MUL_DST_BYTES(20) field represents the IP multicast outgoing byte counter with length N x 8 bits for bytes associated with the IP Flow.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="NetflowV9OptionsTemplateFlowSetType">
+		<xs:annotation>
+			<xs:documentation>Specifies an Options Template FlowSet, which is one or more Options Template Records that have been grouped together in an Export Packet.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Flow_Set_ID" type="cyboxCommon:HexBinaryObjectPropertyType" fixed="01" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the FlowSet ID, which is fixed to 1 for the Options Template FlowSet.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Length" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the total length of this FlowSet, in octets, including the set header, all records, and the optional padding.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Options_Template_Record" type="NetFlowObj:NetflowV9OptionsTemplateRecordType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Specifies the Options Template Record region, which includes the Option Scope Length, Option Length, and fields specifying the Scope field type and Scope field length.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Padding" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the number of padding bytes to be inserted so that the subsequent FlowSet starts at a 4-byte aligned boundary. It is important to note that the Length field includes the padding bytes. Padding SHOULD be using zeros.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NetflowV9OptionsTemplateRecordType">
+		<xs:annotation>
+			<xs:documentation>Specifies the Options Template Record region, which includes the Option Scope Length, Option Length, and fields specifying the Scope field type and Scope field length.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Template_ID" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the template ID of this Options Template, which must be greater than 255.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Option_Scope_Length" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the length of bytes of any Scope field definition contained in the Options Template Record.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Option_Length" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the length of bytes of any options field definitions contained in this Options Template Record.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="Scope_Field_Type" type="NetFlowObj:NetflowV9ScopeFieldType" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Specifies the relevent portion of the Exporter/NetFlow process to which the Options Template Record refers. Currently defined values include 1 for System, 2 for Interface, 3 for Line Card, 4 for Cache, and 5 for Template. More information can be found in RFC 3954.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Scope_Field_Length" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Specifies the length (in bytes) of the Scope field as it would appear in an Options Data Record.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="Option_Field_Type" type="NetFlowObj:NetflowV9FieldType" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Specifies the type of field that would appear in the Options Template Record. More information can be found in RFC 3954.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Option_Field_Length" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Specifies the length (in bytes) of the Option field.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NetflowV9ScopeFieldType">
+		<xs:annotation>
+			<xs:documentation>NetflowV9ScopeFieldType specifies scope field types for Netflow v9, via a union of the NetflowV9ScopeFieldTypeEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="NetFlowObj:NetflowV9ScopeFieldTypeEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="NetflowV9ScopeFieldTypeEnum">
+		<xs:annotation>
+			<xs:documentation>These describe the scope field types, found in the relevant portion of the NetFlow process to which the options record refers. http://www.ietf.org/rfc/rfc3954.txt</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="System(1)">
+				<xs:annotation>
+					<xs:documentation>Indicates the System scope field type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Interface(2)">
+				<xs:annotation>
+					<xs:documentation>Indicates the Interface scope field type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LineCard(3)">
+				<xs:annotation>
+					<xs:documentation>Indicates the Line Card scope field type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Cache(4)">
+				<xs:annotation>
+					<xs:documentation>Indicates the NetFlow Cache scope field type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Template(5)">
+				<xs:annotation>
+					<xs:documentation>Describes the Template scope field type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="NetflowV9DataFlowSetType">
+		<xs:annotation>
+			<xs:documentation>Specifies a Data FlowSet, which is one or more records, of the same type, that are grouped together in an Export Packet. Each record is either a Flow Data Record or an Options Data Record previously defined by a Template Record or an Options Template Record. http://www.ietf.org/rfc/rfc3954.txt</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Flow_Set_ID_Template_ID" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the FlowSet ID, which corresponds to the Template ID from a Template Flow Set or an Options Template Flow Set.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Length" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the length of this FlowSet.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Data_Record" type="NetFlowObj:NetflowV9DataRecordType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The remainder of the Data FlowSet is a collection of Flow Data Record(s), each containing a set of field values. The Type and Length of the fields have been previously defined in the Template Record referenced by the FlowSet ID or Template ID. Specifies either a template flow set or an options template flow set. http://www.ietf.org/rfc/rfc3954.txt </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Padding" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the padding bytes used so that the subsequent FlowSet starts at a 4-byte aligned boundary. It is important to note that the Length field includes the padding bytes. Padding SHOULD be using zeros.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NetflowV9DataRecordType">
+		<xs:annotation>
+			<xs:documentation>A Data FlowSet is one or more records, of the same type, that are grouped together in an Export Packet. Each record is either a Flow Data Record or an Options Data Record previously defined by a Template Record or an Options Template Record. http://www.ietf.org/rfc/rfc3954.txt </xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="1">
+			<xs:annotation>
+				<xs:documentation/>
+			</xs:annotation>
+			<xs:sequence>
+				<xs:element name="Flow_Data_Record" type="NetFlowObj:FlowDataRecordType" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Specifies a Flow Data Record, which corresponds to a FieldType defined in the Template Record. Each one will have multiple values associated with it. </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element name="Options_Data_Record" type="NetFlowObj:OptionsDataRecordType" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Specifies an Options Data Record, which Corresponds to a previously defined Options Template Record.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="FlowDataRecordType">
+		<xs:annotation>
+			<xs:documentation>A Flow Data Record is a data record that contains values of the Flow parameters corresponding to a Template Record. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0" maxOccurs="1">
+			<xs:element name="Flow_Record_Collection_Element" type="NetFlowObj:FlowCollectionElementType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>For each flow record, field values are listed.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FlowCollectionElementType">
+		<xs:annotation>
+			<xs:documentation>Field values are associated with each record in the collection of a flow data record.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0">
+			<xs:element name="Flow_Record_Field_Value" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Set of fields values for a given Flow Data Record.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OptionsDataRecordType">
+		<xs:annotation>
+			<xs:documentation>The data record that contains values and scope information of the Flow measurement parameters, corresponding to an Options Template Record. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Scope_Field_Value" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Corresponds to a previously defined Options Template Record.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:sequence minOccurs="0" maxOccurs="1">
+				<xs:element name="Option_Record_Collection_Element" type="NetFlowObj:OptionCollectionElementType" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>For each option data record, field values are listed.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OptionCollectionElementType">
+		<xs:annotation>
+			<xs:documentation>Field values are associatedwith each option in the collection of an option data record.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0">
+			<xs:element name="Option_Record_Field_Value" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Set of field values for a given Options Data Record.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NetflowV5PacketType">
+		<xs:annotation>
+			<xs:documentation>Defines the contents of a Netflow v5 packet. As of 2012, Netflow v5 is still the most commonly used network flow format. Netflow v5 was developed by Cisco. http://netflow.caligare.com/netflow_v5.htm</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Flow_Header" type="NetFlowObj:NetflowV5FlowHeaderType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Elements of a netflow v5 header.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:sequence minOccurs="0">
+				<xs:element name="Flow_Record" type="NetFlowObj:NetflowV5FlowRecordType" maxOccurs="30">
+					<xs:annotation>
+						<xs:documentation>See Network_Flow_Label for other common fields. Padding of 0-bytes is not captured. REF: http://netflow.caligare.com/netflow_v5.htm REF: http://tools.netsa.cert.org/silk/faq.html#ipfix-fields</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NetflowV5FlowHeaderType">
+		<xs:annotation>
+			<xs:documentation>Defines elements of a netflow v5 header. http://netflow.caligare.com/netflow_v5.htm</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Version" type="cyboxCommon:HexBinaryObjectPropertyType" default="05" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the NetFlow export format version number, which defaults to 5 in this case.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Count" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the number of flows exported in the packet (1-30).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Sys_Up_Time" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the current time in milliseconds since the export device booted.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Unix_Secs" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the current time in milliseconds since 0000 UTC 1970.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Unix_Nsecs" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the residual in nanoseconds since 0000 UTC 1970.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Flow_Sequence" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the sequence counter of total flows seen.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Engine_Type" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the type of flow-switching engine.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Engine_ID" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the slot number of the flow-switching engine.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Sampling_Interval" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the sampling interval field, which consists of the first two bits holding the sampling mode, with the remaining 14 bits holding the value of the sampling interval.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NetflowV5FlowRecordType">
+		<xs:annotation>
+			<xs:documentation>Defines elements of a Netflow v5 flow record. Recall that the seven elements that define the flow itself (e.g., source IP address) are provided in NetworkFlowLabelType. https://bto.bluecoat.com/packetguide/8.6/info/netflow5-records.htm</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Nexthop_IPv4_Addr" type="AddressObj:AddressObjectType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Represents the IP address of the next hop router.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Packet_Count" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Represents the number of packets in the flow.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Byte_Count" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Represents the total number of bytes in the flow.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SysUpTime_Start" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Represents the SysUpTime at start of flow: the total time in milliseconds starting from when the first packet in the flow was seen.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SysUpTime_End" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Represents the SysUpTime at end of flow: when the last packet in the flow was seen.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Padding1" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>One byte of padding.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TCP_Flags" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the union of all TCP flags observed over the life of the flow.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Src_Autonomous_System" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the source autonomous system number, either origin or peer.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Dest_Autonomous_System" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the destination autonomous system number, either origin or peer.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Src_IP_Mask_Bit_Count" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the source address prefix mask bits.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Dest_IP_Mask_Bit_Count" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the destination address prefix mask bits.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Padding2" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Unused (zero) bytes, which is used for purposes of padding.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SiLKRecordType">
+		<xs:annotation>
+			<xs:documentation>System for Internet-Level Knowledge (CMU/SEI). The fields are taken from a list shown in http://tools.netsa.cert.org/silk/rwcut.html. Fields common to all network flows are defined in NetworkFlowLabelType (e.g., source IP, SNMP ingress, etc.). For additional references, see http://tools.netsa.cert.org/silk/analysis-handbook.pdf, http://tools.netsa.cert.org/silk/faq.html#ipfix-fields.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Packet_Count" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Represents the number of packets in the flow.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Byte_Count" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Represents the number of Layer 3 bytes in the packets of the flow.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TCP_Flags" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the union of all TCP flags observed over the life of the flow.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Start_Time" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Represents the SysUpTime at start of flow, i.e. the total time in milliseconds starting from when the router booted. There is another element "Start_Time+msec" which is the starting time of flow including milliseconds, but milliseconds are the resolution of Start_Time unless the -legacy-timestamps switch is specified, so "Start_Time+msec" is not defined separately.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Duration" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the duration of the flow. There is another element "Duration+msec" which is the starting time of flow including milliseconds, but milliseconds are the resolution of Duration unless the -legacy-timestamps switch is specified, so "Duration+msec" is not defined separately.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="End_Time" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Represents the SysUpTime at end of flow. There is another element "End_Time+msec" which is the starting time of flow including milliseconds, but milliseconds are the resolution of End_Time unless the -legacy-timestamps switch is specified, so "End_Time+msec" is not defined separately.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Sensor_Info" type="NetFlowObj:SiLKSensorInfoType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Defines the fields associated with the sensor at the collection point.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ICMP_Type" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>ICMP type for ICMP flows. Empty for non-ICMP flows.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ICMP_Code" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>ICMP code for ICMP flows. Empty for non-ICMP flows.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Router_Next_Hop_IP" type="AddressObj:AddressObjectType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Router next hop IP.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Initial_TCP_Flags" type="PacketObj:TCPFlagsType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>TCP flags on first packet in the flow.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Session_TCP_Flags" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>bit-wise OR of TCP flags over all packets except the first in the flow</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Flow_Attributes" type="NetFlowObj:SiLKFlowAttributesType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Flow attributes set by the flow generator.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Flow_Application" type="PacketObj:IANAPortNumberRegistryType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Based on an examination of payload contents, this value = the port number traditionally used for that type of traffic (21 for FTP traffic even if actually routed over port 80). Documentation (http://tools.netsa.cert.org/silk/rwcut.html) says this is a "guess as to the content of the flow".</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Src_IP_Type" type="NetFlowObj:SiLKAddressType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The type of the source IP in terms of whether the address is routable, external, etc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Dest_IP_Type" type="NetFlowObj:SiLKAddressType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The type of the destination IP in terms of whether the address is routable, external, etc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Src_Country_Code" type="NetFlowObj:SiLKCountryCodeType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A two-letter country code denoting the country of location of the source IP address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Dest_Country_Code" type="NetFlowObj:SiLKCountryCodeType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation> A two-letter country code denoting the country of location of the destination IP address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Src_MAPNAME" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>User defined string for integrating external information into SiLK records. See documentation on SiLK pmap filter for details (defined in the prefix map associated with MAPNAME).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Dest_MAPNAME" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>User defined string for integrating external information into SiLK records. See documentation on SiLK pmap filter for details (defined in the prefix map associated with MAPNAME).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SiLKFlowAttributesType">
+		<xs:annotation>
+			<xs:documentation>SiLKFlowAttributesType specifies SiLK flow attributes, via a union of the SiLKFlowAttributesTypeEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="NetFlowObj:SiLKFlowAttributesTypeEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="SiLKFlowAttributesTypeEnum">
+		<xs:annotation>
+			<xs:documentation>The SiLKFlowAttributesTypeEnum specifies the flow attributes set by the flow generator. This is field 28 of the rwstats options. See http://tools.netsa.cert.org/silk/rwstats.html for more information.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="F (FIN flag)">
+				<xs:annotation>
+					<xs:documentation>Indicates that the flow generator saw additional packets in this flow following a packet with a FIN flag (excluding ACK packets).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="T (Timeout)">
+				<xs:annotation>
+					<xs:documentation>Indicates that the flow generator prematurely created a record for a long-running connection due to a timeout. (When the flow generator yaf(1) is run with the --silk switch, it will prematurely create a flow and mark it with T if the byte count of the flow cannot be stored in a 32-bit value.)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C (Continuation)">
+				<xs:annotation>
+					<xs:documentation>Indicates that the flow generator created this flow as a continuation of long-running connection, where the previous flow for this connection met a timeout (or a byte threshold in the case of yaf).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="SiLKAddressType">
+		<xs:annotation>
+			<xs:documentation>SiLKAddressType specifies SiLK address types, via a union of the SiLKAddressTypeEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="NetFlowObj:SiLKAddressTypeEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="SiLKAddressTypeEnum">
+		<xs:annotation>
+			<xs:documentation>Environment variable allows user to specify the address type mapping file. A partial, typical list is currently given--see http://tools.netsa.cert.org/silk/addrtype.html for more information.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="non-routable (0)">
+				<xs:annotation>
+					<xs:documentation>Denotes a (non-routable) IP address.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="internal(1)">
+				<xs:annotation>
+					<xs:documentation>Denotes an IP address internal to the monitored network.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="routable_external(2)">
+				<xs:annotation>
+					<xs:documentation>Denotes an IP address external to the monitored network.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="SiLKCountryCodeType">
+		<xs:annotation>
+			<xs:documentation>SiLKCountryCodeType specifies country codes used by SiLK, via a union of the SiLKCountryCodeTypeEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="NetFlowObj:SiLKCountryCodeTypeEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="SiLKCountryCodeTypeEnum">
+		<xs:annotation>
+			<xs:documentation>Environment variable allows user to specify a country code mapping file. No enumerations are currently defined.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="SiLKSensorInfoType">
+		<xs:annotation>
+			<xs:documentation>Defines elements associated with a SiLK sensor.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Sensor_ID" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name or ID of sensor at the collection point.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Class" type="NetFlowObj:SiLKSensorClassType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>By default, only one "all" class. Others can be configured.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Type" type="NetFlowObj:SiLKDirectionType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Specifies the direction of traffic, which is enumerated by SiLKDirectionType.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SiLKDirectionType">
+		<xs:annotation>
+			<xs:documentation>SiLKType specifies direction of SiLK traffic, via a union of the SiLKDirectionTypeEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="NetFlowObj:SiLKDirectionTypeEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="SiLKDirectionTypeEnum">
+		<xs:annotation>
+			<xs:documentation>Enumerates direction of traffic. Not all are currently enumerated.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="in">
+				<xs:annotation>
+					<xs:documentation>Denotes inbound traffic relative to a sensor.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="inweb">
+				<xs:annotation>
+					<xs:documentation>Denotes inbound web traffic relative to a sensor. SiLK categorizes a flow as web if the protocol is TCP and either the source port or destination port is one of 80, 443, or 8080.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="innull">
+				<xs:annotation>
+					<xs:documentation>Denotes null inbound traffic relative to a sensor.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="out">
+				<xs:annotation>
+					<xs:documentation>Denotes outbound traffic relative to a sensor.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="outweb">
+				<xs:annotation>
+					<xs:documentation>Denotes outbound web traffic relative to a sensor. SiLK categorizes a flow as web if the protocol is TCP and either the source port or destination port is one of 80, 443, or 8080.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="outnull">
+				<xs:annotation>
+					<xs:documentation>Denotes null outbound traffic relative to a sensor.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="SiLKSensorClassType">
+		<xs:annotation>
+			<xs:documentation>SiLKSensorClassType specifies the sensor class, via a union of the SiLKSensorClassTypeEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="NetFlowObj:SiLKSensorClassTypeEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="SiLKSensorClassTypeEnum">
+		<xs:annotation>
+			<xs:documentation>Enumerates SiLK sensor classes. Currently just one class (all) is defined.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="all">
+				<xs:annotation>
+					<xs:documentation>Defines sensor class "all".</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="YAFRecordType">
+		<xs:annotation>
+			<xs:documentation>YAF (Yet Another Flowmeter) is bidirectional network flow meter. It processes packet data from pcap(3) dumpfiles as generated by tcpdump(1) or via live capture from an interface using pcap(3) into bidirectional flows, then exports those flows to IPFIX. (REF: http://www.usenix.org/event/lisa10/tech/full_papers/Inacio.pdf)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Flow" type="NetFlowObj:YAFFlowType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The elements in a YAF record have been separated based on flow direction. These elements are defined for the general forward flow.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reverse_Flow" type="NetFlowObj:YAFReverseFlowType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Some elements in a YAF record correspond to the reverse flow. These elements are given here.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="YAFFlowType">
+		<xs:annotation>
+			<xs:documentation>These elements of a YAF record correspond to the flow generally or to the forward portion of the flow. Elements common to all network flow objects are defined in the NetworkFlowLabelType (src ip address, ingress/egress interface).</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Flow_Start_Milliseconds" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Flow start time in milliseconds since 1970-01-01 00:00:00 UTC</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Flow_End_Milliseconds" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Flow end time in milliseconds since 1970-01-01 00:00:00 UTC</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Octet_Total_Count" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Number of octets in packets in forward direction of flow. May be encoded in 4 octets using IPFIX reduced-length encoding.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Packet_Total_Count" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Number of packets in forward direction of flow.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Flow_End_Reason" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The reason for Flow termination. It may contain SiLK-specific tags. The range of values may include the following: 0x01: idle timeout (the Flow was terminated because it was considered to be idle). 0x02: active timeout (the Flow was terminated for reporting purposes while it was still active, for example, after the maximum lifetime of unreported Flows was reached). 0x03: end of Flow detected (the Flow was terminated because the Metering Process detected signals indicating the end of the Flow, for example, the TCP FIN flag.) 0x04: forced end (the Flow was terminated because of some external event, for example, a shutdown of the Metering Process initiated by a network management application.) 0x05: lack of resources (the Flow was terminated because of lack of resources available to the Metering Process and/or the Exporting Process.) See http://www.iana.org/assignments/ipfix/ipfix.xml for more information. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SiLK_App_Label" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The SiLK_App_Label is the port number that is traditionally used for that type of traffic (see the /etc/services file on most UNIX systems). For example, traffic that the flow generator recognizes as FTP will have a value of 21, even if that traffic is being routed through the standard HTTP/web port (80).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Payload_Entropy" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Shannon Entropy calculation of the forward payload data. The calculation generates a real number value between 0.0 and 8.0. That number is then converted into an 8-bit integer value between 0 and 255. Roughly, numbers above 230 are generally compressed (or encrypted) and numbers centered around approximately 140 are English text. Lower numbers carry even less information content.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ML_App_Label" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Machine-learning app label</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TCP_Flow" type="NetFlowObj:YAFTCPFlowType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Contains TCP-related information of the network flow.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Vlan_ID_MAC_Addr" type="AddressObj:AddressObjectType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The MAC adress.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Passive_OS_Fingerprinting" type="cyboxCommon:PlatformSpecificationType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>OS name and version.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="First_Packet_Banner" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>First forward packet IP payload.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Second_Packet_Banner" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Second forward packet IP payload.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="N_Bytes_Payload" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Initial n bytes of forward direction of applications payload.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="YAFReverseFlowType">
+		<xs:annotation>
+			<xs:documentation>These elements correspond to the reverse flow captured by in YAF record.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Reverse_Octet_Total_Count" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Number of octets in packets in reverse direction of flow. May be encoded in 4 octets using IPFIX reduced-length encoding.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reverse_Packet_Total_Count" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Number of packets in reverse direction of flow.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reverse_Payload_Entropy" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Shannon Entropy calculation of the reverse payload data. The calculation generates a real number value between 0.0 and 8.0. That number is then converted into an 8-bit integer value between 0 and 255. Roughly, numbers above 230 are generally compressed (or encrypted) and numbers centered around approximately 140 are English text. Lower numbers carry even less information content.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reverse_Flow_Delta_Milliseconds" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>RTT of initial handshake.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TCP_Reverse_Flow" type="NetFlowObj:YAFTCPFlowType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The associated elements relate to the reverse packets of the flow.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reverse_Vlan_ID_MAC_Addr" type="AddressObj:AddressObjectType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Reverse MAC address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reverse_Passive_OS_Fingerprinting" type="cyboxCommon:PlatformSpecificationType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>OS name and version of the reverse flow.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reverse_First_Packet" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>First reverse packet IP payload.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reverse_N_Bytes_Payload" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Initial n bytes of reverse direction of flow payload</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="YAFTCPFlowType">
+		<xs:annotation>
+			<xs:documentation>Contains TCP-related information of the network flow.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TCP_Sequence_Number" type="cyboxCommon:IntegerObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>TCP sequence number.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Initial_TCP_Flags" type="PacketObj:TCPFlagsType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>TCP flags of the first packet.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Union_TCP_Flags" type="cyboxCommon:HexBinaryObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The union of the TCP flags of the 2...nth packet.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

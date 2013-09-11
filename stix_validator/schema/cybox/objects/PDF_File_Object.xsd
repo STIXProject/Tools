@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:PDFFileObj="http://cybox.mitre.org/objects#PDFFileObject-1" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:FileObj="http://cybox.mitre.org/objects#FileObject-2" targetNamespace="http://cybox.mitre.org/objects#PDFFileObject-1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>PDF_File_Object</schema>
+			<version>1.0</version>
+			<date>03/25/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation.
+				All rights reserved.  The contents of this file are subject to the terms of
+				the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See
+				the CybOX License for the specific language governing permissions and
+				limitations for use of this schema.  When distributing copies of the CybOX
+				Schema, this license header must be included.
+			</terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#FileObject-2" schemaLocation="File_Object.xsd"/>
+	<xs:element name="PDF_File" type="PDFFileObj:PDFFileObjectType" nillable="true">
+		<xs:annotation>
+			<xs:documentation>The PDF_File element is intended to characterize the structural and metadata information regarding a single PDF file.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="PDFFileObjectType" mixed="false">
+		<xs:annotation>
+			<xs:documentation>The PDFFileObjectType type is intended to characterize the structural makeup of PDF files.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FileObj:FileObjectType">
+				<xs:sequence minOccurs="1">
+					<xs:element minOccurs="0" name="Metadata" type="PDFFileObj:PDFFileMetadataType">
+						<xs:annotation>
+							<xs:documentation>The Metadata field captures some useful metadata associated with the PDF file.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="Version" type="cyboxCommon:DoubleObjectPropertyType">
+						<xs:annotation>
+							<xs:documentation>The Version field specifies the decimal version number portion of the string from the PDF Header that specifies the version of the PDF specification to which the PDF file conforms, e.g. '1.4'.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="Indirect_Objects" type="PDFFileObj:PDFIndirectObjectListType">
+						<xs:annotation>
+							<xs:documentation>The Indirect_Objects field captures the indirect objects included in the PDF file, representing the contents of a document.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="Cross_Reference_Tables" type="PDFFileObj:PDFXRefTableListType">
+						<xs:annotation>
+							<xs:documentation>The Cross_Reference_Tables field captures the cross-reference tables included in the PDF file, used for faciliting random access of indirect PDF objects.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="Trailers" type="PDFFileObj:PDFTrailerListType">
+						<xs:annotation>
+							<xs:documentation>The Trailers field captures the trailers included in the PDF file, used for capturing offsets to the cross-reference table and important objects.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PDFXRefTableListType">
+		<xs:annotation>
+			<xs:documentation>The PDFXrefTableListType captures a list of PDF cross-reference tables.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" minOccurs="1" name="Cross_Reference_Table" type="PDFFileObj:PDFXRefTableType">
+				<xs:annotation>
+					<xs:documentation>The Cross_Reference_Table field captures the cross-reference table contained in the PDF file, for the random access of indirect objects contained in the file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDFXRefTableType">
+		<xs:annotation>
+			<xs:documentation>The PDFXRefTableType captures the details of a PDF cross-reference table, which provides a capability for the random access of indirect objects contained in the file.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Subsections" type="PDFFileObj:PDFXrefTableSubsectionListType">
+				<xs:annotation>
+					<xs:documentation>The Subsections field captures the subsections contained in the cross-reference table.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Offset" type="cyboxCommon:PositiveIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Offset field specifies the offset of the cross-reference from the beginning of the file, in bytes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Hashes" type="cyboxCommon:HashListType">
+				<xs:annotation>
+					<xs:documentation>The Hashes field captures any hashes that were computed for the cross-reference table.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDFXrefTableSubsectionListType">
+		<xs:annotation>
+			<xs:documentation>The PDFXrefTableSubsectionListType captures a list of cross-reference table subsections.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" name="Subsection" type="PDFFileObj:PDFXrefTableSubsectionType">
+				<xs:annotation>
+					<xs:documentation>The Subsection field captures a single cross-reference table subsection in the list.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDFXrefTableSubsectionType">
+		<xs:annotation>
+			<xs:documentation>The PDFXrefTableSubsectionType captures details of subsections contained within a PDF cross-reference table.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="First_Object_Number" type="cyboxCommon:NonNegativeIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The First_Object_Number field captures the object number of the first object for which there is a corresponding entry in this cross-reference subsection.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Number_Of_Objects" type="cyboxCommon:NonNegativeIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Number_Of_Objects field captures the number of objects for which there are corresponding entries in this cross-reference subsection.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Cross_Reference_Entries" type="PDFFileObj:PDFXrefEntryListType">
+				<xs:annotation>
+					<xs:documentation>The Cross_Reference_Entries field specifies the cross-reference entries contained in this cross-reference subsection.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDFTrailerListType">
+		<xs:annotation>
+			<xs:documentation>The PDFTrailerListType captures a list of PDF trailers.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" name="Trailer" type="PDFFileObj:PDFTrailerType">
+				<xs:annotation>
+					<xs:documentation>The Trailer field captures a PDF file trailer contained in the file, used by applications for quickly locating the cross-reference table and certain special objects.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDFTrailerType">
+		<xs:annotation>
+			<xs:documentation>The PDFTrailerType captures the details of a PDF trailer.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Size" type="cyboxCommon:PositiveIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Size field captures the total number of entries in the file's cross-reference table.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Prev" type="cyboxCommon:PositiveIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Prev field the byte offset from the beginning of the file to the beginning of the previous cross-reference table. This is only applicable for files that have more than one cross-reference table.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Root" type="PDFFileObj:PDFIndirectObjectIDType">
+				<xs:annotation>
+					<xs:documentation>The Root field captures an indirect object reference that points to the catalog dictionary for the PDF document contained in the file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Encrypt" type="PDFFileObj:PDFDictionaryType">
+				<xs:annotation>
+					<xs:documentation>The Encrypt field captures the PDF document's encryption dictionary, either through an indirect reference or embedded set of key/value pairs.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Info" type="PDFFileObj:PDFIndirectObjectIDType">
+				<xs:annotation>
+					<xs:documentation>The Info field captures an indirect object reference that points to the document information dictionary.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="ID" type="PDFFileObj:PDFFileIDType">
+				<xs:annotation>
+					<xs:documentation>The ID field captures an array of two strings that constitutes a file identifier. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Last_Cross_Reference_Offset" type="cyboxCommon:PositiveIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Last_Cross_Reference_Offset field captures the byte offset, relative to the beginning of the file, of the last cross-reference table contained in the file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Offset" type="cyboxCommon:PositiveIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Offset field specifies the offset of the trailer from the beginning of the file, in bytes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Hashes" type="cyboxCommon:HashListType">
+				<xs:annotation>
+					<xs:documentation>The Hashes field captures any hashes that were computed for the trailer.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDFFileIDType">
+		<xs:annotation>
+			<xs:documentation>The PDFTrailerIDType captures the details of a PDF ID value stored in a trailer.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element maxOccurs="2" name="ID_String" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The ID_String field captures one of the two strings that constitutes the file identifier.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDFIndirectObjectListType">
+		<xs:annotation>
+			<xs:documentation>The PDFIndirectObjectListType captures a list of PDF indirect objects.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" name="Indirect_Object" type="PDFFileObj:PDFIndirectObjectType" form="qualified">
+				<xs:annotation>
+					<xs:documentation>The Indirect_Object field captures a single PDF indirect object contained in the file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDFIndirectObjectType">
+		<xs:annotation>
+			<xs:documentation>The PDFObjectType captures the details of a PDF document indirect object, used in constructing and storing data associated with the PDF document.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="ID" type="PDFFileObj:PDFIndirectObjectIDType">
+				<xs:annotation>
+					<xs:documentation>The ID field specifies the identifier of the PDF indirect object, consisting of an object number and generation number.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Contents" type="PDFFileObj:PDFIndirectObjectContentsType">
+				<xs:annotation>
+					<xs:documentation>The Contents field captures the contents of the PDF indirect object, including non-stream and stream data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Offset" type="cyboxCommon:PositiveIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Offset field specifies the offset of the PDF indirect object from the beginning of the file, in bytes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Hashes" type="cyboxCommon:HashListType">
+				<xs:annotation>
+					<xs:documentation>The Hashes field captures any hashes that were computed for the PDF indirect object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="type" type="PDFFileObj:PDFObjectTypeEnum">
+			<xs:annotation>
+				<xs:documentation>The type field specifies the basic type of the PDF indirect object.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="PDFIndirectObjectIDType">
+		<xs:annotation>
+			<xs:documentation>The PDFIndirectObjectIDType captures the details of PDF indirect object IDs.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Object_Number" type="cyboxCommon:PositiveIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Object_Number field captures the number portion of the indirect object ID.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Generation_Number" type="cyboxCommon:NonNegativeIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Generation_Number field captures the generation number portion of the indirect object ID.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDFIndirectObjectContentsType">
+		<xs:annotation>
+			<xs:documentation>The PDFIndirectObjectContentsType captures the contents of a PDF indirect object, including both stream and non-stream portions.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Non_Stream_Contents" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Non_Stream_Contents field captures the raw contents of the PDF indirect object excluding any stream data (i.e. everything after the 'obj' keyword and before the 'endobj' keyword up to but not including anything between the 'stream' and 'endstream' keywords) as a string enclosed in an XML CDATA section.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Stream_Contents" type="PDFFileObj:PDFStreamType">
+				<xs:annotation>
+					<xs:documentation>The Stream_Contents field captures the stream contained within in the PDF indirect object, if applicable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDFStreamType">
+		<xs:annotation>
+			<xs:documentation>The PDFStreamType element captures details of PDF document stream objects, which represent arbitrary sequences of bytes.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Raw_Stream" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Raw_Stream element captures the raw, undecoded stream (i.e., everything between the 'stream' and 'endstream' keywords), as a hex string.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Raw_Stream_Hashes" type="cyboxCommon:HashListType">
+				<xs:annotation>
+					<xs:documentation>The Raw_Stream_Hashes field captures any hashes of the raw, undecoded stream.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Decoded_Stream" type="cyboxCommon:HexBinaryObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Decoded_Stream field captures the decoded stream (i.e., after undoing the specified filters in the correct order) as a hex string.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Decoded_Stream_Hashes" type="cyboxCommon:HashListType">
+				<xs:annotation>
+					<xs:documentation>The Decoded_Stream_Hashes field captures any hashes of the decoded stream.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDFDocumentInformationDictionaryType">
+		<xs:annotation>
+			<xs:documentation>The PDFDocumentInformationDictionaryType captures details of the PDF Document Information Dictionary, used for storing metadata associated with the PDF document.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Title" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Title field captures the title of the PDF document.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Author" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Author field captures the name of the person who created the PDF document.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Subject" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Subject field captures the subject of the PDF document.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Keywords" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Keywords field captures the keywords associated with the PDF document.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Creator" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Creator field captures the name of the application that created the original document, for cases where the original document was then converted to PDF.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element maxOccurs="1" minOccurs="0" name="Producer" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Producer field captures the name of the application that converted the document to PDF, for cases where the original document was then converted to PDF.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="CreationDate" type="cyboxCommon:DateTimeObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The CreationDate field captures the date and time that the document was created.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="ModDate" type="cyboxCommon:DateTimeObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The ModDate field captures the date and time that the document was most recently modified.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Trapped" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Trapped field captures a name object indicating whether the document has been modified to included trapping information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDFXrefEntryListType">
+		<xs:annotation>
+			<xs:documentation>The PDFXrefEntryListType captures a list of cross-reference table subsection entries.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" name="Cross_Reference_Entry" type="PDFFileObj:PDFXrefEntryType">
+				<xs:annotation>
+					<xs:documentation>The Cross_Reference_Entry field captures a single cross-reference subsection entry in the list.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDFXrefEntryType">
+		<xs:annotation>
+			<xs:documentation>The PDFXrefEntryType captures details of a cross-reference table subsection entry.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice minOccurs="0">
+				<xs:element minOccurs="1" name="Byte_Offset" type="cyboxCommon:IntegerObjectPropertyType">
+					<xs:annotation>
+						<xs:documentation>The Byte_Offset field captures the 10-digit number, padded with leading zeros if necessary, that specifies the number of bytes from the beginning of the file to the beginning of the object.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element minOccurs="1" name="Object_Number" type="cyboxCommon:NonNegativeIntegerObjectPropertyType">
+					<xs:annotation>
+						<xs:documentation>The Object_Number field specifies the 10-digit object number of the next free object.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element minOccurs="0" name="Generation_Number" type="cyboxCommon:NonNegativeIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Generation_Number field specifies the 5-digit generation number to be used when an object with the same object number is created.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="type" type="PDFFileObj:PDFXrefEntryTypeEnum">
+			<xs:annotation>
+				<xs:documentation>The type field specifies the type of the cross-reference entry.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="PDFDictionaryType">
+		<xs:annotation>
+			<xs:documentation>The PDFDictionaryType captures a PDF dictionary as a set of key value pairs, or as a reference to an indirect object that contains.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element minOccurs="1" name="Object_Reference" type="PDFFileObj:PDFIndirectObjectIDType">
+				<xs:annotation>
+					<xs:documentation>The Object_Reference field captures a reference to an indirect PDF object that contains the dictionary, via its object and generation numbers.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Raw_Contents" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Raw_Contents field captures the contents of the dictionary as a string enclosed in an XML CDATA section.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="PDFFileMetadataType">
+		<xs:annotation>
+			<xs:documentation>The PDFFileMetadaType captures some metadata regarding the PDF file object.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Document_Information_Dictionary" type="PDFFileObj:PDFDocumentInformationDictionaryType">
+				<xs:annotation>
+					<xs:documentation>The Document_Information_Dictionary field captures the details of the PDF Document Information Dicitonary, which includes properties like the document creation date and producer, if present in the PDF document.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Number_Of_Indirect_Objects" type="cyboxCommon:PositiveIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Number_Of_Indirect_Objects field captures the number of indirect PDF objects contained in the file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element maxOccurs="1" minOccurs="0" name="Number_Of_Trailers" type="cyboxCommon:PositiveIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Number_Of_Trailers field captures the number of trailers contained in the file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Number_Of_Cross_Reference_Tables" type="cyboxCommon:PositiveIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Number_Of_Cross_Reference_Tables field captures the number of cross-reference tables contained in the file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Keyword_Counts" type="PDFFileObj:PDFKeywordCountsType">
+				<xs:annotation>
+					<xs:documentation>The Keyword_Counts field captures the counts of various PDF keyword names in the file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="encrypted" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>The encrypted field specifies whether the PDF file is encrypted.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="optimized" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>The optimized field specifies whether the PDF file has been optimized.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="PDFKeywordCountsType">
+		<xs:annotation>
+			<xs:documentation>The PDFKeywordCountsType captures the occurrences of various keywords in a PDF file.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Page_Count" type="PDFFileObj:PDFKeywordCountType">
+				<xs:annotation>
+					<xs:documentation>The Page_Count field captures the number of occurrences of the '/Page' keyword in the PDF file, which provides an indication of the number of pages in the PDF document.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Encrypt_Count" type="PDFFileObj:PDFKeywordCountType">
+				<xs:annotation>
+					<xs:documentation>The Encrypt_Count field captures the number of occurrences of the '/Encrypt' keyword in the PDF file, which indicates that the PDF uses encryption.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="ObjStm_Count" type="PDFFileObj:PDFKeywordCountType">
+				<xs:annotation>
+					<xs:documentation>The ObjStm_Count field captures the number of occurrences of the '/ObjStm' keyword in the PDF file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="JS_Count" type="PDFFileObj:PDFKeywordCountType">
+				<xs:annotation>
+					<xs:documentation>The JS_Count field captures the number of occurrences of the '/JS' keyword in the PDF file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="JavaScript_Count" type="PDFFileObj:PDFKeywordCountType">
+				<xs:annotation>
+					<xs:documentation>The JavaScript_Count field captures the number of occurrences of the '/JavaScript' keyword in the PDF file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="AA_Count" type="PDFFileObj:PDFKeywordCountType">
+				<xs:annotation>
+					<xs:documentation>The AA_Count field captures the number of occurrences of the '/AA' keyword in the PDF file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="OpenAction_Count" type="PDFFileObj:PDFKeywordCountType">
+				<xs:annotation>
+					<xs:documentation>The OpenAction_Count field captures the number of occurrences of the '/OpenAction' keyword in the PDF file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="ASCIIHexDecode_Count" type="PDFFileObj:PDFKeywordCountType">
+				<xs:annotation>
+					<xs:documentation>The ASCIIHexDecode_Count field captures the number of occurrences of the '/ASCIIHexDecode' keyword in the PDF file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="ASCII85Decode_Count" type="PDFFileObj:PDFKeywordCountType">
+				<xs:annotation>
+					<xs:documentation>The ASCII85Decode_Count field captures the number of occurrences of the '/ASCII85Decode' keyword in the PDF file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="LZWDecode_Count" type="PDFFileObj:PDFKeywordCountType">
+				<xs:annotation>
+					<xs:documentation>The LZWDecode_Count field captures the number of occurrences of the '/LZWDecode' keyword in the PDF file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="FlateDecode_Count" type="PDFFileObj:PDFKeywordCountType">
+				<xs:annotation>
+					<xs:documentation>The FlateDecode_Count field captures the number of occurrences of the '/FlateDecode' keyword in the PDF file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="RunLengthDecode_Count" type="PDFFileObj:PDFKeywordCountType">
+				<xs:annotation>
+					<xs:documentation>The RunLengthDecode_Count field captures the number of occurrences of the '/RunLengthDecode' keyword in the PDF file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="JBIG2Decode_Count" type="PDFFileObj:PDFKeywordCountType">
+				<xs:annotation>
+					<xs:documentation>The JBIG2Decode_Count field captures the number of occurrences of the '/JBIG2Decode' keyword in the PDF file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="DCTDecode_Count" type="PDFFileObj:PDFKeywordCountType">
+				<xs:annotation>
+					<xs:documentation>The DCTDecode_Count field captures the number of occurrences of the '/DCTDecode' keyword in the PDF file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="RichMedia_Count" type="PDFFileObj:PDFKeywordCountType">
+				<xs:annotation>
+					<xs:documentation>The RichMedia_Count field captures the number of occurrences of the '/RichMedia' keyword in the PDF file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="CCITTFaxDecode_Count" type="PDFFileObj:PDFKeywordCountType">
+				<xs:annotation>
+					<xs:documentation>The CCITTFaxDecode_Count field captures the number of occurrences of the '/CCITTFaxDecode' keyword in the PDF file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Launch_Count" type="PDFFileObj:PDFKeywordCountType">
+				<xs:annotation>
+					<xs:documentation>The Launch_Count field captures the number of occurrences of the '/Launch' keyword in the PDF file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="XFA_Count" type="PDFFileObj:PDFKeywordCountType">
+				<xs:annotation>
+					<xs:documentation>The XFA_Count field captures the number of occurrences of the '/XFA' keyword in the PDF file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDFKeywordCountType">
+		<xs:annotation>
+			<xs:documentation>The PDFKeywordCountType captures the obfuscated and non-obfuscated occurrences of a keyword.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Non_Obfuscated_Count" type="cyboxCommon:NonNegativeIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Non_Obfuscated_Count field captures the number of times the keyword occurred in the PDF file without any obfuscation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Obfuscated_Count" type="cyboxCommon:NonNegativeIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Obfuscated_Count field captures the number of times the keyword occurred in the PDF file with some form of obfuscation, such as with hexcodes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="PDFObjectTypeEnum">
+		<xs:annotation>
+			<xs:documentation>The PDFObjectTypeEnum is an enumeration of basic PDF document object types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Boolean"/>
+			<xs:enumeration value="Integer"/>
+			<xs:enumeration value="String"/>
+			<xs:enumeration value="Name"/>
+			<xs:enumeration value="Array"/>
+			<xs:enumeration value="Dictionary"/>
+			<xs:enumeration value="Stream"/>
+			<xs:enumeration value="Null"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PDFXrefEntryTypeEnum">
+		<xs:annotation>
+			<xs:documentation>The PDFXrefEntryTypeEnum is an enumeration of PDF cross-reference table entry types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="In-Use"/>
+			<xs:enumeration value="Free"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

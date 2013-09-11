@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:CustomObj="http://cybox.mitre.org/objects#CustomObject-1" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" targetNamespace="http://cybox.mitre.org/objects#CustomObject-1" elementFormDefault="qualified" version="1.0">
+    <xs:annotation>
+
+        <xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+        <xs:appinfo>
+            <schema>Custom_Object</schema>
+            <version>1.0</version>
+            <date>04/01/2013 9:00:00 AM</date>
+            <short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+            <terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+        </xs:appinfo>
+    </xs:annotation>
+    <xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+
+    <xs:element name="Custom" type="CustomObj:CustomObjectType" nillable="true">
+        <xs:annotation>
+            <xs:documentation>The Custom object is intended to characterize objects that are not described by other defined CybOX Object schemas. Objects of this type have no pre-defined properties but instead all properties are provided by the author..</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:complexType name="CustomObjectType" mixed="false">
+        <xs:annotation>
+            <xs:documentation>The CustomObjectType is intended to characterize objects that are not described by other defined CybOX Object schemas. Objects of this type have no pre-defined properties but instead all properties are provided by the author using the inherited Custom_Properties field.</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="cyboxCommon:ObjectPropertiesType">
+                <xs:sequence>
+                    <xs:element name="Description" type="xs:string" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>A description of the intent of this Custom object.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="custom_name" type="xs:QName">
+                    <xs:annotation>
+                        <xs:documentation>The custom_name field specifies a name for this for this type of Custom Object. The custom_name field should use the same namespace as used in the Object and Observable id fields for this author. Two Objects should only have the same custom_name value if they are written by the same author (i.e., their namespace is the same) and they are characterizing the same type of Object. Note that this does not necessarily mean that that two such Object instances will both have identical properties in every case.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://cybox.mitre.org/extensions/platform#CPE2.3-1"
+    xmlns:cpe23="http://cpe.mitre.org/language/2.0"
+    xmlns:cyboxCommon="http://cybox.mitre.org/common-2"
+    targetNamespace="http://cybox.mitre.org/extensions/platform#CPE2.3-1"
+    elementFormDefault="qualified" version="1.0">
+    <xs:annotation>
+        <xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+        <xs:appinfo>
+            <schema>CPE2.3</schema>
+            <version>1.0</version>
+            <date>04/03/2013 9:00:00 AM</date>
+            <short_description>Cyber Observable eXpression (CybOX) Extension - CPE 2.3 Platform Instance - Schematic implementation for using the CPE 2.3 Applicablity Language to describe a Platform within the CybOX observable expression language. It extends the PlatformSpecificationType defined in the CybOX common schema. (cybox_common.xsd) For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML.</short_description>
+            <terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+            <reference>http://scap.nist.gov/specifications/cpe/</reference>
+        </xs:appinfo>
+    </xs:annotation>
+    
+    <xs:import namespace="http://cpe.mitre.org/language/2.0"
+        schemaLocation="http://scap.nist.gov/schema/cpe/2.3/cpe-language_2.3.xsd"/>
+    <xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../../cybox_common.xsd"/>
+    
+    <xs:complexType name="CPE23PlatformSpecificationType">
+        <xs:annotation>
+            <xs:documentation>The CPE23PlatformSpecificationType provides an extension of the PlatformSpecificationType that imports and leverages the CPE 2.3 applicability language schema for structured characterization of a platform or platform combination.</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent> 
+            <xs:extension base="cyboxCommon:PlatformSpecificationType"> 
+                <xs:sequence> 
+                    <xs:element ref="cpe23:platform-specification" >
+                        <xs:annotation>
+                            <xs:documentation>The platform-specification element, defined in the CPE 2.3 Applicability Language schema, supports a structured characterization of a platform or combination of platforms.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element> 
+                </xs:sequence> 
+            </xs:extension> 
+        </xs:complexContent> 
+    </xs:complexType>
+</xs:schema>

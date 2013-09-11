@@ -1,0 +1,1090 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cybox="http://cybox.mitre.org/cybox-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" targetNamespace="http://cybox.mitre.org/cybox-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>CybOX Core</schema>
+			<version>2.0</version>
+			<date>04/08/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Core.</short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="cybox_common.xsd"/>
+	<xs:element name="Observables" type="cybox:ObservablesType">
+		<xs:annotation>
+			<xs:documentation>The Observables construct represents a collection of cyber observables.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="ObservablesType">
+		<xs:annotation>
+			<xs:documentation>The ObservablesType is a type representing a collection of cyber observables.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Observable_Package_Source" type="cyboxCommon:MeasureSourceType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Observable_Package_Source field is optional and enables descriptive specification of how this package of Observables was identified and specified. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="cybox:Observable" maxOccurs="unbounded"/>
+			<xs:element name="Pools" type="cybox:PoolsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Pools construct enables the description of Events, Actions, Objects and Properties in a space-efficient pooled manner with the actual Observable structures defined in the CybOX schema containing references to the pooled elements. This reduces redundancy caused when identical observable elements occur multiple times within a set of defined Observables.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="cybox_major_version" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The major_version field specifies the major version of the CybOX language utlized for this set of Observables.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="cybox_minor_version" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The minor_version field specifies the minor version of the CybOX language utlized for this set of Observables.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="Observable" type="cybox:ObservableType">
+		<xs:annotation>
+			<xs:documentation>The Observable construct represents a description of a single cyber observable.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="ObservableType">
+		<xs:annotation>
+			<xs:documentation>The ObservableType is a type representing a description of a single cyber observable.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Title" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Title field provides a mechanism to specify a short title or description for this Observable</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="cyboxCommon:StructuredTextType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Description field provides a mechanism to specify a structured text description of this Observable. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Keywords" type="cybox:KeywordsType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Keywords enables capture of relevant keywords for this cyber observable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Observable_Source" type="cyboxCommon:MeasureSourceType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Observable_Source field is optional and enables descriptive specification of how this Observable was identified and specified. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice minOccurs="0">
+				<xs:element ref="cybox:Object" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The Object construct identifies and specificies the characteristics of a specific cyber-relevant object (e.g. a file, a registry key or a process). </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="cybox:Event" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The Event construct enables specification of a cyber observable event that is dynamic in nature with specific action(s) taken against specific cyber relevant objects (e.g. a file is deleted, a registry key is created or an HTTP Get Request is received).</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Observable_Composition" type="cybox:ObservableCompositionType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The Observable_Composition construct enables specification of composite observables made up of logical constructions of atomic observables or other composite observables (e.g. Obs5 = (Obs1 OR Obs2) AND (Obs3 OR Obs4)).</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="Pattern_Fidelity" type="cybox:PatternFidelityType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Pattern_Fidelity contains elements that enable the characterization of the fidelity of this pattern to its purpose.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:QName">
+			<xs:annotation>
+				<xs:documentation>The id field specifies a unique id for this Observable.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="idref" type="xs:QName">
+			<xs:annotation>
+				<xs:documentation>The idref field specifies a unique id reference to an Observable defined elsewhere.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="negate" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>The negate field, when set to true, indicates the absence (rather than the presence) of the given Observable in a CybOX pattern.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<!---->
+	<xs:simpleType name="TrendEnum">
+		<xs:annotation>
+			<xs:documentation>TrendEnum is a (non-exhaustive) enumeration of trend types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Increasing">
+				<xs:annotation>
+					<xs:documentation>Specifies an increasing trend.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Decreasing">
+				<xs:annotation>
+					<xs:documentation>Specifies a decreasing trend.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<!---->
+	<xs:element name="Event" type="cybox:EventType">
+		<xs:annotation>
+			<xs:documentation>The Event construct enables specification of a cyber observable event that is dynamic in nature with specific action(s) taken against specific cyber relevant objects (e.g. a file is deleted, a registry key is created or an HTTP Get Request is received).</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="EventType">
+		<xs:annotation>
+			<xs:documentation>The EventType is a complex type representing a cyber observable event that is dynamic in nature with specific action(s) taken against specific cyber relevant objects (e.g. a file is deleted, a registry key is created or an HTTP Get Request is received).</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:sequence>
+				<xs:element name="Type" type="cyboxCommon:ControlledVocabularyStringType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The Type field uses a standardized controlled vocabulary to capture what type of Event this is.</xs:documentation>
+						<xs:documentation>This field is implemented through the xsi:type controlled vocabulary extension mechanism. The default vocabulary type is EventTypeVocab in the http://cybox.mitre.org/default_vocabularies-2 namespace. This type is defined in the cybox_default_vocabularies.xsd file or at the URL http://cybox.mitre.org/XMLSchema/default_vocabularies/2.0/cybox_default_vocabularies.xsd.
+							Users may also define their own vocabulary using the type extension mechanism (by specifying a vocabulary name and/or reference using the vocab_name and vocab_reference attributes, respectively) or simply use this as a string field. </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Description" type="cyboxCommon:StructuredTextType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The Description field provides a mechanism to specify a structured text description of this Event. </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Observation_Method" type="cyboxCommon:MeasureSourceType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The Observation_Method field is optional and enables descriptive specification of how this Event was observed (in the case of a Cyber Observable Event instance) or could potentially be observed (in the case of a Cyber Observable Event pattern). </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Actions" type="cybox:ActionsType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The Actions construct enables description/specification of one or more cyber observable actions. </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Frequency" type="cybox:FrequencyType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The Frequency field conveys a targeted observation pattern of the frequency of the associated event or action.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:sequence maxOccurs="unbounded">
+				<xs:element name="Event" type="cybox:EventType">
+					<xs:annotation>
+						<xs:documentation>This Event construct is included recursively to enable description/specification of composite Events.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:choice>
+		<xs:attribute name="id" type="xs:QName">
+			<xs:annotation>
+				<xs:documentation>The id field specifies a unique id for this Event.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="idref" type="xs:QName">
+			<xs:annotation>
+				<xs:documentation>The idref field specifies a unique id reference to an Event defined elsewhere.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="FrequencyType">
+		<xs:annotation>
+			<xs:documentation>The FrequencyType is a type representing the specification of a frequency for a given action or event.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="rate" type="xs:float" use="required">
+			<xs:annotation>
+				<xs:documentation>This field specifies the rate for this defined frequency.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="units" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>This field specifies the units for this defined frequency.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="scale" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>This field specifies the time scale for this defined frequency.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="trend" type="cybox:TrendEnum">
+			<xs:annotation>
+				<xs:documentation>This field is optional and conveys a targeted observation pattern of the nature of any trend in the frequency of the associated event or action. This field would be leveraged within an event or action pattern observable triggering on the matching of a specified trend in the frequency of an event or action.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<!---->
+	<xs:element name="Action" type="cybox:ActionType">
+		<xs:annotation>
+			<xs:documentation>The Action construct enables description/specification of a single cyber observable action. </xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="ActionsType">
+		<xs:annotation>
+			<xs:documentation>The ActionsType is a complex type representing a set of cyber observable actions.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="cybox:Action" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Action construct enables description/specification of a single cyber observable action. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ActionType">
+		<xs:annotation>
+			<xs:documentation>The ActionType is a complex type representing a single cyber observable action.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Type" type="cyboxCommon:ControlledVocabularyStringType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Type field is optional and utilizes a standardized controlled vocabulary to specify the basic type of the action that was performed.</xs:documentation>
+					<xs:documentation>This field is implemented through the xsi:type controlled vocabulary extension mechanism. The default vocabulary type is ActionTypeVocab in the http://cybox.mitre.org/default_vocabularies-2 namespace. This type is defined in the cybox_default_vocabularies.xsd file or at the URL http://cybox.mitre.org/XMLSchema/default_vocabularies/2.0/cybox_default_vocabularies.xsd.
+						Users may also define their own vocabulary using the type extension mechanism (by specifying a vocabulary name and/or reference using the vocab_name and vocab_reference attributes, respectively) or simply use this as a string field.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name" type="cyboxCommon:ControlledVocabularyStringType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Name field is optional and utilizes a standardized controlled vocabulary to identify/characterize the specific name of the action that was performed.</xs:documentation>
+					<xs:documentation>This field is implemented through the xsi:type controlled vocabulary extension mechanism. The default vocabulary type is ActionNameVocab in the http://cybox.mitre.org/default_vocabularies-2 namespace. This type is defined in the cybox_default_vocabularies.xsd file or at the URL http://cybox.mitre.org/XMLSchema/default_vocabularies/2.0/cybox_default_vocabularies.xsd.
+						Users may also define their own vocabulary using the type extension mechanism (by specifying a vocabulary name and/or reference using the vocab_name and vocab_reference attributes, respectively) or simply use this as a string field.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="cyboxCommon:StructuredTextType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Description field contains a textual description of the action.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Action_Aliases" type="cybox:ActionAliasesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Action_Aliases field is optional and enables identification of other potentially used names for this Action.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Action_Arguments" type="cybox:ActionArgumentsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Action_Arguments field is optional and enables the specification of relevant arguments/parameters for this Action.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Discovery_Method" type="cyboxCommon:MeasureSourceType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Discovery_Method field is optional and enables descriptive specification of how this Action was observed (in the case of a Cyber Observable Action instance) or could potentially be observed (in the case of a Cyber Observable Action pattern). </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Associated_Objects" type="cybox:AssociatedObjectsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Associated_Objects construct is optional and enables the description/specification of cyber Objects relevant (either initiating or affected by) this Action.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Relationships" type="cybox:RelationshipsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Relationships construct is optional and enables description of other cyber observable actions that are related to this Action.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Frequency" type="cybox:FrequencyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Frequency field conveys a targeted observation pattern of the frequency of the associated event or action.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:QName">
+			<xs:annotation>
+				<xs:documentation>The id field specifies a unique id for this Action.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="idref" type="xs:QName">
+			<xs:annotation>
+				<xs:documentation>The idref field specifies a unique id reference to an Action defined elsewhere.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ordinal_position" type="xs:positiveInteger">
+			<xs:annotation>
+				<xs:documentation>The ordinal_position field is intended to reference the ordinal position of the action with within a series of actions.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="action_status" type="cybox:ActionStatusTypeEnum">
+			<xs:annotation>
+				<xs:documentation>The action_status field enables description of the status of the action being described.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="context" type="cybox:ActionContextTypeEnum">
+			<xs:annotation>
+				<xs:documentation>The context field is optional and enables simple characterization of the broad operational context in which the Action is relevant</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="timestamp" type="xs:dateTime">
+			<xs:annotation>
+				<xs:documentation>The timestamp field represents the local or relative time at which the action occurred or was observed. </xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="ActionStatusTypeEnum">
+		<xs:annotation>
+			<xs:documentation>ActionStatusTypeEnum is a (non-exhaustive) enumeration of cyber observable action status types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Success">
+				<xs:annotation>
+					<xs:documentation>Specifies a cyber observable action that was successful.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Fail">
+				<xs:annotation>
+					<xs:documentation>Specifies a cyber observable action that failed.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Error">
+				<xs:annotation>
+					<xs:documentation>Specifies a cyber observable action that resulted in an error.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Complete/Finish">
+				<xs:annotation>
+					<xs:documentation>Specifies a cyber observable action that completed or finished. This action status does not specify the result of the action (e.g., Success/Error).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Pending">
+				<xs:annotation>
+					<xs:documentation>Specifies a cyber observable action is pending.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Ongoing">
+				<xs:annotation>
+					<xs:documentation>Specifies a cyber observable action that is ongoing.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Unknown">
+				<xs:annotation>
+					<xs:documentation>Specifies a cyber observable action with an unknown status.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ActionContextTypeEnum">
+		<xs:annotation>
+			<xs:documentation>ActionContextTypeEnum is a (non-exhaustive) enumeration of cyber observable action contexts.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Host">
+				<xs:annotation>
+					<xs:documentation>Specifies that the cyber observable action occurred on a host.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Network">
+				<xs:annotation>
+					<xs:documentation>Specifies that the cyber observable action occurred on a network.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ActionAliasesType">
+		<xs:annotation>
+			<xs:documentation>The ActionAliasesType enables identification of other potentially used names for this Action.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Action_Alias" type="xs:string" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Action_Alias field is optional and enables identification of a single other potentially used name for this Action.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ActionArgumentsType">
+		<xs:annotation>
+			<xs:documentation>The ActionArgumentsType enables the specification of relevant arguments/parameters for this Action.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Action_Argument" type="cybox:ActionArgumentType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Action_Argument construct is optional and enables the specification of a single relevant argument/parameter for this Action.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ActionArgumentType">
+		<xs:annotation>
+			<xs:documentation>The ActionArgumentType enables the specification of a single relevant argument/parameter for this Action.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Argument_Name" type="cyboxCommon:ControlledVocabularyStringType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Defined_Argument_Name field is optional and utilizes a standardized controlled vocabulary to identify/characterize the specific action argument utilized.</xs:documentation>
+					<xs:documentation>This field is implemented through the xsi:type controlled vocabulary extension mechanism. The default vocabulary type is ActionArgumentNameVocab in the http://cybox.mitre.org/default_vocabularies-2 namespace. This type is defined in the cybox_default_vocabularies.xsd file or at the URL http://cybox.mitre.org/XMLSchema/default_vocabularies/2.0/cybox_default_vocabularies.xsd.
+						Users may also define their own vocabulary using the type extension mechanism (by specifying a vocabulary name and/or reference using the vocab_name and vocab_reference attributes, respectively) or simply use this as a string field.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Argument_Value" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Argument_Value field specifies the value for this action argument/parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AssociatedObjectsType">
+		<xs:annotation>
+			<xs:documentation>The AssociatedObjectsType enables the description/specification of cyber Objects relevant to an Action.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Associated_Object" type="cybox:AssociatedObjectType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Associated_Object construct enables the description of cyber Objects associated with this Action. This could include Objects that initiated the action, are the target Objects affected by the Action, are utilized by the Action or are the returned result of the Action.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AssociatedObjectType">
+		<xs:annotation>
+			<xs:documentation>The AssociatedObjectType is a complex type representing the characterization of a cyber observable Object associated with a given cyber observable Action.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cybox:ObjectType">
+				<xs:sequence>
+					<xs:element name="Association_Type" type="cyboxCommon:ControlledVocabularyStringType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Association_Type field utilizes a standardized controlled vocabulary to specify the kind of association this Object holds for this Action.</xs:documentation>
+							<xs:documentation>This field is implemented through the xsi:type controlled vocabulary extension mechanism. The default vocabulary type is ActionObjectAssociationTypeVocab in the http://cybox.mitre.org/default_vocabularies-2 namespace. This type is defined in the cybox_default_vocabularies.xsd file or at the URL http://cybox.mitre.org/XMLSchema/default_vocabularies/2.0/cybox_default_vocabularies.xsd.
+								Users may also define their own vocabulary using the type extension mechanism (by specifying a vocabulary name and/or reference using the vocab_name and vocab_reference attributes, respectively) or simply use this as a string field.
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Action_Pertinent_Object_Properties" type="cybox:ActionPertinentObjectPropertiesType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Action_Pertinent_Object_Properties construct is optional and identifies which of the Properties of this Object are specifically pertinent to this Action.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ActionPertinentObjectPropertiesType">
+		<xs:annotation>
+			<xs:documentation>The ActionPertinentObjectPropertiesType identifies which of the Properties of this Object are specifically pertinent to this Action.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Property" type="cybox:ActionPertinentObjectPropertyType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Property construct identifies a single Object Property that is specifically pertinent to this Action.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ActionPertinentObjectPropertyType">
+		<xs:annotation>
+			<xs:documentation>The ActionPertinentObjectPropertyType identifies one of the Properties of an Object that specifically pertinent to an Action.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="name" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The name field specifies the field name for the pertinent Object Property.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="xpath" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The xpath field specifies the XPath 1.0 expression identifying the pertinent property within the Properties schema for this object type.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="RelationshipsType">
+		<xs:annotation>
+			<xs:documentation>The RelationshipsType enables description of other cyber observable actions that are related to this Action.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Relationship" type="cybox:ActionRelationshipType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Relationship construct is optional and enables description of a single other cyber observable action that is related to this Action.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ActionRelationshipType">
+		<xs:annotation>
+			<xs:documentation>The ActionRelationshipType characterizes a relationship between a specified cyber observable action and another cyber observable action.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Type" type="cyboxCommon:ControlledVocabularyStringType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Type field utilizes a standardized controlled vocabulary to describe the nature of the relationship between this Action and the related Action.</xs:documentation>
+					<xs:documentation>This field is implemented through the xsi:type controlled vocabulary extension mechanism. The default vocabulary type is ActionRelationshipTypeVocab in the http://cybox.mitre.org/default_vocabularies-2 namespace. This type is defined in the cybox_default_vocabularies.xsd file or at the URL http://cybox.mitre.org/XMLSchema/default_vocabularies/2.0/cybox_default_vocabularies.xsd.
+						Users may also define their own vocabulary using the type extension mechanism (by specifying a vocabulary name and/or reference using the vocab_name and vocab_reference attributes, respectively) or simply use this as a string field. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Action_Reference" type="cybox:ActionReferenceType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Action_Reference construct captures references to other Actions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ActionReferenceType">
+		<xs:annotation>
+			<xs:documentation>ActionReferenceType is intended to serve as a method for linking to actions.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="action_id" type="xs:QName" use="required">
+			<xs:annotation>
+				<xs:documentation>The action_id field refers to the id of the action being referenced.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<!---->
+	<xs:element name="Object" type="cybox:ObjectType">
+		<xs:annotation>
+			<xs:documentation>The Object construct identifies and specificies the characteristics of a specific cyber-relevant object (e.g. a file, a registry key or a process). </xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="ObjectType">
+		<xs:annotation>
+			<xs:documentation>The ObjectType is a complex type representing the characteristics of a specific cyber-relevant object (e.g. a file, a registry key or a process). </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="State" type="cyboxCommon:ControlledVocabularyStringType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The State field enables the description of the current state of the object, through a standardized controlled vocabulary.</xs:documentation>
+					<xs:documentation>This field is implemented through the xsi:type controlled vocabulary extension mechanism. The default vocabulary type is ObjectStateVocab in the http://cybox.mitre.org/default_vocabularies-2 namespace. This type is defined in the cybox_default_vocabularies.xsd file or at the URL http://cybox.mitre.org/XMLSchema/default_vocabularies/2.0/cybox_default_vocabularies.xsd.
+						Users may also define their own vocabulary using the type extension mechanism (by specifying a vocabulary name and/or reference using the vocab_name and vocab_reference attributes, respectively) or simply use this as a string field. </xs:documentation>					
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Description" type="cyboxCommon:StructuredTextType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Description field provides a mechanism to specify a structured text description of this Object. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Properties" type="cyboxCommon:ObjectPropertiesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Properties construct is an abstract placeholder for various predefined Object type schemas (e.g. File, Process or System) that can be instantiated in its place through extension of the ObjectPropertiesType. This mechanism enables the specification of a broad range of Object types with consistent Object Property naming and structure. The set of Properties schemas are maintained independent of the core CybOX schema.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Domain_Specific_Object_Properties" type="cybox:DomainSpecificObjectPropertiesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Domain_Specific_Object_Properties construct is of an Abstract type placeholder within the CybOX schema enabling the inclusion of domain-specific metadata for an object through the use of a custom type defined as an extension of this base Abstract type. This enables domains utilizing CybOX such as malware analysis or forensics to incorporate non-generalized object metadata from their domains into CybOX objects.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Related_Objects" type="cybox:RelatedObjectsType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Related_Objects construct is optional and enables the identification and/or specification of Objects with relevant relationships with this Object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Defined_Effect" type="cybox:DefinedEffectType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Defined_Effect construct is an abstract placeholder for various predefined Object Effect types (e.g. DataReadEffect, ValuesEnumeratedEffect or StateChangeEffect) that can be instantiated in its place through extension of the DefinedEffectType. This mechanism enables the specification of a broad range of types of potential complex action effects on Objects. The set of Defined_Effect types (extending the DefeinedEffectType) are maintained as part of the core CybOX schema.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Discovery_Method" type="cyboxCommon:MeasureSourceType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Discovery_Method field is optional and enables descriptive specification of how this Object was observed (in the case of a Cyber Observable Object instance) or could potentially be observed (in the case of a Cyber Observable Object pattern). </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:QName">
+			<xs:annotation>
+				<xs:documentation>The id field specifies a unique id for this Object.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="idref" type="xs:QName">
+			<xs:annotation>
+				<xs:documentation>The idref field specifies a unique id reference to an Object defined elsewhere.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="has_changed" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>The has_changed field is optional and conveys a targeted observation pattern of whether the associated object specified has changed. This field would be leveraged within a pattern observable triggering on whether the value of an object specification has changed.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="DomainSpecificObjectPropertiesType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>The DomainSpecificObjectPropertiesType is an abstract type placeholder within the CybOX schema enabling the inclusion of domain-specific metadata for an object through the use of a custom type defined as an extension of this base Abstract type. This enables domains utilizing CybOX such as malware analysis or forensics to incorporate non-generalized object metadata from their domains into CybOX objects.</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="RelatedObjectsType">
+		<xs:annotation>
+			<xs:documentation>The RelatedObjectsType enables the identification and/or specification of Objects with relevant relationships with this Object.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Related_Object" type="cybox:RelatedObjectType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Related_Object construct is optional and enables the identification and/or specification of a single Objects with relevant relationships with this Object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RelatedObjectType">
+		<xs:annotation>
+			<xs:documentation>The RelatedObjectType enables the identification and/or specification of an Object with a relevant relationship with this Object.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cybox:ObjectType">
+				<xs:sequence>
+					<xs:element name="Relationship" type="cyboxCommon:ControlledVocabularyStringType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Relationship field uses a standardized controlled vocabulary to capture the nature of the relationship between this Object and the Related_Object.</xs:documentation>
+							<xs:documentation>This field is implemented through the xsi:type controlled vocabulary extension mechanism. The default vocabulary type is ObjectRelationshipVocab in the http://cybox.mitre.org/default_vocabularies-2 namespace. This type is defined in the cybox_default_vocabularies.xsd file or at the URL http://cybox.mitre.org/XMLSchema/default_vocabularies/2.0/cybox_default_vocabularies.xsd.
+								Users may also define their own vocabulary using the type extension mechanism (by specifying a vocabulary name and/or reference using the vocab_name and vocab_reference attributes, respectively) or simply use this as a string field. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DefinedEffectType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>The DefinedEffectType is an abstract placeholder for various predefined Object Effect types (e.g. DataReadEffect, ValuesEnumeratedEffect or StateChangeEffect) that can be instantiated in its place through extension of the DefinedEffectType. This mechanism enables the specification of a broad range of types of potential complex action effects on Objects. The set of Defined_Effect types (extending the DefinedEffectType) are maintained as part of the core CybOX schema.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="effect_type" type="cybox:EffectTypeEnum">
+			<xs:annotation>
+				<xs:documentation>The effect_type field specifies the nature of the Defined Effect instantiated in the place of the Defined_Effect element. </xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="EffectTypeEnum">
+		<xs:annotation>
+			<xs:documentation>EffectTypeEnum is a (non-exhaustive) enumeration of effect types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="State_Changed">
+				<xs:annotation>
+					<xs:documentation>Specifies that the associated Action had an effect on the Object of changing its state.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Data_Read">
+				<xs:annotation>
+					<xs:documentation>Specifies that the associated Action had an effect on the Object of reading data from it.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Data_Written">
+				<xs:annotation>
+					<xs:documentation>Specifies that the associated Action had an effect on the Object of writing data to it.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Data_Sent">
+				<xs:annotation>
+					<xs:documentation>Specifies that the associated Action had an effect on the Object of sending data to it.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Data_Received">
+				<xs:annotation>
+					<xs:documentation>Specifies that the associated Action had an effect on the Object of receiving data from it.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Properties_Read">
+				<xs:annotation>
+					<xs:documentation>Specifies that the associated Action had an effect on the Object of reading properties from it.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Properties_Enumerated">
+				<xs:annotation>
+					<xs:documentation>Specifies that the associated Action had an effect on the Object of enumeraring properies from it.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Values_Enumerated">
+				<xs:annotation>
+					<xs:documentation>Specifies that the associated Action had an effect on the Object of enumerating values from it.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ControlCode_Sent">
+				<xs:annotation>
+					<xs:documentation>Specifies that the associated Action had an effect on the Object of having a control code sent to it.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="StateChangeEffectType">
+		<xs:annotation>
+			<xs:documentation>The StateChangeEffectType is intended as a generic way of characterizing the effects of actions upon objects where the some state of the object is changed. </xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cybox:DefinedEffectType">
+				<xs:sequence>
+					<xs:element name="Old_Object" type="cybox:ObjectType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Old_Object construct specifies the object and its properties as they were before the state change effect occurred.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="New_Object" type="cybox:ObjectType">
+						<xs:annotation>
+							<xs:documentation>The New_Object construct specifies the object and its properties as they are after the state change effect occurred.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DataReadEffectType">
+		<xs:annotation>
+			<xs:documentation>The DataReadEffectType type is intended to characterize the effects of actions upon objects where some data is read, such as from a file or a pipe.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cybox:DefinedEffectType">
+				<xs:sequence>
+					<xs:element name="Data" type="cyboxCommon:DataSegmentType">
+						<xs:annotation>
+							<xs:documentation>The Data field specifies the data that was read from the object by the action.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DataWrittenEffectType">
+		<xs:annotation>
+			<xs:documentation>The DataWrittenEffectType type is intended to characterize the effects of actions upon objects where some data is written, such as to a file or a pipe.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cybox:DefinedEffectType">
+				<xs:sequence>
+					<xs:element name="Data" type="cyboxCommon:DataSegmentType">
+						<xs:annotation>
+							<xs:documentation>The Data field specifies the data that was written to the object by the action.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DataSentEffectType">
+		<xs:annotation>
+			<xs:documentation>The DataSentEffectType type is intended to characterize the effects of actions upon objects where some data is sent, such as a byte sequence on a socket.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cybox:DefinedEffectType">
+				<xs:sequence>
+					<xs:element name="Data" type="cyboxCommon:DataSegmentType">
+						<xs:annotation>
+							<xs:documentation>The Data field specifies the data that was sent on the object, or from the object, by the action.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DataReceivedEffectType">
+		<xs:annotation>
+			<xs:documentation>The DataReceivedEffectType type is intended to characterize the effects of actions upon objects where some data is received, such as a byte sequence on a socket.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cybox:DefinedEffectType">
+				<xs:sequence>
+					<xs:element name="Data" type="cyboxCommon:DataSegmentType">
+						<xs:annotation>
+							<xs:documentation>The Data field specifies the data that was received on the object, or from the object, by the action.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PropertyReadEffectType">
+		<xs:annotation>
+			<xs:documentation>The PropertyReadEffectType type is intended to characterize the effects of actions upon objects where some specific property is read from an object, such as the current running state of a process.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cybox:DefinedEffectType">
+				<xs:sequence>
+					<xs:element name="Name" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Name field specifies the Name of the property being read.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Value" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Value field specifies the value of the property being read.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PropertiesEnumeratedEffectType">
+		<xs:annotation>
+			<xs:documentation>The PropertiesEnumeratedEffectType type is intended to characterize the effects of actions upon objects where some properties of the object are enumerated, such as the startup parameters for a process.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cybox:DefinedEffectType">
+				<xs:sequence>
+					<xs:element name="Properties" type="cybox:PropertiesType">
+						<xs:annotation>
+							<xs:documentation>The Properties field specifies the properties that were enumerated as a result of the action on the object.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PropertiesType">
+		<xs:annotation>
+			<xs:documentation>The PropertiesType specifies the properties that were enumerated as a result of the action on the object.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Property" type="xs:string" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Property elemet specifies a single property that was enumerated as a result of the action on the object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ValuesEnumeratedEffectType">
+		<xs:annotation>
+			<xs:documentation>The ValuesEnumeratedEffectType type is intended to characterize the effects of actions upon objects where some values of the object are enumerated, such as the values of a registry key.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cybox:DefinedEffectType">
+				<xs:sequence>
+					<xs:element name="Values" type="cybox:ValuesType">
+						<xs:annotation>
+							<xs:documentation>The Values field specifies the values that were enumerated as a result of the action on the object.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ValuesType">
+		<xs:annotation>
+			<xs:documentation>The ValuesType specifies the values that were enumerated as a result of the action on the object.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Value" type="xs:string" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Value field specifies a single value that was enumerated as a result of the action on the object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SendControlCodeEffectType">
+		<xs:annotation>
+			<xs:documentation>The SendControlCodeEffectType is intended to characterize the effects of actions upon objects where some control code, or other control-oriented communication signal, is sent to the object. For example, an action may send a control code to change the running state of a process.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cybox:DefinedEffectType">
+				<xs:sequence>
+					<xs:element name="Control_Code" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>The Control_Code field specifies the actual control code that was sent to the object.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!---->
+	<xs:element name="Property" type="cyboxCommon:PropertyType">
+		<xs:annotation>
+			<xs:documentation>The Property element represents the specification of a single Object Property</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!---->
+	<xs:complexType name="ObservableCompositionType">
+		<xs:annotation>
+			<xs:documentation>The ObservablesCompositionType enables the specification of higher-order composite observables composed of logical combinations of other observables.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0">
+			<xs:element name="Observable" type="cybox:ObservableType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Observable construct represents a description of a single cyber observable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="operator" type="cybox:OperatorTypeEnum" use="required">
+			<xs:annotation>
+				<xs:documentation>The operator field enables the specification of complex compositional cyber observables by providing logical operators for defining interrelationships between constituent cyber observables defined utilizing the recursive Observable element.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="OperatorTypeEnum">
+		<xs:annotation>
+			<xs:documentation>OperatorTypeEnum is a (non-exhaustive) enumeration of operators.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AND">
+				<xs:annotation>
+					<xs:documentation>Specifies the AND logical composition operation.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OR">
+				<xs:annotation>
+					<xs:documentation>Specifies the OR logical composition operation.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<!---->
+	<xs:complexType name="PoolsType">
+		<xs:annotation>
+			<xs:documentation>The PoolsType enables the description of Events, Actions, Objects and Properties in a space-efficient pooled manner with the actual Observable structures defined in the CybOX schema containing references to the pooled elements. This reduces redundancy caused when identical observable elements occur multiple times within a set of defined Observables.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Event_Pool" type="cybox:EventPoolType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Event_Pool construct enables the description of CybOX Events in a space-efficient pooled manner with the actual Observable structures defined in the CybOX schema containing references to the pooled Event elements. This reduces redundancy caused when identical Events occur multiple times within a set of defined Observables.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Action_Pool" type="cybox:ActionPoolType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Action_Pool construct enables the description of CybOX Actions in a space-efficient pooled manner with the actual Observable structures defined in the CybOX schema containing references to the pooled Action elements. This reduces redundancy caused when identical Actions occur multiple times within a set of defined Observables.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Object_Pool" type="cybox:ObjectPoolType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Object_Pool construct enables the description of CybOX Objects in a space-efficient pooled manner with the actual Observable structures defined in the CybOX schema containing references to the pooled Object elements. This reduces redundancy caused when identical Objects occur multiple times within a set of defined Observables.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Property_Pool" type="cybox:PropertyPoolType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Property_Pool construct enables the description of CybOX Properties in a space-efficient pooled manner with the actual Observable structures defined in the CybOX schema containing references to the pooled Properties elements. This reduces redundancy caused when identical Properties occur multiple times within a set of defined Observables.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EventPoolType">
+		<xs:annotation>
+			<xs:documentation>The EventPoolType enables the description of CybOX Events in a space-efficient pooled manner with the actual Observable structures defined in the CybOX schema containing references to the pooled Event elements. This reduces redundancy caused when identical Events occur multiple times within a set of defined Observables.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Event" type="cybox:EventType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Event construct enables specification of a cyber observable event that is dynamic in nature with specific action(s) taken against specific cyber relevant objects (e.g. a file is deleted, a registry key is created or an HTTP Get Request is received).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ActionPoolType">
+		<xs:annotation>
+			<xs:documentation>The ActionPoolType enables the description of CybOX Actions in a space-efficient pooled manner with the actual Observable structures defined in the CybOX schema containing references to the pooled Action elements. This reduces redundancy caused when identical Actions occur multiple times within a set of defined Observables.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Action" type="cybox:ActionType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Action construct enables description/specification of a single cyber observable action. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ObjectPoolType">
+		<xs:annotation>
+			<xs:documentation>The ObjectPoolType enables the description of CybOX Objects in a space-efficient pooled manner with the actual Observable structures defined in the CybOX schema containing references to the pooled Object elements. This reduces redundancy caused when identical Objects occur multiple times within a set of defined Observables.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Object" type="cybox:ObjectType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Object construct identifies and specificies the characteristics of a specific cyber-relevant object (e.g. a file, a registry key or a process). </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PropertyPoolType">
+		<xs:annotation>
+			<xs:documentation>The PropertyPoolType enables the description of CybOX Properties in a space-efficient pooled manner with the actual Observable structures defined in the CybOX schema containing references to the pooled Properties elements. This reduces redundancy caused when identical Properties occur multiple times within a set of defined Observables.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Property" type="cyboxCommon:PropertyType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Property construct enables the specification of a single Object Property.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!---->
+	<xs:simpleType name="NoisinessEnum">
+		<xs:annotation>
+			<xs:documentation>NoisinessEnum is a (non-exhaustive) enumeration of potential levels of noisiness for a given observable pattern.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="High">
+				<xs:annotation>
+					<xs:documentation>Specifies that this observable has a high level of noisiness meaning a potentially high level of false positives.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Medium">
+				<xs:annotation>
+					<xs:documentation>Specifies that this observable has a medium level of noisiness meaning a potentially medium level of false positives.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Low">
+				<xs:annotation>
+					<xs:documentation>Specifies that this observable has a low level of noisiness meaning a potentially low level of false positives.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ObfuscationTechniquesType">
+		<xs:annotation>
+			<xs:documentation>The ObfuscationTechniquesType enables the description of a set of potential techniques an attacker could leverage to obfuscate the observability of this Observable. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Obfuscation_Technique" type="cybox:ObfuscationTechniqueType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Obfuscation_Technique field is optional and enables the description of a single potential technique an attacker could leverage to obfuscate the observability of this Observable. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ObfuscationTechniqueType">
+		<xs:annotation>
+			<xs:documentation>The ObfuscationTechniqueType enables the description of a single potential technique an attacker could leverage to obfuscate the observability of this Observable. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Description" type="cyboxCommon:StructuredTextType">
+				<xs:annotation>
+					<xs:documentation>The Description field captures a structured text description of the obfuscation technique.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Observables" type="cybox:ObservablesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Observables construct is optional and enables description of potential cyber observables that could indicate the use of this particular obfuscation technique.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="EaseOfObfuscationEnum">
+		<xs:annotation>
+			<xs:documentation>The EaseOfObfuscationEnum is a (non-exhaustive) enumeration of simple characterizations of how easy it would be for an attacker to obfuscate the observability of this Observable.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="High">
+				<xs:annotation>
+					<xs:documentation>Specifies that this observable is very easy to obfuscate and hide.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Medium">
+				<xs:annotation>
+					<xs:documentation>Specifies that this observable is somewhat easy to obfuscate and hide.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Low">
+				<xs:annotation>
+					<xs:documentation>Specifies that this observable is not very easy to obfuscate and hide.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="KeywordsType">
+		<xs:sequence>
+			<xs:element name="Keyword" type="xs:string" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Each keyword element contains one keyword.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PatternFidelityType">
+		<xs:sequence>
+			<xs:element name="Noisiness" type="cybox:NoisinessEnum" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Noisiness field is optional and enables simple characterization of how noisy this Observable typically could be. In other words, how likely is it to generate false positives.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Ease_of_Evasion" type="cybox:EaseOfObfuscationEnum" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Ease_of_Obfuscation field is optional and enables simple characterization of how easy it would be for an attacker to obfuscate the observability of this Observable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Evasion_Techniques" type="cybox:ObfuscationTechniquesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Obfuscation_Techniques field is optional and enables the description of potential techniques an attacker could leverage to obfuscate the observability of this Observable. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

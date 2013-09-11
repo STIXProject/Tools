@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:X509CertificateObj="http://cybox.mitre.org/objects#X509CertificateObject-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" targetNamespace="http://cybox.mitre.org/objects#X509CertificateObject-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>X509_Certificate_Object</schema>
+			<version>2.0</version>
+			<date>03/11/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:element name="X509_Certificate" type="X509CertificateObj:X509CertificateObjectType">
+		<xs:annotation>
+			<xs:documentation>X509_Certificate object represents a public key certificate for use in a public key infrastructure.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType mixed="false" name="X509CertificateObjectType">
+		<xs:annotation>
+			<xs:documentation>The X509CertificateObjectType type is intended to characterize X.509 certificates.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent mixed="false">
+			<xs:extension base="cyboxCommon:ObjectPropertiesType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Certificate" type="X509CertificateObj:X509CertificateType">
+						<xs:annotation>
+							<xs:documentation>Certificate represents the contents of an X.509 certificate, including items such as issuer, subject, and others.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="Certificate_Signature" type="X509CertificateObj:X509CertificateSignatureType">
+						<xs:annotation>
+							<xs:documentation>Certificate Signature contains the signature and signature algorithm of this X.509 certificate.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="X509CertificateType">
+		<xs:annotation>
+			<xs:documentation>The X509CertificateType type represents the contents of an X.509 certificate, including items such as issuer, subject, and others.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Version" type="cyboxCommon:IntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>Version describes the version of the encoded certificate.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Serial_Number" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The serial number is a unique identifier for each X.509 certificate issued by a specific Certificate Authority.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Signature_Algorithm" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The signature algorithm is the algorithm used to sign the X.509 certificate.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Issuer" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The issuer is the Certificate Authority who issued the X.509 certificate.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Validity" type="X509CertificateObj:ValidityType">
+				<xs:annotation>
+					<xs:documentation>Validity is the time interval during which the issuer warrants that it will maintain information about the status of the certificate.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Subject" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The subject identifies the entity associated with the public key stored in the subject public key field of the X.509 certificate.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Subject_Public_Key" type="X509CertificateObj:SubjectPublicKeyType">
+				<xs:annotation>
+					<xs:documentation>The Subject Public Key is used to carry the public key and identify the algorithm with which the key is used.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Standard_Extensions" type="X509CertificateObj:X509V3ExtensionsType">
+				<xs:annotation>
+					<xs:documentation>The Standard_Extensions field captures standard X509 V3 extensions that may be specified in the certificate.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Non_Standard_Extensions" type="X509CertificateObj:X509NonStandardExtensionsType">
+				<xs:annotation>
+					<xs:documentation>The Non_Standard_Extensions field captures non-standard X509 extensions that may be specified in the certificate.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="X509CertificateSignatureType">
+		<xs:annotation>
+			<xs:documentation>The X509CertificateSignatureType contains the signature and signature algorithm of this X.509 certificate.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Signature_Algorithm" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>Signature Algorithm contains the algorithm identifier for the algorithm used by the Certificate Authority to compute the signature.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Signature" type="cyboxCommon:StringObjectPropertyType" maxOccurs="1" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Signature contains a digital signature computed upon this X.509 certificate.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SubjectPublicKeyType">
+		<xs:annotation>
+			<xs:documentation>The SubjectPublicKeyType is used to carry the public key and identify the algorithm with which the key is used.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Public_Key_Algorithm" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>Public Key Algorithm is the algorithm with which to encrypt data being sent to the subject.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="RSA_Public_Key" type="X509CertificateObj:RSAPublicKeyType">
+				<xs:annotation>
+					<xs:documentation>RSA Public Key is the public key contained in this X.509 certificate.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ValidityType">
+		<xs:annotation>
+			<xs:documentation>The ValidityType type is the time interval during which the issuer warrants that it will maintain information about the status of the certificate.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Not_Before" type="cyboxCommon:DateTimeObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>Not before is the date on which the certificate validity period begins.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Not_After" type="cyboxCommon:DateTimeObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>Not after is the date on which the certificate validity period ends.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RSAPublicKeyType">
+		<xs:annotation>
+			<xs:documentation>The RSAPublicKeyType captures details of RSA public keys.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Modulus" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Modulus is the modulus portion of a public key.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Exponent" type="cyboxCommon:IntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>Exponent is the exponent portion of a public key.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="X509V3ExtensionsType">
+		<xs:annotation>
+			<xs:documentation>The X509V3ExtensionsType captures the standard X509 V3 Extensions that may be used in X509 certificates. Based on RFC 3280, "Standard Extensions": http://www.ietf.org/rfc/rfc3280.txt</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Basic_Constraints" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Basic_Constraints field captures a multi-valued extension which indicates whether a certificate is a CA certificate. The first (mandatory) name is CA followed by TRUE or FALSE. If CA is TRUE then an optional pathlen name followed by an non-negative value can be included. Also equivalent to the object ID (OID) value of 2.5.29.19.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Name_Constraints" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Name_Constraints field captures a name space within which all subject names in subsequent certificates in a certification path MUST be located. Also equivalent to the object ID (OID) value of 2.5.29.30.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Policy_Constraints" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Policy_Constraints field captures any constraints on path validation for certificates issued to CAs. Also equivalent to the object ID (OID) value of 2.5.29.36.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Key_Usage" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Key_Usage element field captures a multi-valued extension consisting of a list of names of the permitted key usages. Also equivalent to the object ID (OID) value of 2.5.29.15.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Extended_Key_Usage" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Extended_Key_Usage field captures a list of usages indicating purposes for which the certificate public key can be used for. Also equivalent to the object ID (OID) value of 2.5.29.37.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Subject_Key_Identifier" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Subject_Key_Identifier field captures the identifier that provides a means of identifying certificates that contain a particular public key. Also equivalent to the object ID (OID) value of 2.5.29.14.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Authority_Key_Identifier" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Authority_Key_Identifier field captures the identifier that provides a means of identifying the public key corresponding to the private key used to sign a certificate. Also equivalent to the object ID (OID) value of 2.5.29.35.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Subject_Alternative_Name" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Subject_Alternative_Name field captures the additional identities to be bound to the subject of the certificate. Also equivalent to the object ID (OID) value of 2.5.29.17.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Issuer_Alternative_Name" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Issuer_Alternative_Name field captures the additional identities to be bound to the issuer of the certificate. Also equivalent to the object ID (OID) value of 2.5.29.18.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Subject_Directory_Attributes" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Subject_Directory_Attributes field captures the identification attributes (e.g., nationality) of the subject. Also equivalent to the object ID (OID) value of 2.5.29.9.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="CRL_Distribution_Points" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The CRL_Distribution_Points field captures how CRL information is obtained. Also equivalent to the object ID (OID) value of 2.5.29.31.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Inhibit_Any_Policy" type="cyboxCommon:NonNegativeIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Inhibit_Any_Policy field the number of additional certificates that may appear in the path before anyPolicy is no longer permitted. Also equivalent to the object ID (OID) value of 2.5.29.54.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Private_Key_Usage_Period" type="X509CertificateObj:ValidityType">
+				<xs:annotation>
+					<xs:documentation>The Private_Key_Usage_Period field captures the validity period for the private key, if it is different from the validity period of the certificate. Also equivalent to the object ID (OID) value of 2.5.29.16.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Certificate_Policies" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Certificate_Policies field captures a sequence of one or more policy information terms, each of which consists of an object identifier (OID) and optional qualifiers. Also equivalent to the object ID (OID) value of 2.5.29.32.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Policy_Mappings" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Policy_Mappings field captures one or more pairs of OIDs; each pair includes an issuerDomainPolicy and a subjectDomainPolicy. The pairing indicates whether the issuing CA considers its issuerDomainPolicy equivalent to the subject CA's subjectDomainPolicy. Also equivalent to the object ID (OID) value of 2.5.29.33.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="X509NonStandardExtensionsType">
+		<xs:annotation>
+			<xs:documentation>The NonStandardX509ExtensionsType captures some non-standard or deprecated X509 extensions that may be useful. Based on the OpenSSL "Deprecated Extensions" documentation: https://www.openssl.org/docs/apps/x509v3_config.html#Deprecated_Extensions. Also based on the Alvestrand certificateExtension reference: http://www.alvestrand.no/objectid/2.5.29.html</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Netscape_Comment" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Netscape_Comment field captures a comment which may be displayed when the certificate is viewed in some browsers.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Netscape_Certificate_Type" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Netscape_Certificate_Type field captures a list of flags which indicate the purposes for which a certificate could be used.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Old_Authority_Key_Identifier" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Old_Authority_Key_Identifier captures the old version of the authority key identifier, equivalent to the object ID (OID) value of 2.5.29.1.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Old_Primary_Key_Attributes" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Old_Primary_Key_Attributes field captures the old version of the primary key attributes, equivalent to the object ID (OID) value of 2.5.29.2.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

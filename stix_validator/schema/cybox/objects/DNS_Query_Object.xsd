@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:DNSQueryObj="http://cybox.mitre.org/objects#DNSQueryObject-2" xmlns:URIObj="http://cybox.mitre.org/objects#URIObject-2" xmlns:DNSRecordObj="http://cybox.mitre.org/objects#DNSRecordObject-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" targetNamespace="http://cybox.mitre.org/objects#DNSQueryObject-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>DNS_Query_Object</schema>
+			<version>2.0</version>
+			<date>02/11/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#DNSRecordObject-2" schemaLocation="DNS_Record_Object.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#URIObject-2" schemaLocation="URI_Object.xsd"/>
+	<xs:element name="DNS_Query" type="DNSQueryObj:DNSQueryObjectType">
+		<xs:annotation>
+			<xs:documentation>The DNS_Query object is intended to represent a single DNS query.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="DNSQueryObjectType">
+		<xs:annotation>
+			<xs:documentation>The DNSQueryType is intended to characterize a single DNS query and its components.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cyboxCommon:ObjectPropertiesType">
+				<xs:sequence>
+					<xs:element name="Question" type="DNSQueryObj:DNSQuestionType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Question field specifies the DNS question component of the DNS query.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Answer_Resource_Records" minOccurs="0" type="DNSQueryObj:DNSResourceRecordsType">
+						<xs:annotation>
+							<xs:documentation>The Answers field specifies any Answers resource records that were returned for the DNS query.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="Authority_Resource_Records" type="DNSQueryObj:DNSResourceRecordsType">
+						<xs:annotation>
+							<xs:documentation>The Authority_Resource_Records field specifies any Authority resource records that were returned for the DNS query.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Additional_Records" minOccurs="0" type="DNSQueryObj:DNSResourceRecordsType">
+						<xs:annotation>
+							<xs:documentation>The Authority_Resource_Records field specifies any Additional resource records that were returned for the DNS query.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="Date_Ran" type="cyboxCommon:DateTimeObjectPropertyType">
+						<xs:annotation>
+							<xs:documentation>The Date_Ran field specifies the date and time that the DNS query was run.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="Service_Used" type="cyboxCommon:StringObjectPropertyType">
+						<xs:annotation>
+							<xs:documentation>The Service_Used field specifies the service used to run the DNS Query.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="successful" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>The successful field specifies whether or not the DNS Query was successful.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DNSQuestionType">
+		<xs:annotation>
+			<xs:documentation>The DNSQuestionType specifies the components of a DNS Question, including the domain name queried, type, and class.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="QName" type="URIObj:URIObjectType">
+				<xs:annotation>
+					<xs:documentation>The QName field specifies the domain name being queried.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="QType" type="DNSQueryObj:DNSRecordType">
+				<xs:annotation>
+					<xs:documentation>The QType specifies the type of DNS query performed, in terms of the requested DNS record type.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="QClass" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The QClass field specifies the class of resource records being requested.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DNSResourceRecordsType">
+		<xs:annotation>
+			<xs:documentation>The DNSAnswersType encompasses one or more resource records returned for a DNS query.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Resource_Record" type="DNSRecordObj:DNSRecordObjectType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Answer field specifies a single DNS resource record returned as part of a DNS query.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DNSRecordType">
+		<xs:annotation>
+			<xs:documentation>DNSRecordType specifies DNS record types, via a union of the DNSRecordTypeEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="DNSQueryObj:DNSRecordTypeEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute fixed="string" name="datatype" type="cyboxCommon:DatatypeEnum" use="optional">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="DNSRecordTypeEnum">
+		<xs:annotation>
+			<xs:documentation>The DNSRecordTypeEnum is a non-exhaustive enumeration of DNS Record Type names.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="A"/>
+			<xs:enumeration value="AAAA"/>
+			<xs:enumeration value="AFSDB"/>
+			<xs:enumeration value="APL"/>
+			<xs:enumeration value="CERT"/>
+			<xs:enumeration value="CNAME"/>
+			<xs:enumeration value="DHCID"/>
+			<xs:enumeration value="DLV"/>
+			<xs:enumeration value="DNAME"/>
+			<xs:enumeration value="DNSKEY"/>
+			<xs:enumeration value="DS"/>
+			<xs:enumeration value="HIP"/>
+			<xs:enumeration value="IPSECKEY"/>
+			<xs:enumeration value="KEY"/>
+			<xs:enumeration value="KX"/>
+			<xs:enumeration value="LOC"/>
+			<xs:enumeration value="MX"/>
+			<xs:enumeration value="NAPTR"/>
+			<xs:enumeration value="NS"/>
+			<xs:enumeration value="NSEC"/>
+			<xs:enumeration value="NSEC3"/>
+			<xs:enumeration value="NSEC3PARAM"/>
+			<xs:enumeration value="PTR"/>
+			<xs:enumeration value="RRSIG"/>
+			<xs:enumeration value="RP"/>
+			<xs:enumeration value="SIG"/>
+			<xs:enumeration value="SOA"/>
+			<xs:enumeration value="SPF"/>
+			<xs:enumeration value="SRV"/>
+			<xs:enumeration value="SSHFP"/>
+			<xs:enumeration value="TA"/>
+			<xs:enumeration value="TKEY"/>
+			<xs:enumeration value="TSIG"/>
+			<xs:enumeration value="TXT"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

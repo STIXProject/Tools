@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:HTTPSessionObj="http://cybox.mitre.org/objects#HTTPSessionObject-2" xmlns:PortObj="http://cybox.mitre.org/objects#PortObject-2" xmlns:AddressObj="http://cybox.mitre.org/objects#AddressObject-2" xmlns:URIObj="http://cybox.mitre.org/objects#URIObject-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" targetNamespace="http://cybox.mitre.org/objects#HTTPSessionObject-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by [NAME] at [COMPANY]. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>HTTP_Session_Object</schema>
+			<version>2.0</version>
+			<date>02/11/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#AddressObject-2" schemaLocation="Address_Object.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#PortObject-2" schemaLocation="Port_Object.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#URIObject-2" schemaLocation="URI_Object.xsd"/>
+	<xs:element name="HTTP_Session" type="HTTPSessionObj:HTTPSessionObjectType">
+		<xs:annotation>
+			<xs:documentation>The HTTP_Session object is intended to capture the HTTP requests and responses made on a single HTTP session.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="HTTPSessionObjectType">
+		<xs:annotation>
+			<xs:documentation>The HTTPSessionObjectType is intended to capture the details of an HTTP session.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cyboxCommon:ObjectPropertiesType">
+				<xs:sequence>
+					<xs:element name="HTTP_Request_Response" type="HTTPSessionObj:HTTPRequestResponseType" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>The HTTP_Request_Response field specifies a single HTTP Request/Response pair.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="HTTPRequestResponseType">
+		<xs:annotation>
+			<xs:documentation>The HTTPRequestResponseType captures a single HTTP request/response pair.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="HTTP_Client_Request" type="HTTPSessionObj:HTTPClientRequestType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The HTTP_Client_Request field specifies the HTTP client request portion of a single HTTP request/response pair.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="HTTP_Server_Response" type="HTTPSessionObj:HTTPServerResponseType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The HTTP_Server_Response field specifies the HTTP server response portion of a single HTTP request/response pair.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HTTPClientRequestType">
+		<xs:annotation>
+			<xs:documentation>The HTTPClientRequestType field captures the details of an HTTP client request.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="HTTP_Request_Line" minOccurs="0" type="HTTPSessionObj:HTTPRequestLineType">
+				<xs:annotation>
+					<xs:documentation>The HTTP_Request_Line field specifies the HTTP request line of the HTTP client request.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="HTTP_Request_Header" minOccurs="0" type="HTTPSessionObj:HTTPRequestHeaderType">
+				<xs:annotation>
+					<xs:documentation>The HTTP_Request_Header field specifies all of the HTTP header fields that may be found in the HTTP client request.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="HTTP_Message_Body" minOccurs="0" type="HTTPSessionObj:HTTPMessageType">
+				<xs:annotation>
+					<xs:documentation>The HTTP_Message_Body field specifies the optional message body that may be included in the HTTP client request.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HTTPServerResponseType">
+		<xs:annotation>
+			<xs:documentation>The HTTPServerResponseType captures the details of an HTTP server response.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="HTTP_Status_Line" minOccurs="0" type="HTTPSessionObj:HTTPStatusLineType">
+				<xs:annotation>
+					<xs:documentation>The HTTP_Status_Line field captures the status line returned as part of the HTTP server response.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="HTTP_Response_Header" minOccurs="0" type="HTTPSessionObj:HTTPResponseHeaderType">
+				<xs:annotation>
+					<xs:documentation>The HTTP_Response_Header field captures the details of the HTTP Header returned as part of the HTTP server response.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="HTTP_Message_Body" minOccurs="0" type="HTTPSessionObj:HTTPMessageType">
+				<xs:annotation>
+					<xs:documentation>The HTTP_Message_Body field captures the HTTP message body returned as part of the HTTP server response.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HTTPRequestLineType">
+		<xs:annotation>
+			<xs:documentation>The HTTPRequestLineType captures a single HTTP request line.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="HTTP_Method" type="HTTPSessionObj:HTTPMethodType">
+				<xs:annotation>
+					<xs:documentation>The HTTP_Method field captures the HTTP method portion of the HTTP request line.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Value" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Value field captures the value (typically a resource path) portion of the HTTP request line.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Version" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Version field captures the HTTP version portion of the HTTP request line.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HTTPRequestHeaderType">
+		<xs:annotation>
+			<xs:documentation>The HTTPRequestHeaderType captures the raw or parsed header of an HTTP request.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Raw_Header" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Raw_Header field captures the HTTP request header as a raw, un-parsed string.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Parsed_Header" type="HTTPSessionObj:HTTPRequestHeaderFieldsType">
+				<xs:annotation>
+					<xs:documentation>The Parsed_Header field captures the HTTP request header as a set of parsed HTTP header fields.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HTTPRequestHeaderFieldsType">
+		<xs:annotation>
+			<xs:documentation>The HTTPRequestHeaderFieldsType captures parsed HTTP request header fields.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Accept" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Accept field specifies the HTTP Request Accept header field, which defines the Content-Types that are acceptable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Accept_Charset" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Accept-Charset field specifies the HTTP Request Accept-Charset header field, which defines the character sets that are acceptable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Accept_Language" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Accept-Language field specifies the HTTP Request Accept-Language header field, which defines the acceptable languages for response.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Accept_Datetime" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Accept-Datetime field specifies the HTTP Request Accept-Datetime header field, which defines the acceptable version time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Accept_Encoding" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Accept-Encoding field specifies the HTTP Request Accept-Encoding header field, which defines the acceptable encodings.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Authorization" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Authorization field specifies the HTTP Request Authorization header field, which defines the authentication credentials for use in HTTP authentication.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Cache_Control" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Cache-Control field specifies the HTTP Request Cache-Control header field, which defines the directives that MUST be obeyed by all caching mechanisms along the request/response chain.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Connection" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Connection field specifies the HTTP Request Connection header field, which defines the type of connection that the user-agent would prefer.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Cookie" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Cookie field specifies the HTTP Request Cookie header field, which defines the HTTP cookie previously sent by the server.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Content_Length" type="cyboxCommon:IntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Content-Length field specifies the HTTP Request Content-Length header field, which defines the length of the request body in octets.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Content_MD5" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Content-MD5 field specifies the HTTP Request Content-MD5 header field, which defines a Base64 encoded binary MD5 sum of the content of the request body.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Content_Type" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Content-Type field specifies the HTTP Request Content-Type header field, which defines a the MIME type of the body of the request (used with POST and PUT requests).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Date" type="cyboxCommon:DateTimeObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Date field specifies the HTTP Request Date header field, which defines the date and time that the message was sent.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Expect" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Expect field specifies the HTTP Request Expect header field, which defines the particular server behaviors that are required by the client.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="From" type="AddressObj:AddressObjectType">
+				<xs:annotation>
+					<xs:documentation>The From field specifies the HTTP Request From header field, which defines the email address of the user making the request.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Host" type="HTTPSessionObj:HostFieldType">
+				<xs:annotation>
+					<xs:documentation>The Host field specifies the HTTP Request Host header field, which the domain name of the server and the TCP port number on which the server is listening.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="If_Match" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The If-Match field specifies the HTTP Request If-Match header field, which allows the action to be performed if the client supplied entity matches the same entity on the server.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="If_Modified_Since" type="cyboxCommon:DateTimeObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The If-Modified-Since field specifies the HTTP Request If-Modified-Since header field, which allows a 304 Not Modified response to be returned if content is unchanged since the input date/time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="If_None_Match" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The If-Modified-Since field specifies the HTTP Request If-Modified-Since header field, which allows the action to be performed only if the client supplied entity does not match the same entity on the server.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="If_Range" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The If-Range field specifies the HTTP Request If-Range header field, which allows the client to request the part(s) of the entity that they are missing, or otherwise the new entity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="If_Unmodified_Since" type="cyboxCommon:DateTimeObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The If-Unmodified-Since field specifies the HTTP Request If-Unmodified-Since header field, which allows a response to be sent only if the entity has not been modified since a specific date/time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Max_Forwards" type="cyboxCommon:IntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Max-Forwards field specifies the HTTP Request Max-Forwards header field, which defines the maximum number of times the message can be forwarded through proxies or gateways.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Pragma" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Pragma field specifies the HTTP Request Pragma header field, which defines any implementation-specific values that may have various anywhere along the request-response chain.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Proxy_Authorization" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Proxy-Authorization field specifies the HTTP Request Proxy-Authorization header field, which defines the authorization credentials for connecting to a proxy.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Range" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Range field specifies the HTTP Request Range header field, which defines the range, in bytes, for requesting only part of an entity (bytes are numbered from 0).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Referer" type="URIObj:URIObjectType">
+				<xs:annotation>
+					<xs:documentation>The Referer field specifies the HTTP Request Range Referer field, which defines the address of the previous web page from which a link to the currently requested page was followed.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="TE" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The TE field specifies the HTTP Request TE field, which defines the transfer encodings the user agent is willing to accept.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="User_Agent" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The User-Agent field specifies the HTTP Request User-Agent field, which defines the user agent string of the user agent.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Via" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Via field specifies the HTTP Request Via field, which defines any proxies through which the request was sent.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Warning" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Warning field specifies the HTTP Request Warning field, which defines any general warnings about possible problems with the entity body.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="DNT" type="URIObj:URIObjectType">
+				<xs:annotation>
+					<xs:documentation>The DNT field specifies the non-standard HTTP Request DNT field, which is typically used to request that a web application disable their tracking of a user.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="X_Requested_With" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The X-Requested-With field specifies the non-standard HTTP Request X-Requested-With field, which is typically used to identify Ajax requests.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="X_Requested_For" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The X-Forwarded-For field specifies the non-standard HTTP Request X-Forwarded-For field, which is typically used to identify the originating IP address of a client connecting to a web server through an HTTP proxy or load balancer.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="X_ATT_DeviceId" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The X-ATT-DeviceId field specifies the non-standard HTTP Request X-ATT-DeviceId field, which is typically used to identify the make, model, and firmware of AT&amp;T devices.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="X_Wap_Profile" type="URIObj:URIObjectType">
+				<xs:annotation>
+					<xs:documentation>The X-Wap-Profile field specifies the non-standard HTTP Request X-Wap-Profile field, which is typically used to link to an XML file on the Internet with a full description and details about the device currently connecting.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HTTPResponseHeaderType">
+		<xs:annotation>
+			<xs:documentation>The HTTPResponseHeaderType captures the raw or parsed header of an HTTP response.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Raw_Header" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Raw_Header field captures the HTTP response header as a raw, un-parsed string.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Parsed_Header" type="HTTPSessionObj:HTTPResponseHeaderFieldsType">
+				<xs:annotation>
+					<xs:documentation>The Parsed_Header field captures the HTTP response header as a set of parsed HTTP header fields.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HTTPResponseHeaderFieldsType">
+		<xs:annotation>
+			<xs:documentation>The HTTPRequestHeaderFieldsType captures parsed HTTP request header fields.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Access_Control_Allow_Origin" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Access-Control-Allow-Origin field specifies the HTTP Response Access-Control-Allow-Origin header field, which defines which web sites can participate in cross-origin resource sharing.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Accept_Ranges" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Accept-Ranges field specifies the HTTP Response Accept-Ranges header field, which defines the partial content range types this server supports.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Age" type="cyboxCommon:IntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Age field specifies the HTTP Response Authorization header field, which defines the age the object has been in a proxy cache, in seconds.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Cache_Control" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Cache-Control field specifies the HTTP Response Cache-Control header field, which tells all caching mechanisms from server to client whether they may cache this object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Connection" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Connection field specifies the HTTP Response Connection header field, which specifies the options that are desired for the connection.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Content_Encoding" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Content-Encoding field specifies the HTTP Response Content-Encoding header field, which defines the type of encoding used on the data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Content_Language" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Content-Language field specifies the HTTP Response Content-Language header field, which defines the language the content is in.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Content_Length" type="cyboxCommon:IntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Content-Length field specifies the HTTP Response Content-Length header field, which defines the length of the request body in octets.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Content_Location" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Content-Location field specifies the HTTP Response Content-Location header field, which defines an alternate location for the returned data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Content_MD5" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Content-MD5 field specifies the HTTP Response Content-MD5 header field, which defines the base64-encoded binary MD5 sum of the content of the response.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Content_Disposition" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Content-Disposition field specifies the HTTP Response Content-Disposition header field, which provides a means for the origin server to suggest a default filename if the user requests that the content is saved to a file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Content_Range" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Content-Range field specifies the HTTP Response Content-Range header field, which defines where in a full body message the partial message belongs.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Content_Type" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Content-Type field specifies the HTTP Response Content-Type header field, which defines the MIME type of the content.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Date" type="cyboxCommon:DateTimeObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Date field specifies the HTTP Request Date header field, which defines the date and time that the message was sent.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="ETag" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The ETag field specifies the HTTP Response ETag header field, which defines an identifier for a specific version of a resource, often a message digest.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Expires" type="cyboxCommon:DateTimeObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Expires field specifies the HTTP Response Expires header field, which defines the date/time after which the response is considered stale.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Last_Modified" type="cyboxCommon:DateTimeObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Last-Modified field specifies the HTTP Response Last-Modified header field, which defines the date/time for the requested object, in RFC 2822 format.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Link" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Link field specifies the HTTP Response Link header field, which defines a typed relationship with another resource, where the relation type is defined by RFC 5988.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Location" type="URIObj:URIObjectType">
+				<xs:annotation>
+					<xs:documentation>The Location field specifies the HTTP Response Location header field, which defines the location used in redirection, or when a new resource has been created.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="P3P" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The P3P field specifies the HTTP Response P3P header field, which sets P3P policy to be used by the browser.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Pragma" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Pragma field specifies the HTTP Response Pragma header field, which defines any implementation-specific values that may have various anywhere along the request-response chain.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Proxy_Authenticate" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Proxy-Authenticate field specifies the HTTP Response Proxy-Authenticate header field, which defines the type of authentication necessary to access the proxy.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Refresh" type="cyboxCommon:IntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Refresh field specifies the HTTP Response Refresh header field, which specifies a given interval, in seconds, after which the current page should be refreshed.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Retry_After" type="cyboxCommon:IntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Retry-After field specifies the HTTP Response Retry-After header field, which defines the period, in seconds, after which the client should try again if an entity is temporarily unavailable. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Server" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Server field specifies the HTTP Response Server field, which defines a name for the responding server.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Set_Cookie" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Set-Cookie field specifies the HTTP Response Set-Cookie field, which defines an HTTP cookie.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Strict_Transport_Security" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Strict-Transport-Security field specifies the HTTP response Strict-Transport-Security field, which defines the HSTS Policy informing the HTTP client how long to cache the HTTPS only policy and whether this applies to subdomains.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Trailer" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Trailer field specifies the HTTP Response Trailer field, which indicates that the given set of header fields is present in the trailer of a message encoded with chunked transfer-coding.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Transfer_Encoding" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Transfer-Encoding field specifies the HTTP Response Transfer-Encoding field, which defines the form of encoding used to safely transfer the entity to the user.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Vary" type="URIObj:URIObjectType">
+				<xs:annotation>
+					<xs:documentation>The Vary field specifies the HTTP Response Vary field, which informs downstream proxies on how to match future request headers to decide whether the cached respones can be used rather than requested a fresh one from the origin server.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Via" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Via field specifies the HTTP Response Via field, which informs the client of proxies through which the response was sent.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Warning" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Warning field specifies the HTTP Response Warning field, which defines any general warnings about possible problems with the entity body.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="WWW_Authenticate" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The WWW-Authenticate field specifies the HTTP Response WWW-Authenticate field, which defines the authentication scheme that should be used to access the requested entity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="X_Frame_Options" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The X-Frame-Options field specifies the non-standard HTTP Response X-Frame-Options field, which is used as a form of clickjacking protection, supporting no rendering within a frame and no rendering if origin mismatch.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="X_XSS_Protection" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The X-XSS-Protection field specifies the non-standard HTTP Response X-XSS-Protection field, which is used as a cross-site scripting (XSS) filter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="X_Content_Type_Options" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The X-Content-Type-Options field specifies the non-standard HTTP Response X-Content-Type-Options field, which supports the 'nosniff' parameter to prevent the MIME-sniffing of a response away from the declared content type.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="X_Forwarded_Proto" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The X-Forwarded-Proto field specifies the non-standard HTTP Response X-Forwarded-Proto field, which identifies the originating protocol of an HTTP request.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="X_Powered_By" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The X-Powered-By field specifies the non-standard HTTP Response X-Powered-By field, which specifies the technology supporting the web application running on the server.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="X_UA_Compatible" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The X-UA-Compatible field specifies the non-standard HTTP Response X-UA-Compatible field, which is used to recommend the preferred rendering engine to use to display the content.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HTTPMessageType">
+		<xs:annotation>
+			<xs:documentation>The HTTPMessageType captures a single HTTP message body and its length.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Length" type="cyboxCommon:PositiveIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Length field captures the length of the HTTP message body, in bytes. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Message_Body" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Message_Body field captures the data contained in the HTTP message body.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HTTPStatusLineType">
+		<xs:annotation>
+			<xs:documentation>The HTTPStatusLineType captures a single HTTP response status line.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="Version" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Version field captures the HTTP version portion of the HTTP status line.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Status_Code" type="cyboxCommon:PositiveIntegerObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Status_Code field captures the HTTP status code portion of the HTTP status line.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Reason_Phrase" type="cyboxCommon:StringObjectPropertyType">
+				<xs:annotation>
+					<xs:documentation>The Reason_Phrase field captures the HTTP reason phrase portion of the HTTP status line.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HostFieldType">
+		<xs:annotation>
+			<xs:documentation>The HostFieldType captures the details of the HTTP request Host header field.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="1" name="Domain_Name" type="URIObj:URIObjectType">
+				<xs:annotation>
+					<xs:documentation>The Domain_Name field specifies the domain name of the server.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="Port" type="PortObj:PortObjectType">
+				<xs:annotation>
+					<xs:documentation>The Port field specifies the TCP port number on which the server is listening.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HTTPMethodType">
+		<xs:annotation>
+			<xs:documentation>HTTPMethodType specifies HTTP method types, via a union of the HTTPMethodEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="HTTPSessionObj:HTTPMethodEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute fixed="string" name="datatype" type="cyboxCommon:DatatypeEnum" use="required">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="HTTPMethodEnum">
+		<xs:annotation>
+			<xs:documentation>The HTTPMethodEnum is an enumeration of HTTP method types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="GET"/>
+			<xs:enumeration value="POST"/>
+			<xs:enumeration value="HEAD"/>
+			<xs:enumeration value="PUT"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

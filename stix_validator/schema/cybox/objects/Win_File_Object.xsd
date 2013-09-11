@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:WinFileObj="http://cybox.mitre.org/objects#WinFileObject-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:FileObj="http://cybox.mitre.org/objects#FileObject-2" targetNamespace="http://cybox.mitre.org/objects#WinFileObject-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>Win_File_Object</schema>
+			<version>2.0</version>
+			<date>02/11/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#FileObject-2" schemaLocation="File_Object.xsd"/>
+	<xs:element name="Windows_File" type="WinFileObj:WindowsFileObjectType" nillable="true">
+		<xs:annotation>
+			<xs:documentation>The Windows_File object is intended to characterize Windows files.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="WindowsFileObjectType" mixed="false">
+		<xs:annotation>
+			<xs:documentation>The WindowsFileObjectType type is intended to characterize Windows files.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FileObj:FileObjectType">
+				<xs:sequence minOccurs="1">
+					<xs:element name="Filename_Accessed_Time" type="cyboxCommon:DateTimeObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Filename_Accessed_Time field specifies the date/time the filename of the Windows file was last accessed.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Filename_Created_Time" type="cyboxCommon:DateTimeObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Filename_Created_Time field specifies the date/time the filename of the Windows file was created.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Filename_Modified_Time" type="cyboxCommon:DateTimeObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Filename_Modified_Time field specifies the date/time the filename of the Windows file was last modified.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Drive" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Drive field specifies the drive letter of the drive that the file resides on.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Security_ID" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Security_ID field specifies the Security ID (SID) value assigned to the file.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Security_Type" type="cyboxCommon:SIDType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Security_Type field specifies the type of Security ID (SID) assigned to the file.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Stream_List" type="WinFileObj:StreamListType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Stream_List field specifies any alternate data streams contained within the file.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="StreamObjectType" mixed="false">
+		<xs:annotation>
+			<xs:documentation>The StreamObjectType type is intended to characterize NTFS alternate data streams.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cyboxCommon:HashListType">
+				<xs:sequence>
+					<xs:element name="Name" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Name field specifies the name of the alternate data stream.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Size_In_Bytes" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="1" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Size_In_Bytes field specifies the size of the alternate data stream, in bytes.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="StreamListType">
+		<xs:annotation>
+			<xs:documentation>The StreamListType type specifies a list of NTFS alternate data streams.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Stream" type="WinFileObj:StreamObjectType" nillable="true" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Stream field characterizes a single NTFS alternate data stream.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WindowsFileAttributesType">
+		<xs:annotation>
+			<xs:documentation>The WindowsFileAttributesType type specifies Windows file attributes. It imports and extends the FileAttributeType from the CybOX File Object.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FileObj:FileAttributeType">
+				<xs:sequence maxOccurs="1">
+					<xs:element name="Attribute" type="WinFileObj:WindowsFileAttributeType" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>The WindowsFileAttributeType specifies a single Windows file attribute.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="WindowsFileAttributeType">
+		<xs:annotation>
+			<xs:documentation>WindowsFileAttributeType specifies Windows file attributes via a union of the FileAttributesEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="WinFileObj:FileAttributesEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="WindowsFilePermissionsType">
+		<xs:annotation>
+			<xs:documentation>The WindowsFilePermissionsType type specifies Windows file permissions. It imports and extends the FilePermissionsType from the CybOX File Object.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="FileObj:FilePermissionsType">
+				<xs:sequence>
+					<xs:element name="Full_Control" type="xs:boolean" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Full_Control field specifies whether reading, writing, changing and deleting of the file is perfmitted.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Modify" type="xs:boolean" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Modify field specifies whether reading and writing or deletion of the file is permitted.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Read" type="xs:boolean" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Read field specifies whether viewing or accessing of the file's contents is permitted.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Read_And_Execute" type="xs:boolean" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Read_And_Execute field specifies whether viewing and accessing of the file's contents as well as executing of the file is permitted.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Write" type="xs:boolean" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Write field specifies whether writing to the file is permitted.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="FileAttributesEnum">
+		<xs:annotation>
+			<xs:documentation>The FileAttributesEnum type is an enumeration of Windows file attributes. These refer to the constants specified in http://msdn.microsoft.com/en-us/library/gg258117(v=vs.85).aspx.</xs:documentation>
+		</xs:annotation>
+		<xs:list>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="ReadOnly">
+						<xs:annotation>
+							<xs:documentation>Specifies a file is read only, as denoted by the constant value, 0x1. Applications can read the file, but cannot write to it or delete it. This attribute is not honored on directories. For more information as to why, see http://go.microsoft.com/FWLink/?LinkId=125896.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Hidden">
+						<xs:annotation>
+							<xs:documentation>Specifies a file or directory is hidden, as denoted by the constant value, 0x2. It is not included in an ordinary directory listing.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="System">
+						<xs:annotation>
+							<xs:documentation>Specifies a file or directory that the operating system uses a part of, or uses exclusively, as denoted by the constant value, 0x4.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Directory">
+						<xs:annotation>
+							<xs:documentation>Specifies a directory, as denoted by the constant value, 0x10. </xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Archive">
+						<xs:annotation>
+							<xs:documentation>Specifies a file or directory that is an archive file or directory, as denoted by the constant value, 0x20. Applications typically use this attribute to mark files for backup or removal. </xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Device">
+						<xs:annotation>
+							<xs:documentation>Specifies a reserved system value, as denoted by the constant value, 0x40.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Normal">
+						<xs:annotation>
+							<xs:documentation>Specifies a file that has no other attributes set, and is only valid when this attribute is used alone, as denoted by the constant value, 0x80.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Temporary">
+						<xs:annotation>
+							<xs:documentation>Specifies a file being used for temporary storage, as denoted by the constant value, 0x100.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="SparseFile">
+						<xs:annotation>
+							<xs:documentation>Specifies a sparse file, as denoted by the constant value, 0x200.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="ReparsePoint">
+						<xs:annotation>
+							<xs:documentation>Specifies a file or directory that has an associated reparse point, or a file that is a symbolic link, as denoted by the constant value, 0x400.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Compressed">
+						<xs:annotation>
+							<xs:documentation>Specifies a file or directory that is compressed, as denoted by the constant value, 0x800. For a file, all of the data in the file is compressed. For a directory, compression is the default for newly created files and subdirectories.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Offline">
+						<xs:annotation>
+							<xs:documentation>Specifies that the data of a file is not available immediately, as denoted by the constant value, 0x1000. This attribute indicates that the file data is physically moved to offline storage. This attribute is used by Remote Storage, which is the hierarchical storage management software. Applications should not arbitrarily change this attribute.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="NotContentIndexed">
+						<xs:annotation>
+							<xs:documentation>Specifies that a file is not to be indexed by the content indexing service, as denoted by the constant value, 0x2000.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Encrypted">
+						<xs:annotation>
+							<xs:documentation>Specifies a file or directory that is encrypted, as denoted by the constant value, 0x4000. For a file, all data streams in the file are encrypted. For a directory, encryption is the default for newly created files and subdirectories.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Deleted">
+						<xs:annotation>
+							<xs:documentation>Specifies a file or directory that is marked as deleted.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="IntegrityStream">
+						<xs:annotation>
+							<xs:documentation>Specifies the directory or user data stream is configured with integrity (only supported on ReFS volumes), as denoted by the constant value, 0x8000. It is not included in an ordinary directory listing. The integrity setting persists with the file if it's renamed. If a file is copied the destination file will have integrity set if either the source file or destination directory have integrity set. NOTE: This flag is supported ONLY for Windows Server 8 Beta and later.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Virtual">
+						<xs:annotation>
+							<xs:documentation>Specifies a reserved system value, as denoted by the constant value, 0x10000.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="NoScrubData">
+						<xs:annotation>
+							<xs:documentation>The user data stream not to be read by the background data integrity scanner (AKA scrubber), as denoted by the constant value, 0x20000. When set on a directory it only provides inheritance. This flag is only supported on Storage Spaces and ReFS volumes in Windows 8 and Windows Server 8 Beta and later. It is not included in an ordinary directory listing.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:list>
+	</xs:simpleType>
+</xs:schema>

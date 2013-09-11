@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:AddressObj="http://cybox.mitre.org/objects#AddressObject-2" xmlns:NetworkRouteEntryObj="http://cybox.mitre.org/objects#NetworkRouteEntryObject-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" targetNamespace="http://cybox.mitre.org/objects#NetworkRouteEntryObject-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>Network_Route_Entry_Object</schema>
+			<version>2.0</version>
+			<date>02/11/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#AddressObject-2" schemaLocation="Address_Object.xsd"/>
+	<xs:element name="Network_Route_Entry" type="NetworkRouteEntryObj:NetworkRouteEntryObjectType">
+		<xs:annotation>
+			<xs:documentation>The Network_Route_Entry object is intended to characterize generic system network routing table entries.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="NetworkRouteEntryObjectType" mixed="false">
+		<xs:annotation>
+			<xs:documentation>The NetworkRouteEntryObjectType type is intended to characterize generic system network routing table entries.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cyboxCommon:ObjectPropertiesType">
+				<xs:sequence>
+					<xs:element name="Destination_Address" type="AddressObj:AddressObjectType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Destination_Address field specifies the destination IP address of the network route. It imports and uses the AddressObjectType from the CybOX Address object.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Origin" type="AddressObj:AddressObjectType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Origin field specifies the origin address of the network route. It imports and uses the AddressObjectType from the CybOX Address object.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Netmask" type="AddressObj:AddressObjectType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Netmask field specifies the netmask for te destination network.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Gateway_Address" type="AddressObj:AddressObjectType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Gateway_Address field specifies the IP address of the gateway through which all packets using this route will be gatewayed. It imports and uses the AddressObjectType from the CybOX Address object.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Metric" type="cyboxCommon:UnsignedLongObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Metric field specifies the distance to the target, in terms of hops.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Type" type="NetworkRouteEntryObj:RouteType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Type field specifies the type of network route being characterized.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Protocol" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Protocol field specifies the name of the routing protocol that the route was added with.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Interface" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Interface field specifies the name of the network interface to which all packets for the route will be sent.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Preferred_Lifetime" type="cyboxCommon:DurationObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Preferred_Lifetime field specifies the preferred lifetime of the route, in seconds.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Valid_Lifetime" type="cyboxCommon:DurationObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Valid_Lifetime field specifies the lifetime for which the route is valid, in seconds.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Route_Age" type="cyboxCommon:DurationObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Route_Age field specifies the number of seconds since the route was added or modified in the routing table.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="is_ipv6" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>The is_ipv6 field specifies whether the route uses IPv6 addresses.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="is_autoconfigure_address" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>The is_autoconfigure_address field specifies whether the destination IP address for the route is automatically configured.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="is_immortal" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>The is_immortal field specifies whether the lifetimes for the route prefixes are infinite.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="is_loopback" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>The is_loopback field specifies whether the route is the default for all packets sent to local network addresses.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="is_publish" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>The is_publish field specifies whether the route is published.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RouteType">
+		<xs:annotation>
+			<xs:documentation>RouteType specifies route types, via a union of the RouteTypeEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="NetworkRouteEntryObj:RouteTypeEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute name="datatype" type="cyboxCommon:DatatypeEnum" fixed="string">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="RouteTypeEnum">
+		<xs:annotation>
+			<xs:documentation>The RouteTypeEnum type is an enumeration of network route types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Other">
+				<xs:annotation>
+					<xs:documentation/>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Invalid">
+				<xs:annotation>
+					<xs:documentation>Indicates a route that is invalid.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Direct">
+				<xs:annotation>
+					<xs:documentation>Indicates routing from one machine directly to another, where both machines reside on the same physical network.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Indirect">
+				<xs:annotation>
+					<xs:documentation>Indicates routing that is not direct and must be set to a gateway.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

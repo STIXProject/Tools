@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ArtifactObj="http://cybox.mitre.org/objects#ArtifactObject-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" targetNamespace="http://cybox.mitre.org/objects#ArtifactObject-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>Artifact_Object</schema>
+			<version>2.0</version>
+			<date>02/11/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:element name="Artifact" type="ArtifactObj:ArtifactObjectType">
+		<xs:annotation>
+			<xs:documentation>The Artifact object is intended to encapsulate and convey the content of a Raw Artifact.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="ArtifactObjectType">
+		<xs:annotation>
+			<xs:documentation>The ArtifactObjectType type is intended to encapsulate and convey the content of a Raw Artifact.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cyboxCommon:ObjectPropertiesType">
+				<xs:sequence>
+					<xs:element name="Hashes" type="cyboxCommon:HashListType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Hashes field is optional and specifies hashes for the Raw_Artifact content.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Packaging" type="ArtifactObj:PackagingType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Packaging field is optional and characterizes packaging layers (e.g. compression, encryption, encoding) applied to the original content to generate the content of the Raw_Artifact field of this Object. The ordering of entries in this sequence implicitly denotes the ordering of packaging layer operations applied.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:choice>
+						<xs:element name="Raw_Artifact" type="ArtifactObj:RawArtifactType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The Raw_Artifact field contains the raw content of a cyber artifact (rather than simply analysis of that artifact). It is conveyed within a string-based field and should be further enclosed in a CDATA section within the string-based field.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Raw_Artifact_Reference" type="xs:anyURI" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The Raw_Artifact_Reference field contains a reference to an external instance of the raw content of a cyber artifact (rather than simply analysis of that artifact).</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:sequence>
+				<xs:attribute name="type" type="ArtifactObj:ArtifactTypeEnum">
+					<xs:annotation>
+						<xs:documentation>The type field specifies the general type of the artifact contained in this Defined Object.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="content_type" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>The content_type field is optional and specifies the Internet Media Type of the artifact contained in this Defined Object.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="content_type_version" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>The content_type_version field is optional and specifies the content type version of the artifact contained in this Defined Object.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="suspected_malicious" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>The suspected_malicious field is optional and conveys whether the content of the Raw_Artifact is believed to be malicoius.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RawArtifactType">
+		<xs:annotation>
+			<xs:documentation>The RawArtifactType is intended to convey, with minimal characterization, the content of the Raw Artifact itself.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cyboxCommon:StringObjectPropertyType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PackagingType">
+		<xs:annotation>
+			<xs:documentation>The PackagingType captures any packaging layers applied to an artifact.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="Compression" type="ArtifactObj:CompressionType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The Compression field is optional and specifies details for a compression layer applied to the content of the Raw_Artifact.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Encryption" type="ArtifactObj:EncryptionType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The Encryption field is optional and specifies details for an encryption layer applied to the content of the Raw_Artifact.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Encoding" type="ArtifactObj:EncodingType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>The Encoding field is optional and specifies details for an encoding layer applied to the content of the Raw_Artifact.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="is_encrypted" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>The is_encrypted field is optional and specifies whether the Raw_Artifact content is protected/encrypted.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="is_compressed" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>The is_compressed field is optional and specifies whether the Raw_Artifact content is compressed.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="CompressionType">
+		<xs:annotation>
+			<xs:documentation>The CompressionType captures any compression packaging details for an artifact.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="compression_mechanism" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The compression_mechanism field is optional and specifies the compression algorithm utilized to protect the Raw_Artifact content.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="compression_mechanism_ref" type="xs:anyURI">
+			<xs:annotation>
+				<xs:documentation>The compression_mechanism_ref field is optional and conveys a reference to a description of the compression algorithm utilized to protect the Raw_Artifact content.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="EncryptionType">
+		<xs:annotation>
+			<xs:documentation>The EncryptionType captures any encryption packaging details for an artifact.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="encryption_mechanism" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The encryption_mechanism field is optional and specifies the protection/encryption algorithm utilized to protect the Raw_Artifact content.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="encryption_mechanism_ref" type="xs:anyURI">
+			<xs:annotation>
+				<xs:documentation>The encryption_mechanism_ref field is optional and conveys a reference to a description of the protection/encryption algorithm utilized to protect the Raw_Artifact content.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="encryption_key" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The encryption_key field is optional and locally specifies the password for unprotecting/decrypting the Raw_Artifact content. </xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="encryption_key_ref" type="xs:anyURI">
+			<xs:annotation>
+				<xs:documentation>The encryption_key_ref field is optional and specifies a reference to a remote specification of the password for unprotecting/decrypting the Raw_Artifact content. </xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="EncodingType">
+		<xs:annotation>
+			<xs:documentation>The EncodingType captures any encoding packaging details for an artifact.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="algorithm" type="xs:string" default="Base64">
+			<xs:annotation>
+				<xs:documentation>The algorithm field is optional and specifies the encoding algorithm utilized to encode the Raw_Artifact.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="character_set" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The character_set field is optional and specifies the character set utilized in the Raw_Artifact content encoding.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="custom_character_set_ref" type="xs:anyURI">
+			<xs:annotation>
+				<xs:documentation>The custom_character_set_ref field is optional and conveys a reference to a specification of the custom character set used to encode the Raw_Artifact.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="ArtifactTypeEnum">
+		<xs:annotation>
+			<xs:documentation>The ArtifactTypeEnum is a (non-exhaustive) enumeration of cyber raw artifact types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="File">
+				<xs:annotation>
+					<xs:documentation>The File value specifies that the artifact is a file.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Memory Region">
+				<xs:annotation>
+					<xs:documentation>The Memory Region value specifies that the artifact is a block of data from a region of memory.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="File System Fragment">
+				<xs:annotation>
+					<xs:documentation>The File System Fragment value specifies that the artifact is a block of data from a file system.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Network Traffic">
+				<xs:annotation>
+					<xs:documentation>The Network Traffic value specifies that the artifact is a block of network traffic data such as PCAP.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Generic Data Region">
+				<xs:annotation>
+					<xs:documentation>The Generic Data Region value specifies that the artifact is a block of data from an unknown source.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

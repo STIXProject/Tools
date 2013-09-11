@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:NetworkRouteEntryObj="http://cybox.mitre.org/objects#NetworkRouteEntryObject-2" xmlns:UnixNetworkRouteEntryObj="http://cybox.mitre.org/objects#UnixNetworkRouteEntryObject-2" targetNamespace="http://cybox.mitre.org/objects#UnixNetworkRouteEntryObject-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>Unix_Network_Route_Entry_Object</schema>
+			<version>2.0</version>
+			<date>02/11/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#NetworkRouteEntryObject-2" schemaLocation="Network_Route_Entry_Object.xsd"/>
+	<xs:element name="Unix_Network_Route_Entry" type="UnixNetworkRouteEntryObj:UnixNetworkRouteEntryObjectType">
+		<xs:annotation>
+			<xs:documentation>The Unix_Network_Route_Entry object is intended to characterize entries in the network routing table of a Unix system.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="UnixNetworkRouteEntryObjectType" mixed="false">
+		<xs:annotation>
+			<xs:documentation>The UnixNetworkRouteEntryObjectType type is intended to characterize entries in the network routing table of a Unix system.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="NetworkRouteEntryObj:NetworkRouteEntryObjectType">
+				<xs:sequence>
+					<xs:element name="Flags" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Flags field specifies any flags used for the network route, such as G (use gateway).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MSS" type="cyboxCommon:UnsignedIntegerObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The MSS field specifies the maximum segment size for TCP connections over this network route, in bytes.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Ref" type="cyboxCommon:UnsignedLongObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Ref field specifies the number of references to this network route.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Use" type="cyboxCommon:UnsignedLongObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Use field specifies the number of lookups that were performed for this network route.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Window" type="cyboxCommon:UnsignedIntegerObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Window field specifies the default window size for TCP connections over this network route, in bytes.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

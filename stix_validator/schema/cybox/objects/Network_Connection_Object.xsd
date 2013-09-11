@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:SocketAddressObj="http://cybox.mitre.org/objects#SocketAddressObject-1" xmlns:NetworkConnectionObj="http://cybox.mitre.org/objects#NetworkConnectionObject-2" xmlns:DNSQueryObj="http://cybox.mitre.org/objects#DNSQueryObject-2" xmlns:HTTPSessionObj="http://cybox.mitre.org/objects#HTTPSessionObject-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" targetNamespace="http://cybox.mitre.org/objects#NetworkConnectionObject-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>Network_Connection_Object</schema>
+			<version>2.0</version>
+			<date>02/11/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#HTTPSessionObject-2" schemaLocation="HTTP_Session_Object.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#DNSQueryObject-2" schemaLocation="DNS_Query_Object.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#SocketAddressObject-1" schemaLocation="Socket_Address_Object.xsd"/>
+	<xs:element name="Network_Connection" type="NetworkConnectionObj:NetworkConnectionObjectType">
+		<xs:annotation>
+			<xs:documentation>The Network_Connection object is intended to represent a single network connection.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="NetworkConnectionObjectType" mixed="false">
+		<xs:annotation>
+			<xs:documentation>The NetworkConnectionObjectType is intended as a way of characterizing local or remote (i.e. Internet) network connections.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent mixed="false">
+			<xs:extension base="cyboxCommon:ObjectPropertiesType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="Creation_Time" type="cyboxCommon:DateTimeObjectPropertyType">
+						<xs:annotation>
+							<xs:documentation>The Creation_Time field specifies the date/time the network connection was created.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="Layer3_Protocol" type="NetworkConnectionObj:Layer3ProtocolType">
+						<xs:annotation>
+							<xs:documentation>The Layer3_Protocol field specifies the particular network (layer 3 in the OSI model) layer protocol used in the connection.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="Layer4_Protocol" type="NetworkConnectionObj:Layer4ProtocolType">
+						<xs:annotation>
+							<xs:documentation>The Layer4_Protocol field specifies the particular transport (layer 4 in the OSI model) layer protocol used in the connection.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="Layer7_Protocol" type="NetworkConnectionObj:Layer7ProtocolType">
+						<xs:annotation>
+							<xs:documentation>The Layer7_Protocol field specifies the particular application (layer 7 in the OSI model) layer protocol used in the connection.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="Source_Socket_Address" type="SocketAddressObj:SocketAddressObjectType">
+						<xs:annotation>
+							<xs:documentation>The Source_Socket_Address field specifies the source socket address, consisting of an IP Address and port number, used in the connection.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element maxOccurs="1" minOccurs="0" name="Source_TCP_State" type="NetworkConnectionObj:TCPStateEnum">
+						<xs:annotation>
+							<xs:documentation>The Source_TCP_State field specifies the current state of the TCP network connection at the source, if applicable.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="Destination_Socket_Address" type="SocketAddressObj:SocketAddressObjectType">
+						<xs:annotation>
+							<xs:documentation>The Destination_Socket_Address field specifies the destination socket address, consisting of an IP Address and port number, used in the connection.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element maxOccurs="1" minOccurs="0" name="Destination_TCP_State" type="NetworkConnectionObj:TCPStateEnum">
+						<xs:annotation>
+							<xs:documentation>The Destination_TCP_State field specifies the current state of the TCP network connection at the destination, if applicable.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Layer7_Connections" minOccurs="0" type="NetworkConnectionObj:Layer7ConnectionsType">
+						<xs:annotation>
+							<xs:documentation>The Layer7_Connections field allows for the characterization of any application (layer 7 in the OSI model) layer connections observed as part of the network connection.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="tls_used" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>The tls_used field specifies whether or not Transport Layer Security (TLS) is used in the network connection.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Layer7ConnectionsType">
+		<xs:annotation>
+			<xs:documentation>The Layer7ConnectionsType specifies the different types of application (layer 7 in the OSI model) connections that may be initiated as part of the network connection.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="HTTP_Session" type="HTTPSessionObj:HTTPSessionObjectType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The HTTP Session field specifies a single HTTP session initiated between source and destination IP addresses/ports, and includes 1-n HTTP Request/Response pairs.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DNS_Query" type="DNSQueryObj:DNSQueryObjectType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The DNS_Query field specifies a single DNS query/answer pair initiated between source and destination IP addresses/ports.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Layer3ProtocolType">
+		<xs:annotation>
+			<xs:documentation>Layer3ProtocolType specifies Layer 3 protocol types, via a union of the Layer3ProtocolEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="NetworkConnectionObj:Layer3ProtocolEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute fixed="string" name="datatype" type="cyboxCommon:DatatypeEnum" use="required">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Layer4ProtocolType">
+		<xs:annotation>
+			<xs:documentation>Layer4ProtocolType specifies Layer 4 protocol types, via a union of the Layer4ProtocolEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="NetworkConnectionObj:Layer4ProtocolEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute fixed="string" name="datatype" type="cyboxCommon:DatatypeEnum" use="required">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Layer7ProtocolType">
+		<xs:annotation>
+			<xs:documentation>Layer7ProtocolType specifies Layer 7 protocol types, via a union of the Layer7ProtocolEnum type and the atomic xs:string type. Its base type is the CybOX Core BaseObjectPropertyType, for permitting complex (i.e. regular-expression based) specifications.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="NetworkConnectionObj:Layer7ProtocolEnum xs:string"/>
+				</xs:simpleType>
+				<xs:attribute fixed="string" name="datatype" type="cyboxCommon:DatatypeEnum" use="required">
+					<xs:annotation>
+						<xs:documentation>This attribute is optional and specifies the expected type for the value of the specified property.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="TCPStateEnum">
+		<xs:annotation>
+			<xs:documentation>The ConnectionStateEnum type is an enumeration of TCP connection states.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="UNKNOWN">
+				<xs:annotation>
+					<xs:documentation>Indicates an unknown TCP connection state.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CLOSED">
+				<xs:annotation>
+					<xs:documentation>Indicates the closed TCP connection state--i.e. no connection state at all.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LISTENING">
+				<xs:annotation>
+					<xs:documentation>Indicates the listening TCP connection state.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SYN_SENT">
+				<xs:annotation>
+					<xs:documentation>Indicates the SYN sent TCP connection state--i.e. wait for a matching connection request after having sent a connection request.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SYN_RECEIVED">
+				<xs:annotation>
+					<xs:documentation>Indicates the SYN received TCP connection state--i.e. waiting for a confirming connection request acknowledgment after having both received and sent a connection request.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ESTABLISHED">
+				<xs:annotation>
+					<xs:documentation>Indicates the established TCP connection state--i.e. an open connection in which data received can be delivered to the user.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FIN_WAIT_1">
+				<xs:annotation>
+					<xs:documentation>Indicates the FIN-WAIT-1 TCP connection state--i.e. waiting for a connection termination request from the remote TCP, or an acknowledgment of the connection termination request previously sent.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FIN_WAIT_2">
+				<xs:annotation>
+					<xs:documentation>Indicates the FIN-WAIT-2 TCP connection state--i.e. waiting for a connection termination request from the remote TCP.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CLOSE_WAIT">
+				<xs:annotation>
+					<xs:documentation>Indicates the CLOSE-WAIT TCP connection state--i.e. waiting for a connection termination request from the local user.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CLOSING">
+				<xs:annotation>
+					<xs:documentation>Indicates the CLOSING TCP connection state--i.e. waiting for a connection termination request acknowledgment from the remote TCP.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LAST_ACK">
+				<xs:annotation>
+					<xs:documentation>Indicates the LAST-ACK connection state--i.e. waiting for an acknowledgment of the connection termination request previously sent to the remote TCP (which includes an acknowledgment of its connection termination request).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TIME_WAIT">
+				<xs:annotation>
+					<xs:documentation>Indicates the TIME-WAIT connection state--i.e. waiting for for enough time to pass to be sure the remote TCP received the acknowledgment of its connection termination request.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DELETING_TCB">
+				<xs:annotation>
+					<xs:documentation>Indicates the DELETE-TCB connection state--i.e. the Transmission Control Block (TCB) is being deleted.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Layer3ProtocolEnum">
+		<xs:annotation>
+			<xs:documentation>Layer3ProtocolEnum is a non-exhaustive enumeration of Layer 3 (network) layer protocols.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="IPv4">
+				<xs:annotation>
+					<xs:documentation>Specifies the Internet Protocol, version 4.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IPv6">
+				<xs:annotation>
+					<xs:documentation>Specifies the Internet Protocol, version 6.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ICMP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Internet Control Message Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IGMP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Internet Group Management Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IGRP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Interior Gateway Routing Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CLNP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Connectionless Networking Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EGP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Exterior Gateway Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EIGRP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Enhanced Interior Gateway Routing Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IPSec">
+				<xs:annotation>
+					<xs:documentation>Specifies the Internet Protocol Security suite.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IPX">
+				<xs:annotation>
+					<xs:documentation>Specifies the Internetwork Packet Exchange protocol</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Routed-SMLT">
+				<xs:annotation>
+					<xs:documentation>Specifies the Routed Split Multi-Link Trunking protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCCP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Signalling Connection Control Part protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Layer4ProtocolEnum">
+		<xs:annotation>
+			<xs:documentation>Layer4ProtocolEnum is a non-exhaustive enumeration of Layer 4 (transport) layer protocols.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TCP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Transmission Control Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UDP">
+				<xs:annotation>
+					<xs:documentation>Specifies the User Datagram Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AH">
+				<xs:annotation>
+					<xs:documentation>Specifies the Authentication Header protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ESP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Encapsulating Security Payload protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GRE">
+				<xs:annotation>
+					<xs:documentation>Specifies the Generic Routing Encapsulation protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IL">
+				<xs:annotation>
+					<xs:documentation>Specifies the Internet Link protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCTP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Stream Control Transmission Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Sinec H1">
+				<xs:annotation>
+					<xs:documentation>Specifies the Siemens Sinec H1 protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SPX">
+				<xs:annotation>
+					<xs:documentation>Specifies the Sequenced Packet Exchange protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DCCP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Datagram Congestion Control Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Layer7ProtocolEnum">
+		<xs:annotation>
+			<xs:documentation>Layer7ProtocolEnum is a non-exhaustive enumeration of Layer 7 (application) layer protocols.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="HTTP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Hypertext Transfer Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HTTPS">
+				<xs:annotation>
+					<xs:documentation>Specifies the Hypertext Transfer Protocol Secure.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FTP">
+				<xs:annotation>
+					<xs:documentation>Specifies the File Transfer Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SMTP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Simple Mail Transfer Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IRC">
+				<xs:annotation>
+					<xs:documentation>Specifies the Internet Relay Chat protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IDENT">
+				<xs:annotation>
+					<xs:documentation>Specifies the Identification Protocol, IDENT.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DNS">
+				<xs:annotation>
+					<xs:documentation>Specifies the Domain Name System protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TELNET">
+				<xs:annotation>
+					<xs:documentation>Specifies the Telnet protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="POP3">
+				<xs:annotation>
+					<xs:documentation>Specifies the Post Office Protocol, version 3.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IMAP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Internet Message Access Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SSH">
+				<xs:annotation>
+					<xs:documentation>Specifies the Secure Shell protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SMB">
+				<xs:annotation>
+					<xs:documentation>Specifies the Microsoft Server Message Block protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ADC">
+				<xs:annotation>
+					<xs:documentation>Specifies the Advance Direct Connect protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AFP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Apple Filing Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BACNet">
+				<xs:annotation>
+					<xs:documentation>Specifies the Building Automation and Control Network protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BitTorrent">
+				<xs:annotation>
+					<xs:documentation>Specifies the BitTorrent protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BOOTP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Bootstrap Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Diameter">
+				<xs:annotation>
+					<xs:documentation>Specifies the Diameter protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DICOM">
+				<xs:annotation>
+					<xs:documentation>Specifies the Digital Imaging and Communications in Medicine protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DICT">
+				<xs:annotation>
+					<xs:documentation>Specifies the Dictionary protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DSM-CC">
+				<xs:annotation>
+					<xs:documentation>Specifies the Digital Storage Media Command and Control protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DSNP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Distributed Social Networking Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DHCP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Dynamic Host Configuration Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ED2K">
+				<xs:annotation>
+					<xs:documentation>Specifies the EDonkey2000 protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Finger">
+				<xs:annotation>
+					<xs:documentation>Specifies the Finger protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Gnutella">
+				<xs:annotation>
+					<xs:documentation>Specifies the Gnutella protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Gopher">
+				<xs:annotation>
+					<xs:documentation>Specifies the Gopher protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ISUP">
+				<xs:annotation>
+					<xs:documentation>Specifies the ISDN User Part protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LDAP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Lightweight Directory Access Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MIME">
+				<xs:annotation>
+					<xs:documentation>Specifies the Multipurpose Internet Mail Extensions protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MSNP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Microsoft Notification Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MAP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Mobile Application Part protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NetBIOS">
+				<xs:annotation>
+					<xs:documentation>Specifies the Network Basic Input/Output System protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NNTP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Network News Transfer Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NTP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Network Time Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NTCIP">
+				<xs:annotation>
+					<xs:documentation>Specifies the National Transportation Communications for Intelligent Transportation System Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RADIUS">
+				<xs:annotation>
+					<xs:documentation>Specifies the Remote Authentication Dial In User Service protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RDP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Remote Desktop Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rlogin">
+				<xs:annotation>
+					<xs:documentation>Specifies the rlogin protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rsync">
+				<xs:annotation>
+					<xs:documentation>Specifies the rsync otocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RTP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Real-time Transport Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RTSP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Real-time Transport Streaming Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SISNAPI">
+				<xs:annotation>
+					<xs:documentation>Specifies the Siebel Internet Session Network API protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SIP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Session Initiation Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SNMP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Simple Network Management Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="STUN">
+				<xs:annotation>
+					<xs:documentation>Specifies the Session Traversal Utilities for NAT protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TUP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Telephonse User Part protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TCAP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Transaction Capabilities Application Part protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TFTP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Trivial File Transfer Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WebDAV">
+				<xs:annotation>
+					<xs:documentation>Specifies the Web Distributed Authoring and Versioning protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="XMPP">
+				<xs:annotation>
+					<xs:documentation>Specifies the Extensible Messaging and Presence Protocol.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

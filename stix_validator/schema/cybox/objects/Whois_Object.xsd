@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:WhoisObj="http://cybox.mitre.org/objects#WhoisObject-2" xmlns:URIObj="http://cybox.mitre.org/objects#URIObject-2" xmlns:AddressObj="http://cybox.mitre.org/objects#AddressObject-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" targetNamespace="http://cybox.mitre.org/objects#WhoisObject-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>Whois_Object</schema>
+			<version>2.0</version>
+			<date>02/11/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#URIObject-2" schemaLocation="URI_Object.xsd"/>
+	<xs:import namespace="http://cybox.mitre.org/objects#AddressObject-2" schemaLocation="Address_Object.xsd"/>
+	<xs:element name="Whois_Entry" type="WhoisObj:WhoisObjectType">
+		<xs:annotation>
+			<xs:documentation>The Whois_Entry object is intended to characterize an individual Whois entry for a domain.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="WhoisObjectType" mixed="false">
+		<xs:annotation>
+			<xs:documentation>The WhoisObjectType type is intended to characterize Whois information for a domain.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cyboxCommon:ObjectPropertiesType">
+				<xs:sequence>
+					<xs:element name="Domain_Name" type="URIObj:URIObjectType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Domain_Name field specifies the corresponding domain name for this whois entry</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Domain_ID" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Domain_ID field specifies the domain id for the domain associated with this Whois entry</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Server_Name" type="URIObj:URIObjectType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Server_Name field specifies the corresponding server name for this whois entry. This usually corresponds to a nameserver lookup.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IP_Address" type="AddressObj:AddressObjectType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The IP_Address field specifies the corresponding ip address for this whois entry. The usually corresponds to a nameserver lookup.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DNSSEC" type="WhoisObj:WhoisDNSSECTypeEnum" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The DNSSEC element corresponds to the DNSSEC field associated with a Whois entry. Acceptable values are: "Signed" or "Unsigned".</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Nameservers" type="WhoisObj:WhoisNameserversType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Nameservers element represents a list of nameserver entries for a Whois entry.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Status" type="WhoisObj:WhoisStatusesType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Status element represents a list of statuses for a given Whois entry.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Updated_Date" type="cyboxCommon:DateObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Updated_Date field specifies the date in which the registered domain information was last updated</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Creation_Date" type="cyboxCommon:DateObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Creation_Date field specifies the date in which the registered domain was created</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Expiration_Date" type="cyboxCommon:DateObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Expiration_Date field specifies the date in which the registered domain will expire</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="Regional_Internet_Registry" type="WhoisObj:RegionalRegistryType">
+						<xs:annotation>
+							<xs:documentation>The Regional_Internet_Registry field specifies the name of the Regional Internet Registry (RIR) which allocated the IP address contained in this WHOIS entry.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Sponsoring_Registrar" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Sponsoring_Registrar field holds the name of the sponsoring registrar for the domain</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Registrar_Info" type="WhoisObj:WhoisRegistrarInfoType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Registrar_Info element represents registrar info that would be returned from a registrar lookup</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Registrants" minOccurs="0" type="WhoisObj:WhoisRegistrantsType">
+						<xs:annotation>
+							<xs:documentation>The Registrants element represents the registrant information associated with a domain lookup</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Contact_Info" type="WhoisObj:WhoisContactType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The Contact_Info element represents contact info that would be returned from a contact lookup</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:simpleType name="WhoisStatusTypeEnum">
+		<xs:annotation>
+			<xs:documentation>The WhoisStatusEnum enumeration lists all valid statuses for a domain within a whois entry</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ADD_PERIOD">
+				<xs:annotation>
+					<xs:documentation>The 5-day Add Grace Period after the initial registration of a domain. If the domain is deleted by the registrar during this period, the registry provides a credit to the registrar for the cost of the registration.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RENEW_PERIOD">
+				<xs:annotation>
+					<xs:documentation>The 5-day period after a domain registration period is explicitly extended (renewed) by the registrar. If the domain is deleted by the registrar during this period, the registry provides a credit to the registrar for the cost of the renewal.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AUTO_RENEW_PERIOD">
+				<xs:annotation>
+					<xs:documentation>The 45-day period after a domain registration period expires and is extended (renewed) automatically by the registry. If the domain is deleted by the registrar during this period, the registry provides a credit to the registrar for the cost of the renewal.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TRANSFER_PERIOD">
+				<xs:annotation>
+					<xs:documentation>The 5-day period after the successful transfer of domain name registration sponsorship from one registrar to another registrar. If the domain is deleted by the new sponsoring registrar during this period, the registry provides a credit to the registrar for the cost of the transfer.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PENDING_DELETE_RESTORABLE">
+				<xs:annotation>
+					<xs:documentation>The 30-day period after a registrar has submitted a delete command to delete a domain from the registry. All Internet services associated with the domain are disabled. During this period, a registrar can submit a request to Restore the domain.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PENDING_DELETE_SCHEDULED_FOR_RELEASE">
+				<xs:annotation>
+					<xs:documentation>The 5-day period following the PENDING DELETE RESTORABLE period. During this period, all Internet services associated with the domain will remain disabled and domain cannot be Restored.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PENDING_RESTORE">
+				<xs:annotation>
+					<xs:documentation>The registrar has submitted a Restore request for a domain that was previously in the status of PENDING DELETE RESTORABLE and the registry is awaiting a Restore Report from the registrar.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OK">
+				<xs:annotation>
+					<xs:documentation>This is the normal status for a domain that has no pending operations or prohibitions.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="INACTIVE">
+				<xs:annotation>
+					<xs:documentation>The domain has no associated nameservers. A minimum of 2 nameservers must be associated with the domain before it can be published to the zone. </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CLIENT_TRANSFER_PROHIBITED">
+				<xs:annotation>
+					<xs:documentation>Registrar does not allow the transfer of a domain.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CLIENT_RENEW_PROHIBITED">
+				<xs:annotation>
+					<xs:documentation>Registrar does not allow the renewal of a domain.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CLIENT_DELETE_PROHIBITED">
+				<xs:annotation>
+					<xs:documentation>Registrar does not allow the deletion of a domain.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CLIENT_UPDATE_PROHIBITED">
+				<xs:annotation>
+					<xs:documentation>Registrar does not allow the update or modification of a domain.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CLIENT_HOLD">
+				<xs:annotation>
+					<xs:documentation>Registrar will not allow the domain to be published to the zone.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TRANSFER_PROHIBITED">
+				<xs:annotation>
+					<xs:documentation>Registry does not allow the transfer of a domain.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RENEW_PROHIBITED">
+				<xs:annotation>
+					<xs:documentation>Registry does not allow the renewal of a domain.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DELETE_PROHIBITED">
+				<xs:annotation>
+					<xs:documentation>Registry does not allow the deletion of a domain.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UPDATE_PROHIBITED">
+				<xs:annotation>
+					<xs:documentation>Registry does not allow all the update or modification of a domain.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HOLD">
+				<xs:annotation>
+					<xs:documentation>Registry will not allow the domain to be published to the zone.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="WhoisRegistrarInfoType">
+		<xs:sequence>
+			<xs:element name="Registrar_ID" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Registrar_ID corresponds to the Registrar ID field of a Whois entry</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Registrar_GUID" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Registrar_GUID corresponds to the Registrar GUID field of a Whois entry</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Name field holds the name of the registrar organization</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Address" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Address field holds the address (location) of the registrar organization</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Email_Address" type="AddressObj:AddressObjectType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The main email address for the registrar</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Phone_Number" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Phone_Number field holds the phone number of the registrar organization</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Whois_Server" type="URIObj:URIObjectType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Whois_Server field specifies the corresponding whois server for this registrar</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Referral_URL" type="URIObj:URIObjectType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Referral_URL field specifies the corresponding referral URL for registrar</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Contacts" type="WhoisObj:WhoisContactsType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A list of registrar contacts</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="WhoisDNSSECTypeEnum">
+		<xs:annotation>
+			<xs:documentation>The WhoisDNSSECTypeEnum defines an enumeration of acceptable values for the DNSSEC field in a Whois entry</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Signed">
+				<xs:annotation>
+					<xs:documentation>The Signed value signifies that the domain name associated with the Whois entry is digitally signed</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Unsigned">
+				<xs:annotation>
+					<xs:documentation>The Unsigned value signfies that the domain name associated with the Whois entry is not digitally signed</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="WhoisContactsType">
+		<xs:annotation>
+			<xs:documentation>The WhoisContactsType represents a list of contacts (usually registrar or registrant) found in a Whois entry</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Contact" type="WhoisObj:WhoisContactType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>A contact found in a Whois entry </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="WhoisContactType">
+		<xs:sequence>
+			<xs:element name="Contact_ID" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The Contact_ID corresponds to an ID for the contact. This can be presented as Contact ID, Billing ID, Admin ID, Tech ID, etc.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The name of the contact</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Email_Address" type="AddressObj:AddressObjectType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The email address of the contact</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Phone_Number" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The phone number of the contact</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Address" type="cyboxCommon:StringObjectPropertyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The address of the contact</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="contact_type">
+			<xs:annotation>
+				<xs:documentation>The contact_type field specifies what type of contact this is. Only values from WhoisObj:RegistrarContactTypeEnum can be used.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="WhoisObj:WhoisContactTypeEnum"/>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:simpleType name="WhoisContactTypeEnum">
+		<xs:annotation>
+			<xs:documentation>The RegistrarContactTypeEnum defines the types of registrar contacts listed in a whois entry</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ADMIN">
+				<xs:annotation>
+					<xs:documentation>The contact is an administrator</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BILLING">
+				<xs:annotation>
+					<xs:documentation>The contact is for billing</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TECHNICAL">
+				<xs:annotation>
+					<xs:documentation>The contact is for technical assistance</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="WhoisStatusType">
+		<xs:annotation>
+			<xs:documentation>The WhoisStatusType specifies a status for a domain as listed in its Whois entry. Only statuses defined by WhoisStatusTypeEnum can be used.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="WhoisObj:WhoisStatusTypeEnum xs:string"/>
+				</xs:simpleType>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="WhoisStatusesType">
+		<xs:annotation>
+			<xs:documentation>The WhoisStatusesType defines a list of WhoisStatusType objecst</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Status" type="WhoisObj:WhoisStatusType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="WhoisNameserversType">
+		<xs:annotation>
+			<xs:documentation>The WhoisNameserversType defines a list of nameservers associated with a Whois entry</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Nameserver" type="URIObj:URIObjectType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Nameserver field specifies a nameserver of the domain for this whois entry</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="WhoisRegistrantInfoType">
+		<xs:complexContent>
+			<xs:extension base="WhoisObj:WhoisContactType">
+				<xs:sequence>
+					<xs:element name="Registrant_ID" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Registrant_ID specifies the registrant id for a given registrant</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="WhoisRegistrantsType">
+		<xs:annotation>
+			<xs:documentation>The WhoisRegistrantsType represents a list of registrant information for a given Whois entry</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Registrant" type="WhoisObj:WhoisRegistrantInfoType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="RegionalRegistryType">
+		<xs:annotation>
+			<xs:documentation>The RegionalRegistryType specifies a Regional Internet Registry (RIR) for a given WHOIS entry. RIRs defined by the RegionalRegistryTypeEnum may be used, as well as those specified by a free form text string.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="cyboxCommon:BaseObjectPropertyType">
+				<xs:simpleType>
+					<xs:union memberTypes="WhoisObj:RegionalRegistryTypeEnum xs:string"/>
+				</xs:simpleType>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:simpleType name="RegionalRegistryTypeEnum">
+		<xs:annotation>
+			<xs:documentation>The RegionalRegistryTypeEnum is an enumeration of Regional Internet Registries (RIRs) names, represente via their respective acronyms.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AfriNIC">
+				<xs:annotation>
+					<xs:documentation>AfriNIC stands for African Network Information Centre, and is the RIR for Africa.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ARIN">
+				<xs:annotation>
+					<xs:documentation>ARIN stands for American Registry for Internet Numbers, and is the RIR for the United States, Canada, several parts of the Caribbean Region, and Antarctica.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="APNIC">
+				<xs:annotation>
+					<xs:documentation>APNIC stands for Asia-Pacific Network Information Centre, and is the RIR for Asia, Australia, New Zealand, and neighboring countries.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LACNIC">
+				<xs:annotation>
+					<xs:documentation>LACNIC stands for Latin American and Caribbean Network Information Centre, and is the RIR for Latin America and parts of the Caribbean region.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RIPE NCC">
+				<xs:annotation>
+					<xs:documentation>RIPE NCC stands for Réseaux IP Européens Network Coordination Centre, and is the RIR for Europe, Russia, the Middle East, and Central Asia.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:WinDriverObj="http://cybox.mitre.org/objects#WinDriverObject-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" targetNamespace="http://cybox.mitre.org/objects#WinDriverObject-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation>This schema was originally developed by The MITRE Corporation. The CybOX XML Schema implementation is maintained by The MITRE Corporation and developed by the open CybOX Community. For more information, including how to get involved in the effort and how to submit change requests, please visit the CybOX website at http://cybox.mitre.org. </xs:documentation>
+		<xs:appinfo>
+			<schema>Win_Driver_Object</schema>
+			<version>2.0</version>
+			<date>02/11/2013 9:00:00 AM</date>
+			<short_description>The following specifies the fields and types that compose this defined CybOX Object type. Each defined object is an extension of the abstract ObjectPropertiesType, defined in CybOX Common. For more information on this extension mechanism, please see the CybOX Specification. This document is intended for developers and assumes some familiarity with XML. </short_description>
+			<terms_of_use>Copyright (c) 2012-2013, The MITRE Corporation. All rights reserved. The contents of this file are subject to the terms of the CybOX License located at http://cybox.mitre.org/about/termsofuse.html. See the CybOX License for the specific language governing permissions and limitations for use of this schema. When distributing copies of the CybOX Schema, this license header must be included. </terms_of_use>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:import namespace="http://cybox.mitre.org/common-2" schemaLocation="../cybox_common.xsd"/>
+	<xs:element name="Windows_Driver" type="WinDriverObj:WindowsDriverObjectType" nillable="true">
+		<xs:annotation>
+			<xs:documentation>The Windows_Driver object is intended to characterize Windows device drivers.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="WindowsDriverObjectType" mixed="false">
+		<xs:annotation>
+			<xs:documentation>The WindowsDriverObject type is intended to characterize Windows device drivers.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="cyboxCommon:ObjectPropertiesType">
+				<xs:sequence>
+					<xs:element name="Device_Object_List" type="WinDriverObj:DeviceObjectListType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Device_Object_List field specifies the device objects that were created by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Driver_Init" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Driver_Init field specifies the entry point for the driver's DriverEntry routine. See also: http://msdn.microsoft.com/en-us/library/windows/hardware/ff544174(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Driver_Name" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Driver_Name field specifies the name of the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Driver_Object_Address" type="cyboxCommon:HexBinaryObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Driver_Object_Address field specifies the address to the driver's driver object, which contains the storage for the entry point to many of the driver's standard routines. See also: http://msdn.microsoft.com/en-us/library/windows/hardware/ff548034(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Driver_Start_IO" type="cyboxCommon:HexBinaryObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Driver_Start_IO field specifies the entry point for the driver's StartIO routine. See also: http://msdn.microsoft.com/en-us/library/windows/hardware/ff544174(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Driver_Unload" type="cyboxCommon:HexBinaryObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Driver_Unload field specifies the entry point for the driver's unload routine. See also: http://msdn.microsoft.com/en-us/library/windows/hardware/ff544174(v=vs.85).aspx</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Image_Base" type="cyboxCommon:HexBinaryObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Image_Base field specifies the preferred address of the first byte of the driver's image when it is loaded into memory.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Image_Size" type="cyboxCommon:HexBinaryObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The Image_Size field specifies the size of the driver's image, in bytes.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_CLEANUP" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_CLEANUP field represents a count of the number of times the CLEANUP function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_CLOSE" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_CLOSE field represents a count of the number of times the CLOSE function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_CREATE" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_CREATE field represents a count of the number of times the CREATE function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_CREATE_MAILSLOT" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_CREATE_MAILSLOT field represents a count of the number of times the CREATE_MAILSLOT function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_CREATE_NAMED_PIPE" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_CREATE_NAMED_PIPE field represents a count of the number of times the CREATE_NAMED_PIPE function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_DEVICE_CHANGE" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_DEVICE_CHANGE field represents a count of the number of times the DEVICE_CHANGE function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_DEVICE_CONTROL" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_DEVICE_CONTROL field represents a count of the number of times the DEVICE_CONTROL function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_DIRECTORY_CONTROL" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_DIRECTORY_CONTROL field represents a count of the number of times the DIRECTORY_CONTROL function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_FILE_SYSTEM_CONTROL" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_FILE_SYSTEM_CONTROL field represents a count of the number of times the FILE_SYSTEM_CONTROL function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_FLUSH_BUFFERS" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_FLUSH_BUFFERS field represents a count of the number of times the FLUSH_BUFFERS function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_INTERNAL_DEVICE_CONTROL" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_INTERNAL_DEVICE_CONTROL field represents a count of the number of times the INTERNAL_DEVICE_CONTROL function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_LOCK_CONTROL" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_LOCK_CONROL field represents a count of the number of times the LOCK_CONROL function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_PNP" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_PNP field represents a count of the number of times the PNP function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_POWER" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_POWER field represents a count of the number of times the POWER function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_READ" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_READ field represents a count of the number of times the READ function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_QUERY_EA" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_QUERY_EA field represents a count of the number of times the QUERY_EA function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_QUERY_INFORMATION" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_QUERY_INFORMATION field represents a count of the number of times the QUERY_INFORMATION function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_QUERY_SECURITY" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_QUERY_SECURITY field represents a count of the number of times the QUERY_SECURITY function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_QUERY_QUOTA" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_QUERY_QUOTA field represents a count of the number of times the QUERY_QUOTA function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_QUERY_VOLUME_INFORMATION" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_QUERY_VOLUME_INFORMATION field represents a count of the number of times the QUERY_VOLUME_INFORMATION function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_SET_EA" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_SET_EA field represents a count of the number of times the SET_EA function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_SET_INFORMATION" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_SET_INFORMATION field represents a count of the number of times the SET_INFORMATION function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_SET_SECURITY" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_SET_SECURITY field represents a count of the number of times the SET_SECURITY function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_SET_QUOTA" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_SET_QUOTA field represents a count of the number of times the SET_QUOTA function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_SET_VOLUME_INFORMATION" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_SET_VOLUME_INFORMATION field represents a count of the number of times the SET_VOLUME_INFORMATION function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_SHUTDOWN" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_SHUTDOWN field represents a count of the number of times the SHUTDOWN function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_SYSTEM_CONTROL" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_SYSTEM_CONTROL field represents a count of the number of times the SYSTEM_CONTROL function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IRP_MJ_WRITE" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The IRP_MJ_WRITE field represents a count of the number of times the WRITE function code was processed by the driver.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DeviceObjectStructType">
+		<xs:annotation>
+			<xs:documentation>The DeviceObjectStructType type specifies the properties of a device object. In this context, a device object represents a logical, virtual, or physical device for which a driver handles I/O requests. See also: http://msdn.microsoft.com/en-us/library/windows/hardware/ff543147(v=vs.85).aspx</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Attached_Device_Name" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The Attached_Device_Name field specifies the name of another device object that was attached to this one. See also: http://msdn.microsoft.com/en-us/library/windows/hardware/ff543147(v=vs.85).aspx</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Attached_Device_Object" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The Attached_Device_Object field specifies a pointer to another device object that was attached to this one. Typically this is a filter driver. See also: http://msdn.microsoft.com/en-us/library/windows/hardware/ff543147(v=vs.85).aspx</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Attached_To_Device_Name" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The Attached_To_Device_Name field specifies the name of another device object that this one was attached to.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Attached_To_Device_Object" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The Attached_To_Device_Object field specifies a pointer to another device object that this one was attached to. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Attached_To_Driver_Object" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The Attached_To_Driver_Object field specifies a pointer to the driver to which this device object was attached.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Attached_To_Driver_Name" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The Attached_To_Driver_Name field specifies the name of the driver to which this device object was attached.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Device_Name" type="cyboxCommon:StringObjectPropertyType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The Device_Name field specifies the name of the device object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Device_Object" type="cyboxCommon:UnsignedLongObjectPropertyType" nillable="true" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The Device_Object field specifies a pointer to the driver object for the caller.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DeviceObjectListType">
+		<xs:annotation>
+			<xs:documentation>The DeviceObjectListType specifies a list of device objects.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Device_Object_Struct" type="WinDriverObj:DeviceObjectStructType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The Device_Object _Struct field specifies a single device object utilizing the Windows Driver Device Object Struct.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
