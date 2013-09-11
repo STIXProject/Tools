@@ -17,7 +17,7 @@ The STIX Document Validator can validate a STIX v1.0 instance document against S
 found locally or referenced remotely through the schemaLocation attribute.
 
 Validate against local schemas:
-`python sdv.py --input-file stix_foo.xml --schema-dir schema`
+`python sdv.py --input-file <stix_document.xml> --schema-dir schema`
 
 Validate using schemaLocation:
 `python sdv.py --input-file <stix_document.xml> --use-schemaloc`
