@@ -14,7 +14,8 @@ and make sure you are running at least v2.9.1.
 
 ## Use
 The STIX Document Validator can validate a STIX v1.0 instance document against STIX v1.0 schemas
-found locally or referenced remotely through the schemaLocation attribute.
+found locally or referenced remotely through the schemaLocation attribute. It can also perform
+some 'best practice' guidance checks.
 
 Validate against local schemas:
 `python sdv.py --input-file <stix_document.xml> --schema-dir schema`
@@ -24,6 +25,9 @@ Validate using schemaLocation:
 
 Validate a directory of STIX documents:
 `python sdv.py --input-dir <stix_dir> --schema-dir schema`
+
+Check 'best practice' guidance
+`python sdv.py --input-file <stix_document.xml> --best-practices`
 
 ## All STIX Documents?
 The STIX Document Validator bundles a schema directory with it, which includes all STIX v1.0 
