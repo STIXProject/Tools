@@ -124,9 +124,12 @@ class XmlValidator(object):
         if not(self.__use_schemaloc or self.__imports):
             return (False, "No schemas to validate against! Try instantiating XmlValidator with use_schemaloc=True or setting the schema_dir")
         
-        instance_doc = et.parse(instance_doc)
-        instance_root = instance_doc.getroot()
+        try:
+            instance_doc = et.parse(instance_doc)
+        except et.XMLSyntaxError as e:
+            return (False, str(e))
         
+        instance_root = instance_doc.getroot()
         if self.__use_schemaloc:
             try:
                 required_imports = self._extract_schema_locations(instance_root)
