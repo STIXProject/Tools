@@ -30,46 +30,45 @@ def print_result(fp, isvalid, validation_error, warnings):
         print "[+] %s : VALID" % (fp)
         
         if warnings:
+            root_element = warnings.get('root_element')
+            if root_element is not None:
+                print '    [#] Root element not STIX_Package: [%s]' % (root_element.tag)
+
             duplicate_ids = warnings.get('duplicate_ids')
             if duplicate_ids:
-                print '    [~] Nodes with duplicate ids'
+                print '    [#] Nodes with duplicate ids'
                 for id_, list_nodes in duplicate_ids.iteritems():
                     print '    [~] id: [%s]' % (id_)
                     for node in list_nodes:
                         print '       [%s] line: [%s]' % (node.tag, node.sourceline)
-                print
-            
+      
             missing_ids = warnings.get('missing_ids')
             if missing_ids:
-                print '    [~] Nodes with missing ids'
+                print '    [#] Nodes with missing ids'
                 for node in missing_ids:
                     print '    [~] [%s] line: [%s]' % (node.tag, node.sourceline)
-                print
-            
+    
             unresolved_idrefs = warnings.get('unresolved_idrefs')
             if unresolved_idrefs:
-                print '    [~] Nodes with idrefs that do not resolve'
+                print '    [#] Nodes with idrefs that do not resolve'
                 for node in unresolved_idrefs:
                     print '    [~] [%s] idref: [%s] line: [%s]' % (node.tag, node.attrib.get('idref'), node.sourceline)
-                print
-                
+          
             formatted_ids = warnings.get('id_format')
             if formatted_ids:
-                print '    [~] Nodes with ids not formatted as [ns_prefix]:[object-type]-[GUID]'
+                print '    [#] Nodes with ids not formatted as [ns_prefix]:[object-type]-[GUID]'
                 for node in formatted_ids:
                     print '    [~] [%s] id: [%s] line: [%s]' % (node.tag, node.attrib.get('id'), node.sourceline)
-                print
-            
+
             idrefs_with_content = warnings.get('idref_with_content')
             if idrefs_with_content:
-                print '    [~] Nodes that declare idrefs but also contain content'
+                print '    [#] Nodes that declare idrefs but also contain content'
                 for node in idrefs_with_content:
                     print '    [~] [%s] idref: [%s] line: [%s]' % (node.tag, node.attrib.get('idref'), node.sourceline)
-                print
                 
             indicator_suggestions = warnings.get('indicator_suggestions')
             if indicator_suggestions:
-                print '    [~] Indicator suggestions'
+                print '    [#] Indicator suggestions'
                 for indicator_dict in indicator_suggestions:
                     node = indicator_dict['node']                    
                     print '    [~] id: [%s] line: [%s] missing: %s' % (indicator_dict.get('id'), node.sourceline, indicator_dict.get('missing'))
