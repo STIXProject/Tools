@@ -13,11 +13,10 @@ from validator import STIXValidator
 def get_files_to_validate(dir):
     '''Return a list of xml files under a directory'''
     to_validate = []
-    for top, dirs, files in os.walk(dir):
-        for fn in files:
-            if fn.endswith('.xml'):
-                fp = os.path.join(top, fn)
-                to_validate.append(fp)
+    for fn in os.listdir(dir):
+        if fn.endswith('.xml'):
+            fp = os.path.join(dir, fn)
+            to_validate.append(fp)
     
     return to_validate
 
