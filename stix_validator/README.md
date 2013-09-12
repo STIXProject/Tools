@@ -27,7 +27,7 @@ Validate a directory of STIX documents:
 `python sdv.py --input-dir <stix_dir> --schema-dir schema`
 
 Check 'best practice' guidance
-`python sdv.py --input-file <stix_document.xml> --best-practices`
+`python sdv.py --input-file <stix_document.xml> --schema-dir schema --best-practices`
 
 ## All STIX Documents?
 The STIX Document Validator bundles a schema directory with it, which includes all STIX v1.0 
