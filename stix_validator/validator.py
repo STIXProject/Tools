@@ -315,6 +315,13 @@ class STIXValidator(XmlValidator):
                 
         return list_indicators
  
+    def _check_root_element(self, instance_doc):
+        if instance_doc.tag != "{%s}STIX_Package" % (self.NS_STIX_CORE):
+            return instance_doc
+        else:
+            return None
+            
+ 
     def check_best_practices(self, instance_doc):
         '''Checks that a STIX instance document is following best practice guidance.
         
@@ -334,13 +341,15 @@ class STIXValidator(XmlValidator):
         tree = et.parse(instance_doc)
         root = tree.getroot()
         
+        root_element = self._check_root_element(root)
         list_unresolved_idrefs = self._check_idref_resolution(root)
         dict_duplicate_ids = self._check_duplicate_ids(root)
         dict_presence_and_format = self._check_id_presence_and_format(root)
         list_idref_with_content = self._check_idref_with_content(root)
         list_indicators = self._check_indicator_practices(root)
         
-        return {'unresolved_idrefs' : list_unresolved_idrefs,
+        return {'root_element' : root_element,
+                'unresolved_idrefs' : list_unresolved_idrefs,
                 'duplicate_ids' : dict_duplicate_ids,
                 'missing_ids' : dict_presence_and_format['no_id'],
                 'id_format' : dict_presence_and_format['format'],
