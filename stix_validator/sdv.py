@@ -72,22 +72,8 @@ def print_result(fp, isvalid, validation_error, warnings):
             if indicator_suggestions:
                 print '    [~] Indicator suggestions'
                 for indicator_dict in indicator_suggestions:
-                    node = indicator_dict['node']
-                    list_missing = []
-                    if not indicator_dict.get('title', True):
-                        list_missing.append('Title')
-                    if not indicator_dict.get('description', True):
-                        list_missing.append('Description')
-                    if not indicator_dict.get('type', True):
-                        list_missing.append('Type')
-                    if not indicator_dict.get('valid_time_position', True):
-                        list_missing.append('Valid_Time_Position')
-                    if not indicator_dict.get('indicated_ttp', True):
-                        list_missing.append('Indicated_TTP')
-                    if not indicator_dict.get('confidence', True):
-                        list_missing.append('Confidence')
-                    
-                    print '    [~] id: [%s] line: [%s] missing: %s' % (indicator_dict.get('id'), node.sourceline, list_missing)
+                    node = indicator_dict['node']                    
+                    print '    [~] id: [%s] line: [%s] missing: %s' % (indicator_dict.get('id'), node.sourceline, indicator_dict.get('missing'))
                     
     else:
         print "[!] %s : INVALID : [%s]" % (fp, str(validation_error))

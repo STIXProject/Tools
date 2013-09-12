@@ -173,6 +173,16 @@ class STIXValidator(XmlValidator):
         self.best_practices = best_practices
         
     def _check_id_presence_and_format(self, instance_doc):
+        '''Checks that the core STIX/CybOX constructs in the STIX instance document
+        have ids and that each id is formatted as [ns_prefix]:[object-type]-[GUID].
+        
+        Returns a dictionary of lists. Each dictionary has the following keys:
+        no_id - a list of etree Element objects for all nodes without ids
+        format - a list of etree Element objects with ids not formatted as [ns_prefix]:[object-type]-[GUID]
+    
+        Keyword Arguments
+        instance_doc - an etree Element object for a STIX instance document
+        '''
         return_dict = {'no_id' : [],
                        'format' : []}
         
@@ -203,6 +213,15 @@ class STIXValidator(XmlValidator):
         return return_dict
     
     def _check_duplicate_ids(self, instance_doc):
+        '''Looks for duplicate ids in a STIX instance document. 
+        
+        Returns a dictionary of lists. Each dictionary uses the offending
+        id as a key, which points to a list of etree Element nodes which
+        use that id.
+        
+        Keyword Arguments
+        instance_doc - an etree.Element object for a STIX instance document
+        '''
         dict_id_nodes = defaultdict(list)
         dup_dict = {}
         xpath_all_nodes_with_ids = "//*[@id]"
@@ -218,6 +237,12 @@ class STIXValidator(XmlValidator):
         return dup_dict
     
     def _check_idref_resolution(self, instance_doc):
+        '''Checks that all idref attributes in the input document resolve to a local element.
+        Returns a list etree.Element nodes with unresolveable idrefs.
+        
+        Keyword Arguments
+        instance_doc - an etree.Element object for a STIX instance document
+        '''
         list_unresolved_ids = []
         xpath_all_idrefs = "//*[@idref]"
         xpath_all_ids = "//@id"
@@ -232,6 +257,12 @@ class STIXValidator(XmlValidator):
         return list_unresolved_ids
                 
     def _check_idref_with_content(self, instance_doc):
+        '''Looks for elements that have an idref attribute set, but also have content.
+        Returns a list of etree.Element nodes.
+        
+        Keyword Arguments:
+        instance_doc - an etree.Element object for a STIX instance document
+        '''
         list_nodes = []
         xpath = "//*[@idref]"
         nodes = instance_doc.xpath(xpath)
@@ -243,25 +274,36 @@ class STIXValidator(XmlValidator):
         return list_nodes
     
     def _check_indicator_practices(self, instance_doc):
+        '''Looks for STIX Indicators that are missing a Title, Description, Type, Valid_Time_Position, 
+        Indicated_TTP, and/or Confidence
+        
+        Returns a list of dictionaries. Each dictionary has the following keys:
+        id - the id of the indicator
+        node - the etree.Element object for the indicator
+        missing - a list of constructs missing from the indicator
+        
+        Keyword Arguments
+        instance_doc - etree Element for a STIX instance document
+        '''
         list_indicators = []
         xpath = "//%s:Indicator | %s:Indicator" % (self.PREFIX_STIX_CORE, self.PREFIX_STIX_INDICATOR)
         
         nodes = instance_doc.xpath(xpath, namespaces=self.NS_MAP)
         for node in nodes:
-            dict_indicator = {}
+            dict_indicator = defaultdict(list)
             if not node.attrib.get('idref'): # if this is not an idref node, look at its content
                 if node.find('{%s}Title' % (self.NS_STIX_INDICATOR)) is None:
-                    dict_indicator['title'] = False
+                    dict_indicator['missing'].append('Title')
                 if node.find('{%s}Description' % (self.NS_STIX_INDICATOR)) is None:
-                    dict_indicator['description'] = False
+                    dict_indicator['missing'].append('Description')
                 if node.find('{%s}Type' % (self.NS_STIX_INDICATOR)) is None:
-                    dict_indicator['type'] = False
+                    dict_indicator['missing'].append('Type')
                 if node.find('{%s}Valid_Time_Position' % (self.NS_STIX_INDICATOR)) is None:
-                    dict_indicator['valid_time_position'] = False
+                    dict_indicator['missing'].append('Valid_Time_Position')
                 if node.find('{%s}Indicated_TTP' % (self.NS_STIX_INDICATOR)) is None:
-                    dict_indicator['indicated_ttp'] = False
+                    dict_indicator['missing'].append('TTP')
                 if node.find('{%s}Confidence' % (self.NS_STIX_INDICATOR)) is None:
-                    dict_indicator['confidence'] = False
+                    dict_indicator['missing'].append('Confidence')
                 
                 if dict_indicator:
                     dict_indicator['id'] = node.attrib.get('id')
@@ -271,6 +313,20 @@ class STIXValidator(XmlValidator):
         return list_indicators
  
     def check_best_practices(self, instance_doc):
+        '''Checks that a STIX instance document is following best practice guidance.
+        
+        Looks for the following:
+        + idrefs that do not resolve locally
+        + elements with duplicate ids
+        + elements without ids
+        + elements with ids not formatted as [ns_prefix]:[object-type]-[GUID]
+        + indicators missing a Title, Description, Type, Valid_Time_Position, Indicated_TTP, and/or Confidence
+        
+        Returns a dictionary of lists and other dictionaries. This is maybe not ideal but workable.
+        
+        Keyword Arguments
+        instance_doc - a file-like object for a STIX instance document
+        '''
         instance_doc.seek(0)
         tree = et.parse(instance_doc)
         root = tree.getroot()
