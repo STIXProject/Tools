@@ -182,7 +182,7 @@ class STIXValidator(XmlValidator):
                              'stix:Incident',
                              'stix:Indicator',
                              'stix:STIX_Package',
-                             'stix:Thread_Actor',
+                             'stix:Threat_Actor',
                              'stix:TTP',
                              'cybox:Observable',
                              'cybox:Object',
