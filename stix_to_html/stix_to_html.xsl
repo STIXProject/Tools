@@ -51,7 +51,10 @@ mdunn@mitre.org
     xmlns:EmailMessageObj="http://cybox.mitre.org/objects#EmailMessageObject-2"
     exclude-result-prefixes="cybox xsi fn EmailMessageObj">
     
-<xsl:output method="html" omit-xml-declaration="yes" indent="yes" media-type="text/html" version="4.0" />
+  <xsl:output method="html" omit-xml-declaration="yes" indent="yes" media-type="text/html" version="4.0" />
+  <xsl:param name="includeFileMetadataHeader" select="true()" />
+  <xsl:param name="includeStixHeader" select="true()" />
+  
   <xsl:include href="stix_common.xsl"/>
   <xsl:include href="normalize.xsl"/>
   
@@ -163,6 +166,7 @@ mdunn@mitre.org
                 <xsl:call-template name="customHeader" />
                 
                     <div id="wrapper">
+                      <xsl:if test="$includeFileMetadataHeader">
                         <div id="header"> 
                           <xsl:call-template name="customTitle" />
                             
@@ -183,8 +187,11 @@ mdunn@mitre.org
                                 </tr>   
                             </table>
                         </div>
+                      </xsl:if>
+                      <xsl:if test="$includeStixHeader">
                         <h2><a name="analysis">STIX Header</a></h2>
                           <xsl:call-template name="processHeader"/>
+                      </xsl:if>
                       
                         <!--
                           IMPORTANT
