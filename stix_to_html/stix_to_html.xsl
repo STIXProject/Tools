@@ -55,6 +55,12 @@ mdunn@mitre.org
   <xsl:param name="includeFileMetadataHeader" select="true()" />
   <xsl:param name="includeStixHeader" select="true()" />
   
+  <!--
+    do you want to display the constrains in cyboxProperties-style displays?
+    usually the answer is true(), but if you want a more concise display, set to false().
+  -->
+  <xsl:param name="displayConstraints" select="true()" />
+  
   <xsl:include href="stix_common.xsl"/>
   <xsl:include href="icons.xsl"/>
   <xsl:include href="normalize.xsl"/>
@@ -102,6 +108,17 @@ mdunn@mitre.org
   -->
   <xsl:template name="customCss">
   </xsl:template>
+
+  <xsl:template name="configurableCss">
+    <style type="text/css">
+    .cyboxPropertiesConstraints
+    {
+      <xsl:if test="not($displayConstraints)">
+        display: none;
+      </xsl:if>
+    }
+    </style>
+  </xsl:template>
   
     <!--
       This is the main template that sets up the html page that sets up the
@@ -145,6 +162,8 @@ mdunn@mitre.org
                 </style>
                 
                 <xsl:call-template name="customCss" />
+                
+                <xsl:call-template name="configurableCss" />
 
                  <!-- this is a javascript shim to support the javascript
                    "classList" property in dom elements objects for IE.
