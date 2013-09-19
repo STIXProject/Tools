@@ -801,7 +801,20 @@ ikirillov@mitre.org
             <xsl:value-of select="fn:data(.)" />
         </div>
     </xsl:template>
-    
+
+    <!--
+      Custom type handler for more readable output
+    -->
+    <xsl:template match="Common:Hash" mode="cyboxProperties">
+        <div class="container cyboxPropertiesContainer cyboxProperties">
+            <span class="cyboxPropertiesName"><xsl:value-of select="local-name()"/> </span>
+            <span class="cyboxPropertiesValue">
+                <xsl:value-of select="./Common:Type"/> = 
+                <xsl:value-of select="./Common:Simple_Hash_Value|./Common:Fuzzy_Hash_Value"/>
+            </span>            
+        </div>
+    </xsl:template>
+
     <!--
       default template for outputting hierarchical cybox:Properties names/values/constraints
     -->

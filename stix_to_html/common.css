@@ -357,6 +357,23 @@ table
   color: red;
 }
 
+.tlpred{
+  font-weight: bold;
+  background-color: red;
+}
+.tlpamber{
+  font-weight: bold;
+  background-color: gold;
+}
+.tlpgreen{
+  font-weight: bold;
+  background-color: limegreen;
+}
+.tlprwhite{
+  font-weight: bold;
+  background-color: white;
+}
+
 .inlineOrByReferenceLabel
 {
   font-style: italic!important;
@@ -367,7 +384,6 @@ table
 {
   padding-left: 1em;
 }
-
 .cyboxPropertiesValue
 {
   font-weight: normal;

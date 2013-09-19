@@ -53,6 +53,7 @@ mdunn@mitre.org
     
 <xsl:output method="html" omit-xml-declaration="yes" indent="yes" media-type="text/html" version="4.0" />
   <xsl:include href="stix_common.xsl"/>
+  <xsl:include href="icons.xsl"/>
   <xsl:include href="normalize.xsl"/>
   
   <!-- <xsl:include href="cybox_common.xsl"/> -->
@@ -78,7 +79,7 @@ mdunn@mitre.org
   </xsl:template>
   
   <!--
-    if your company wants to customize the css styling, override this template
+    if your organization wants to customize the css styling, override this template
     
     the easiest thing to do is to reference an external stylesheet to be included:
     
@@ -183,6 +184,60 @@ mdunn@mitre.org
                                 </tr>   
                             </table>
                         </div>
+                      
+                      <!-- TODO: Toggle this in customization settings -->
+                      <h2><a name="docContents">Document Contents</a></h2>
+                      <table width="100%">
+                        <tr>
+                          <td>
+                            <xsl:if test="//stix:Campaigns">
+                              <xsl:call-template name="iconCampaigns" />
+                            </xsl:if>
+                          </td>
+                          <td>
+                            <xsl:if test="//stix:Courses_Of_Action">
+                              <xsl:call-template name="iconCOAs" />
+                            </xsl:if>
+                          </td>
+                          <td>
+                            <xsl:if test="//marking:Marking">
+                              <xsl:call-template name="iconDataMarkings" />
+                            </xsl:if>
+                          </td>
+                          <td>
+                            <xsl:if test="//stix:Exploit_Targets">
+                              <xsl:call-template name="iconExploitTargets" />
+                            </xsl:if>
+                          </td>
+                          <td>
+                            <xsl:if test="//stix:Incidents">
+                              <xsl:call-template name="iconIncidents" />
+                            </xsl:if>
+                          </td>
+                          <td>
+                            <xsl:if test="//stix:Indicators">
+                              <xsl:call-template name="iconIndicators" />
+                            </xsl:if>
+                          </td>
+                          <td>
+                            <xsl:if test="//stix:Observables">
+                              <xsl:call-template name="iconObservables" />
+                            </xsl:if>
+                          </td>
+                          <td>
+                            <xsl:if test="//stix:Threat_Actors">
+                              <xsl:call-template name="iconThreatActors" />
+                            </xsl:if>
+                          </td>
+                          <td>
+                            <xsl:if test="//stix:TTPs">
+                              <xsl:call-template name="iconTTPs" />
+                            </xsl:if>
+                          </td>
+                        </tr>   
+                        
+                      </table>
+                      
                         <h2><a name="analysis">STIX Header</a></h2>
                           <xsl:call-template name="processHeader"/>
                       

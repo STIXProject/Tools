@@ -32,7 +32,7 @@
     xmlns:cyboxCommon="http://cybox.mitre.org/common-2"
     xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2"
     xmlns:simpleMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1"
-    
+
     xmlns:ttp='http://stix.mitre.org/TTP-1'
     >
     
@@ -98,12 +98,28 @@
                             <xsl:attribute name="onclick">toggle(this);</xsl:attribute>
                         </xsl:if>
                         <!--
-                          for now, just show the text of simpleMarking:Statement
-                          TODO: do something with the entire contents of stix:Handling
+                          for now, just show the text of simpleMarking:Statement & TLP
+                          
+                          <marking:Marking_Structure color="GREEN" xsi:type="tlpMarking:TLPMarkingStructureType"/>
+                          
+                          TODO: customization toggle whether to show simpleMarking
                         -->
                         <xsl:choose>
                           <xsl:when test="self::stix:Handling">
-                            <xsl:value-of select=".//simpleMarking:Statement/text()"/>
+                            <xsl:variable name="isSimple" select="'simpleMarking:SimpleMarkingStructureType'"/>
+                            <xsl:variable name="isTLP" select="'tlpMarking:TLPMarkingStructureType'"/>
+                            <xsl:choose>
+                              <xsl:when test=".//marking:Marking_Structure/@xsi:type = $isSimple">
+                                <xsl:value-of select=".//simpleMarking:Statement/text()"/>
+                              </xsl:when>
+                              <xsl:when test=".//marking:Marking_Structure/@xsi:type = $isTLP">
+                                <xsl:if test="lower-case(.//marking:Marking_Structure/@color)='red'"><xsl:attribute name="class" select="'tlpred'"/></xsl:if>
+                                <xsl:if test="lower-case(.//marking:Marking_Structure/@color)='amber'"><xsl:attribute name="class" select="'tlpamber'"/></xsl:if>
+                                <xsl:if test="lower-case(.//marking:Marking_Structure/@color)='green'"><xsl:attribute name="class" select="'tlpgreen'"/></xsl:if>
+                                <xsl:if test="lower-case(.//marking:Marking_Structure/@color)='white'"><xsl:attribute name="class" select="'tlpwhite'"/></xsl:if>
+                                Traffic Light Protocol (TLP): <xsl:value-of select=".//marking:Marking_Structure/@color"/>
+                              </xsl:when>
+                            </xsl:choose>
                           </xsl:when>
                           <xsl:when test="self::stix:Information_Source">
                             <xsl:apply-templates mode="cyboxProperties" />
@@ -704,5 +720,4 @@
   <xsl:template match="indicator:Suggested_COA">
     <xsl:apply-templates />
   </xsl:template>
-    
 </xsl:stylesheet>
