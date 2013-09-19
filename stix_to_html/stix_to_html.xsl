@@ -190,56 +190,53 @@ mdunn@mitre.org
                         </div>
                       <!-- TODO: Toggle this in customization settings -->
                       <h2><a name="docContents">Document Contents</a></h2>
-                      <table width="100%">
-                        <tr>
-                          <td>
+                      <div class="documentContentsList">
+                          <div class="documentContentsItem">
                             <xsl:if test="//stix:Campaigns">
                               <xsl:call-template name="iconCampaigns" />
                             </xsl:if>
-                          </td>
-                          <td>
+                          </div>
+                          <div class="documentContentsItem">
                             <xsl:if test="//stix:Courses_Of_Action">
                               <xsl:call-template name="iconCOAs" />
                             </xsl:if>
-                          </td>
-                          <td>
+                          </div>
+                          <div class="documentContentsItem">
                             <xsl:if test="//marking:Marking">
                               <xsl:call-template name="iconDataMarkings" />
                             </xsl:if>
-                          </td>
-                          <td>
+                          </div>
+                          <div class="documentContentsItem">
                             <xsl:if test="//stix:Exploit_Targets">
                               <xsl:call-template name="iconExploitTargets" />
                             </xsl:if>
-                          </td>
-                          <td>
+                          </div>
+                          <div class="documentContentsItem">
                             <xsl:if test="//stix:Incidents">
                               <xsl:call-template name="iconIncidents" />
                             </xsl:if>
-                          </td>
-                          <td>
+                          </div>
+                          <div class="documentContentsItem">
                             <xsl:if test="//stix:Indicators">
                               <xsl:call-template name="iconIndicators" />
                             </xsl:if>
-                          </td>
-                          <td>
+                          </div>
+                          <div class="documentContentsItem">
                             <xsl:if test="//stix:Observables">
                               <xsl:call-template name="iconObservables" />
                             </xsl:if>
-                          </td>
-                          <td>
+                          </div>
+                          <div class="documentContentsItem">
                             <xsl:if test="//stix:Threat_Actors">
                               <xsl:call-template name="iconThreatActors" />
                             </xsl:if>
-                          </td>
-                          <td>
+                          </div>
+                          <div class="documentContentsItem">
                             <xsl:if test="//stix:TTPs">
                               <xsl:call-template name="iconTTPs" />
                             </xsl:if>
-                          </td>
-                        </tr>   
-                        
-                      </table>
+                          </div>
+                      </div>
 
                       </xsl:if>
                       <xsl:if test="$includeStixHeader">

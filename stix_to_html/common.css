@@ -529,10 +529,21 @@ tbody.expandableSeparate.expandableContainer.collapsed > tr > td > .expandableCo
   
   width: 100px;
   height: 100px;
+  
+  display: inline-block;
+  
   /*
   border-style: solid;
   border-color: red;
   border-width: 1px;
   padding: 5px;
   */
+}
+
+.documentContentsList
+{
+}
+.documentContentsItem
+{
+  display: inline;
 }
