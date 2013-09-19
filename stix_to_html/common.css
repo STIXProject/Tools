@@ -521,3 +521,9 @@ tbody.expandableSeparate.expandableContainer.collapsed > tr > td > .expandableCo
   margin-top: 1em;
   text-align: right;
 }
+
+.itemCategoryIcon
+{
+  padding: 0.5em;
+  text-align: left;
+}
