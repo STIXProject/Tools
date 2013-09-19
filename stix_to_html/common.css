@@ -526,4 +526,13 @@ tbody.expandableSeparate.expandableContainer.collapsed > tr > td > .expandableCo
 {
   padding: 0.5em;
   text-align: left;
+  
+  width: 100px;
+  height: 100px;
+  /*
+  border-style: solid;
+  border-color: red;
+  border-width: 1px;
+  padding: 5px;
+  */
 }
