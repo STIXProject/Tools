@@ -444,6 +444,7 @@ mdunn@mitre.org
     <xsl:if test="$categoryGroupingElement/*">
       <div class="topLevelCategoryContainer {$categoryIdentifier}" id="{categoryIdentifier}TopLevelCategoryContainer">
         <h2><a name="{$categoryIdentifier}TopLevelCategoryHeadingAnchor"><xsl:value-of select="$categoryLabel" /></a></h2>
+        <div class="expandAll" onclick="expandAll(this.parentNode);">[expand all <xsl:value-of select="$categoryLabel"/>]</div>
         <table class="topLevelCategory {$categoryIdentifier}" cellspacing="0">
           <colgroup>
             <col width="70%"/>

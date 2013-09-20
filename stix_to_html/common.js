@@ -148,3 +148,16 @@ function toggle(containerElement) {
   containerElement.classList.toggle("collapsed");
   containerElement.classList.toggle("expanded");
 }
+
+function expandAll(current)
+{
+  console.log("expanding all..");
+  var topCategoryExpandables = current.querySelectorAll("table.topLevelCategory > tbody.expandableContainer.expandableSeparate");
+  
+  for (var i=0; i < topCategoryExpandables.length; i++)
+  {
+    var currentExpandable = topCategoryExpandables.item(i).querySelector("tr > td > .expandableToggle");
+    currentExpandable.onclick();
+  }
+  console.log("done expanding.");
+}
