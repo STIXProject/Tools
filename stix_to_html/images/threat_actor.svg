@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 16.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1"
+<svg version="1.1" id="idThreatActorLayer"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%"
 	 viewBox="0 0 144 144" enable-background="new 0 0 144 144" xml:space="preserve">
 <switch>
 	<g>
 		<g>
 			<g>
-				<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="72.0005" y1="144" x2="72.0005" y2="0">
+				<linearGradient id="idThreatActorBackgroundGradient" gradientUnits="userSpaceOnUse" x1="72.0005" y1="144" x2="72.0005" y2="0">
 					<stop  offset="0" style="stop-color:#000000"/>
 					<stop  offset="0.01" style="stop-color:#050101"/>
 					<stop  offset="0.1202" style="stop-color:#3B0709"/>
@@ -20,21 +20,21 @@
 					<stop  offset="0.8489" style="stop-color:#EA1C23"/>
 					<stop  offset="1" style="stop-color:#ED1C24"/>
 				</linearGradient>
-				<path fill="url(#SVGID_1_)" d="M126.004,0H17.997C8.094,0,0,8.098,0,17.999v108.005C0,135.908,8.094,144,17.997,144h108.007
+				<path fill="url(#idThreatActorBackgroundGradient)" d="M126.004,0H17.997C8.094,0,0,8.098,0,17.999v108.005C0,135.908,8.094,144,17.997,144h108.007
 					c9.9,0,17.996-8.092,17.996-17.996V17.999C144,8.098,135.904,0,126.004,0z"/>
 			</g>
 			<defs>
-				<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="0" y="0" width="144" height="144">
+				<filter id="idThreatActorFilter" filterUnits="userSpaceOnUse" x="0" y="0" width="144" height="144">
 					
 						<feColorMatrix  type="matrix" values="-1 0 0 0 1  0 -1 0 0 1  0 0 -1 0 1  0 0 0 1 0" color-interpolation-filters="sRGB" result="source"/>
 				</filter>
 			</defs>
-			<mask maskUnits="userSpaceOnUse" x="0" y="0" width="144" height="144" id="SVGID_2_">
-				<g filter="url(#Adobe_OpacityMaskFilter)">
+			<mask maskUnits="userSpaceOnUse" x="0" y="0" width="144" height="144" id="idThreatActorMask">
+				<g filter="url(#idThreatActorFilter)">
 					
 				</g>
 			</mask>
-			<g opacity="0.6" mask="url(#SVGID_2_)">
+			<g opacity="0.6" mask="url(#idThreatActorMask)">
 				<path d="M126.004,0H17.997C8.094,0,0,8.098,0,17.999v108.005C0,135.908,8.094,144,17.997,144h108.007
 					c9.9,0,17.996-8.092,17.996-17.996V17.999C144,8.098,135.904,0,126.004,0z"/>
 			</g>
@@ -60,11 +60,11 @@
 					C69.451,63.432,65.076,64.45,65.168,67.524z"/>
 			</g>
 		</g>
-		<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="71.9995" y1="123.8203" x2="71.9995" y2="2.9141">
+		<linearGradient id="idThreatActorCurveOpacityGradient" gradientUnits="userSpaceOnUse" x1="71.9995" y1="123.8203" x2="71.9995" y2="2.9141">
 			<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0.1"/>
 			<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0.2"/>
 		</linearGradient>
-		<path fill="url(#SVGID_3_)" d="M123.816,2.914H20.183c-9.501,0-17.271,7.767-17.271,17.271V123.82
+		<path fill="url(#idThreatActorCurveOpacityGradient)" d="M123.816,2.914H20.183c-9.501,0-17.271,7.767-17.271,17.271V123.82
 			C14.615,20.681,141.088,20.184,141.088,20.184C141.088,10.68,133.322,2.914,123.816,2.914z"/>
 	</g>
 </switch>

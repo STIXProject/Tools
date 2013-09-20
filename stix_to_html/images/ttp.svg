@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 16.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1"
+<svg version="1.1" id="idTtpLayer"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%"
 	 viewBox="0 0 144 144" enable-background="new 0 0 144 144" xml:space="preserve">
 <switch>
 	<g>
 		<g>
 			<g>
-				<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="72.0005" y1="143.999" x2="72.0005" y2="0.0015">
+				<linearGradient id="idTtpBackgroundGradient" gradientUnits="userSpaceOnUse" x1="72.0005" y1="143.999" x2="72.0005" y2="0.0015">
 					<stop  offset="0" style="stop-color:#000000"/>
 					<stop  offset="0.0489" style="stop-color:#0B050F"/>
 					<stop  offset="0.1915" style="stop-color:#271137"/>
@@ -18,21 +18,21 @@
 					<stop  offset="0.8117" style="stop-color:#642C8E"/>
 					<stop  offset="1" style="stop-color:#662D91"/>
 				</linearGradient>
-				<path fill="url(#SVGID_1_)" d="M126.002,0.001H17.997C8.094,0.001,0,8.093,0,17.989v108.021c0,9.896,8.094,17.988,17.997,17.988
+				<path fill="url(#idTtpBackgroundGradient)" d="M126.002,0.001H17.997C8.094,0.001,0,8.093,0,17.989v108.021c0,9.896,8.094,17.988,17.997,17.988
 					h108.005c9.906,0,17.998-8.092,17.998-17.988V17.989C144,8.093,135.908,0.001,126.002,0.001z"/>
 			</g>
 			<defs>
-				<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="0" y="0.001" width="144" height="143.998">
+				<filter id="idTtpFilter" filterUnits="userSpaceOnUse" x="0" y="0.001" width="144" height="143.998">
 					
 						<feColorMatrix  type="matrix" values="-1 0 0 0 1  0 -1 0 0 1  0 0 -1 0 1  0 0 0 1 0" color-interpolation-filters="sRGB" result="source"/>
 				</filter>
 			</defs>
-			<mask maskUnits="userSpaceOnUse" x="0" y="0.001" width="144" height="143.998" id="SVGID_2_">
-				<g filter="url(#Adobe_OpacityMaskFilter)">
+			<mask maskUnits="userSpaceOnUse" x="0" y="0.001" width="144" height="143.998" id="idTtpMask">
+				<g filter="url(#idTtpFilter)">
 					
 				</g>
 			</mask>
-			<g opacity="0.6" mask="url(#SVGID_2_)">
+			<g opacity="0.6" mask="url(#idTtpMask)">
 				<path d="M126.002,0.001H17.997C8.094,0.001,0,8.093,0,17.989v108.021c0,9.896,8.094,17.988,17.997,17.988h108.005
 					c9.906,0,17.998-8.092,17.998-17.988V17.989C144,8.093,135.908,0.001,126.002,0.001z"/>
 			</g>
@@ -64,11 +64,11 @@
 				<text transform="matrix(1.0005 0 0 1 56.2705 127.7773)" fill="#FFFFFF" font-family="'Calibri-Bold'" font-size="20.6545">TTP</text>
 			</g>
 		</g>
-		<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="71.9985" y1="123.8291" x2="71.9985" y2="2.9116">
+		<linearGradient id="idTtpCurveOpacityGradient" gradientUnits="userSpaceOnUse" x1="71.9985" y1="123.8291" x2="71.9985" y2="2.9116">
 			<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0.1"/>
 			<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0.2"/>
 		</linearGradient>
-		<path fill="url(#SVGID_3_)" d="M123.816,2.911H20.183c-9.504,0-17.27,7.765-17.27,17.26v103.658
+		<path fill="url(#idTtpCurveOpacityGradient)" d="M123.816,2.911H20.183c-9.504,0-17.27,7.765-17.27,17.26v103.658
 			C14.615,20.666,141.084,20.171,141.084,20.171C141.084,10.676,133.32,2.911,123.816,2.911z"/>
 	</g>
 </switch>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 16.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1"
+<svg version="1.1" id="idCourseOfActionLayer"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%"
 	 viewBox="0 0 144 144" enable-background="new 0 0 144 144" xml:space="preserve">
 <switch>
 	<g>
 		<g>
 			<g>
-				<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="72.0005" y1="144" x2="72.0005" y2="4.882813e-004">
+				<linearGradient id="idCourseOfActionBackgroundGradient" gradientUnits="userSpaceOnUse" x1="72.0005" y1="144" x2="72.0005" y2="4.882813e-004">
 					<stop  offset="0" style="stop-color:#000000"/>
 					<stop  offset="0.0715" style="stop-color:#081700"/>
 					<stop  offset="0.2107" style="stop-color:#153F00"/>
@@ -18,21 +18,21 @@
 					<stop  offset="0.8162" style="stop-color:#329600"/>
 					<stop  offset="1" style="stop-color:#339900"/>
 				</linearGradient>
-				<path fill="url(#SVGID_1_)" d="M126.008,0H17.992C8.091,0,0,8.095,0,17.998v108.004C0,135.908,8.091,144,17.992,144h108.016
+				<path fill="url(#idCourseOfActionBackgroundGradient)" d="M126.008,0H17.992C8.091,0,0,8.095,0,17.998v108.004C0,135.908,8.091,144,17.992,144h108.016
 					c9.9,0,17.992-8.092,17.992-17.998V17.998C144,8.095,135.908,0,126.008,0z"/>
 			</g>
 			<defs>
-				<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="0" y="0" width="144" height="144">
+				<filter id="idCourseOfActionFilter" filterUnits="userSpaceOnUse" x="0" y="0" width="144" height="144">
 					
 						<feColorMatrix  type="matrix" values="-1 0 0 0 1  0 -1 0 0 1  0 0 -1 0 1  0 0 0 1 0" color-interpolation-filters="sRGB" result="source"/>
 				</filter>
 			</defs>
-			<mask maskUnits="userSpaceOnUse" x="0" y="0" width="144" height="144" id="SVGID_2_">
-				<g filter="url(#Adobe_OpacityMaskFilter)">
+			<mask maskUnits="userSpaceOnUse" x="0" y="0" width="144" height="144" id="idCourseOfActionMask">
+				<g filter="url(#idCourseOfActionFilter)">
 					
 				</g>
 			</mask>
-			<g opacity="0.6" mask="url(#SVGID_2_)">
+			<g opacity="0.6" mask="url(#idCourseOfActionMask)">
 				<path d="M126.008,0H17.992C8.091,0,0,8.095,0,17.998v108.004C0,135.908,8.091,144,17.992,144h108.016
 					c9.9,0,17.992-8.092,17.992-17.998V17.998C144,8.095,135.908,0,126.008,0z"/>
 			</g>
@@ -43,11 +43,11 @@
 				<text transform="matrix(0.9996 0 0 1 15.9526 127.4209)" fill="#FFFFFF" font-family="'Calibri-Bold'" font-size="16.3638">Course of Action</text>
 			</g>
 		</g>
-		<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="72.0015" y1="123.8164" x2="72.0015" y2="2.9136">
+		<linearGradient id="idCourseOfActionCurveOpacityGradient" gradientUnits="userSpaceOnUse" x1="72.0015" y1="123.8164" x2="72.0015" y2="2.9136">
 			<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0.2"/>
 			<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0.3"/>
 		</linearGradient>
-		<path fill="url(#SVGID_3_)" d="M123.824,2.913H20.176c-9.499,0-17.264,7.767-17.264,17.271v103.633
+		<path fill="url(#idCourseOfActionCurveOpacityGradient)" d="M123.824,2.913H20.176c-9.499,0-17.264,7.767-17.264,17.271v103.633
 			C14.612,20.678,141.09,20.184,141.09,20.184C141.09,10.68,133.326,2.913,123.824,2.913z"/>
 		<g>
 			

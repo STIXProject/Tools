@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 16.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1"
+<svg version="1.1" id="idIndicatorLayer"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%"
 	 viewBox="0 0 144 144" enable-background="new 0 0 144 144" xml:space="preserve">
 <switch>
 	<g>
 		<g>
 			<g>
-				<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="72.0005" y1="144.001" x2="72.0005" y2="-4.882813e-004">
+				<linearGradient id="idIndicatorBackgroundGradient" gradientUnits="userSpaceOnUse" x1="72.0005" y1="144.001" x2="72.0005" y2="-4.882813e-004">
 					<stop  offset="0" style="stop-color:#000000"/>
 					<stop  offset="0.0316" style="stop-color:#111003"/>
 					<stop  offset="0.1394" style="stop-color:#47440E"/>
@@ -20,30 +20,30 @@
 					<stop  offset="0.8522" style="stop-color:#F6EA31"/>
 					<stop  offset="1" style="stop-color:#F9ED32"/>
 				</linearGradient>
-				<path fill="url(#SVGID_1_)" d="M126.004-0.001H17.994C8.095-0.001,0,8.096,0,17.998v108.007c0,9.903,8.095,17.996,17.994,17.996
+				<path fill="url(#idIndicatorBackgroundGradient)" d="M126.004-0.001H17.994C8.095-0.001,0,8.096,0,17.998v108.007c0,9.903,8.095,17.996,17.994,17.996
 					h108.01c9.902,0,17.996-8.093,17.996-17.996V17.998C144,8.096,135.906-0.001,126.004-0.001z"/>
 			</g>
 			<defs>
-				<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="0" y="-0.001" width="144" height="144.002">
+				<filter id="idIndicatorFilter" filterUnits="userSpaceOnUse" x="0" y="-0.001" width="144" height="144.002">
 					
 						<feColorMatrix  type="matrix" values="-1 0 0 0 1  0 -1 0 0 1  0 0 -1 0 1  0 0 0 1 0" color-interpolation-filters="sRGB" result="source"/>
 				</filter>
 			</defs>
-			<mask maskUnits="userSpaceOnUse" x="0" y="-0.001" width="144" height="144.002" id="SVGID_2_">
-				<g filter="url(#Adobe_OpacityMaskFilter)">
+			<mask maskUnits="userSpaceOnUse" x="0" y="-0.001" width="144" height="144.002" id="idIndicatorMask">
+				<g filter="url(#idIndicatorFilter)">
 					
 				</g>
 			</mask>
-			<g opacity="0.6" mask="url(#SVGID_2_)">
+			<g opacity="0.6" mask="url(#idIndicatorMask)">
 				<path d="M126.004-0.001H17.994C8.095-0.001,0,8.096,0,17.998v108.007c0,9.903,8.095,17.996,17.994,17.996h108.01
 					c9.902,0,17.996-8.093,17.996-17.996V17.998C144,8.096,135.906-0.001,126.004-0.001z"/>
 			</g>
 		</g>
-		<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="72" y1="123.8184" x2="72" y2="2.9136">
+		<linearGradient id="idIndicatorCurveOpacityGradient" gradientUnits="userSpaceOnUse" x1="72" y1="123.8184" x2="72" y2="2.9136">
 			<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0.1"/>
 			<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0.2"/>
 		</linearGradient>
-		<path fill="url(#SVGID_3_)" d="M123.818,2.913H20.183c-9.502,0-17.271,7.767-17.271,17.271v103.635
+		<path fill="url(#idIndicatorCurveOpacityGradient)" d="M123.818,2.913H20.183c-9.502,0-17.271,7.767-17.271,17.271v103.635
 			C14.616,20.68,141.088,20.184,141.088,20.184C141.088,10.68,133.322,2.913,123.818,2.913z"/>
 		<g>
 			<g>
