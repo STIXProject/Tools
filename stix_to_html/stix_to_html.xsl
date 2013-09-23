@@ -190,6 +190,7 @@ mdunn@mitre.org
                         <div id="header"> 
                           <xsl:call-template name="customTitle" />
                             
+                          <div class="expandAll" onclick="expandAll(this.parentNode);">[expand all -- all sections]</div>
                           
                             <!-- print out the stix metadata table -->
                             <table class="stixMetadata hor-minimalist-a" width="100%">

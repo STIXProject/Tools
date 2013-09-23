@@ -440,6 +440,15 @@ tbody.expandableContainer > tr > td > .expandableToggle::before
   padding-left: 1.0em;
   text-indent: -0.5em;
 }
+
+.expandAll
+{
+  cursor: pointer;
+  text-decoration: underline;
+  color: blue;
+  margin-bottom: 1em;
+}
+
 .expandableContainer > .expandableContents,
 tbody.expandableContainer > tr > td > .expandableContents
 {
