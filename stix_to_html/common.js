@@ -149,6 +149,14 @@ function toggle(containerElement) {
   containerElement.classList.toggle("expanded");
 }
 
+function nsResolver(prefix) {
+  var ns = {
+    'xhtml' : 'http://www.w3.org/1999/xhtml',
+    'mathml': 'http://www.w3.org/1998/Math/MathML'
+  };
+  return ns[prefix] || null;
+}
+
 function expandAll(current)
 {
   console.log("expanding all..");
@@ -161,9 +169,18 @@ function expandAll(current)
     
     // document.evaluate("ancestor::*", $p, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,null)
     
-    currentToggle.onclick();
+    // check if this item id has already been expanded
+    var currentId = currentExpandable.getAttribute("data-stix-content-id");
+    var ancestorList = document.evaluate("ancestor::*[@data-stix-content-id = '" + currentId + "']", currentExpandable, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,null);
+    if (ancestorList.snapshotLength == 0)
+    {
+      // if not previously expanded (that is previously in it's ancestors in the html dom)
+      currentToggle.onclick();
+      
+    expandNestedExpandables(currentExpandable);      
+    }
     
-    expandNestedExpandables(currentExpandable);
+    
   }
   console.log("done expanding.");
 }
@@ -183,8 +200,18 @@ function expandNestedExpandables(contextExpandable)
   for (var i=0; i < expandableDescendentsSeparate.length; i++)
   {
     var currentExpandable = expandableDescendentsSeparate.item(i);
-    var expandableToggle = currentExpandable.querySelector(".expandableToggle");
-    expandableToggle.onclick();
+    var currentToggle = currentExpandable.querySelector(".expandableToggle");
+
+    // check if this item id has already been expanded
+    var currentId = currentExpandable.getAttribute("data-stix-content-id");
+    var ancestorList = document.evaluate("ancestor::*[@data-stix-content-id = '" + currentId + "']", currentExpandable, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,null);
+    if (ancestorList.snapshotLength == 0)
+    {
+      // if not previously expanded (that is previously in it's ancestors in the html dom)
+      currentToggle.onclick();
+      expandNestedExpandables(currentExpandable);      
+    }
+      
   }
   
   var expandableDescendentsSame = contextExpandable.querySelector(".expandableContainer.expandableSame");
