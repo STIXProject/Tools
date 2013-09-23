@@ -181,8 +181,16 @@ mdunn@mitre.org
                 <script type="text/javascript">
                   <xsl:value-of select="unparsed-text('common.js')" />
                 </script>
+                
+                <!-- read in the wgxpath xpath-in-javascript library -->
+                <!-- http://code.google.com/p/wicked-good-xpath/ -->
+                <script type="text/javascript">
+                  <xsl:value-of select="unparsed-text('wgxpath.install.js')" />
+                </script>
+                
+                
               </head>
-              <body onload="runtimeCopyObjects();">
+              <body onload="runtimeCopyObjects(); initialize();">
                 <xsl:call-template name="customHeader" />
                 
                     <div id="wrapper">
@@ -190,7 +198,7 @@ mdunn@mitre.org
                         <div id="header"> 
                           <xsl:call-template name="customTitle" />
                             
-                          <div class="expandAll" onclick="expandAll(this.parentNode);">[expand all -- all sections]</div>
+                          <div class="expandAll" onclick="expandAll(document.querySelector('.topLevelCategoryTables'));">[expand all -- all sections]</div>
                           
                             <!-- print out the stix metadata table -->
                             <table class="stixMetadata hor-minimalist-a" width="100%">
@@ -284,6 +292,7 @@ mdunn@mitre.org
                         <!--
                           MAIN TOP LEVEL CATEGORY TABLES
                         -->
+                        <div class="topLevelCategoryTables">
                       
                         <xsl:call-template name="processTopLevelCategory">
                             <xsl:with-param name="reference" select="$reference" />
@@ -349,6 +358,8 @@ mdunn@mitre.org
                          <xsl:with-param name="categoryLabel" select="'Threat Actors'" />
                          <xsl:with-param name="categoryIdentifier" select="'threatActors'" />
                        </xsl:call-template>
+                          
+                       </div>
                    </div>
                 
                   <xsl:call-template name="customFooter" />

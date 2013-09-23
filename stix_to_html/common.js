@@ -216,3 +216,11 @@ function expandNestedExpandables(contextExpandable)
   
   var expandableDescendentsSame = contextExpandable.querySelector(".expandableContainer.expandableSame");
 }
+
+function initialize()
+{
+  console.log("beginning initialization...");
+  wgxpath.install();
+  console.log("done initialization.");
+
+}
