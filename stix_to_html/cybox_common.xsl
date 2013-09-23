@@ -129,7 +129,7 @@ ikirillov@mitre.org
         
         <xsl:variable name="contentVar" select="concat(count(ancestor::node()), '00000000', count(preceding::node()))"/>
         
-        <tbody class="expandableContainer expandableSeparate collapsed">
+        <tbody class="expandableContainer expandableSeparate collapsed" data-stix-content-id="{$id}">
             <tr>
                 <td>
                     <div class="expandableToggle objectReference" onclick="embedObject()toggle(this.parentNode.parentNode.parentNode)">
@@ -589,7 +589,7 @@ ikirillov@mitre.org
         
          <xsl:choose>
             <xsl:when test="$targetObject">
-                <div class="expandableContainer expandableSeparate collapsed">
+                <div class="expandableContainer expandableSeparate collapsed" data-stix-content-id="{$targetId}">
                     <xsl:variable name="idVar" select="generate-id(.)"/>
 
                     <xsl:choose>

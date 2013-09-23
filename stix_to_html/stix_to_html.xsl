@@ -531,7 +531,7 @@ mdunn@mitre.org
           
       </xsl:when>
       <xsl:otherwise>
-        <div id="{fn:data($actualItem/@id)}" class="expandableContainer expandableSeparate collapsed">
+        <div id="{$id}" class="expandableContainer expandableSeparate collapsed" data-stix-content-id="{$id}">
           <!-- <div class="expandableToggle objectReference" onclick="toggle(this.parentNode)"> -->
           <div class="expandableToggle objectReference">
             <xsl:attribute name="onclick">embedObject(this.parentElement, '<xsl:value-of select="$id"/>','<xsl:value-of select="$expandedContentId"/>');</xsl:attribute>

@@ -156,8 +156,36 @@ function expandAll(current)
   
   for (var i=0; i < topCategoryExpandables.length; i++)
   {
-    var currentExpandable = topCategoryExpandables.item(i).querySelector("tr > td > .expandableToggle");
-    currentExpandable.onclick();
+    var currentExpandable = topCategoryExpandables.item(i);
+    var currentToggle = currentExpandable.querySelector("tr > td > .expandableToggle");
+    
+    // document.evaluate("ancestor::*", $p, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,null)
+    
+    currentToggle.onclick();
+    
+    expandNestedExpandables(currentExpandable);
   }
   console.log("done expanding.");
+}
+
+function expandTopLevelCategoryTable()
+{
+  
+}
+
+function expandNestedExpandables(contextExpandable)
+{
+  // document.evaluate("ancestor::*", $p, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,null)
+  
+  //   //div[contains(concat(' ', @class, ' '), ' Test ')]
+  
+  var expandableDescendentsSeparate = contextExpandable.querySelectorAll(".expandableContainer.expandableSeparate");
+  for (var i=0; i < expandableDescendentsSeparate.length; i++)
+  {
+    var currentExpandable = expandableDescendentsSeparate.item(i);
+    var expandableToggle = currentExpandable.querySelector(".expandableToggle");
+    expandableToggle.onclick();
+  }
+  
+  var expandableDescendentsSame = contextExpandable.querySelector(".expandableContainer.expandableSame");
 }
