@@ -20,11 +20,11 @@
   default to light gray + dark gray for alternating rows in top level category
   tables unless overridden by other css rules 
 */
-table.topLevelCategory tbody:nth-child(even)
+table.topLevelCategory > tbody:nth-child(even)
 {
 background-color: hsl(0, 0%, 90%);
 }
-table.topLevelCategory tbody:nth-child(odd)
+table.topLevelCategory > tbody:nth-child(odd)
 {
 background-color: hsl(0, 0%, 98%);
 }
@@ -33,65 +33,65 @@ background-color: hsl(0, 0%, 98%);
  color specific templates for top level tables for specific categories
 */
 
-table.topLevelCategory.indicators tbody:nth-child(even)
+table.topLevelCategory.indicators > tbody:nth-child(even)
 {
 background-color: hsl(56, 70%, 90%);
 }
-table.topLevelCategory.indicators tbody:nth-child(odd)
+table.topLevelCategory.indicators > tbody:nth-child(odd)
 {
 background-color: hsl(56, 90%, 98%);
 }
 
-table.topLevelCategory.ttps tbody:nth-child(even)
+table.topLevelCategory.ttps > tbody:nth-child(even)
 {
 background-color: hsl(274, 70%, 90%);
 }
-table.topLevelCategory.ttps tbody:nth-child(odd)
+table.topLevelCategory.ttps > tbody:nth-child(odd)
 {
 background-color: hsl(274, 90%, 98%);
 }
 
-table.topLevelCategory.observables tbody:nth-child(even)
+table.topLevelCategory.observables > tbody:nth-child(even)
 {
 background-color: hsl(220, 70%, 90%);
 }
-table.topLevelCategory.observables tbody:nth-child(odd)
+table.topLevelCategory.observables > tbody:nth-child(odd)
 {
 background-color: hsl(220, 90%, 98%);
 }
 
-table.topLevelCategory.campaigns tbody:nth-child(even)
+table.topLevelCategory.campaigns > tbody:nth-child(even)
 {
 background-color: hsl(200, 70%, 90%);
 }
-table.topLevelCategory.campaigns tbody:nth-child(odd)
+table.topLevelCategory.campaigns > tbody:nth-child(odd)
 {
 background-color: hsl(200, 90%, 98%);
 }
 
-table.topLevelCategory.threatActors tbody:nth-child(even)
+table.topLevelCategory.threatActors > tbody:nth-child(even)
 {
 background-color: hsl(358, 70%, 90%);
 }
-table.topLevelCategory.threatActors tbody:nth-child(odd)
+table.topLevelCategory.threatActors > tbody:nth-child(odd)
 {
 background-color: hsl(358, 90%, 98%);
 }
 
-table.topLevelCategory.exploitTargets tbody:nth-child(even)
+table.topLevelCategory.exploitTargets > tbody:nth-child(even)
 {
 background-color: hsl(0, 70%, 90%);
 }
-table.topLevelCategory.exploitTargets tbody:nth-child(odd)
+table.topLevelCategory.exploitTargets > tbody:nth-child(odd)
 {
 background-color: hsl(0, 90%, 98%);
 }
 
-table.topLevelCategory.incidents tbody:nth-child(even)
+table.topLevelCategory.incidents > tbody:nth-child(even)
 {
 background-color: hsl(24, 70%, 90%);
 }
-table.topLevelCategory.incidents tbody:nth-child(odd)
+table.topLevelCategory.incidents > tbody:nth-child(odd)
 {
 background-color: hsl(24, 90%, 98%);
 }
