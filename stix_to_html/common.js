@@ -58,6 +58,12 @@ function embedObject(container, targetId, expandedContentContainerId) {
 
     //var copy = pristineCopies[targetId].cloneNode(true);
     var template = document.querySelector(".reference #" + targetId.replace(":", "\\:"));
+    
+    if (template == null)
+    {
+      console.log("tried to expand id that didn't exist in reference list: " + targetId);
+      return;
+    }
     //var copy = template.cloneNode(true);
     
     var target = container.querySelector("#" + expandedContentContainerId.replace(":", "\\:"));
