@@ -174,7 +174,10 @@
     <xsl:attribute name="idref" select="fn:data(.)" />
 </xsl:template>
 -->
-
+  <xsl:template match="@object_reference|@action_id" mode="createReference" priority="20.0">
+    <xsl:attribute name="idref" select="fn:data(.)" />
+  </xsl:template>
+  
 <xsl:template match="@phase_id[../../self::stixCommon:Kill_Chain]" mode="createReference" priority="20.0">
   <xsl:param name="isTopLevel" select="fn:false()" />
   <xsl:choose>

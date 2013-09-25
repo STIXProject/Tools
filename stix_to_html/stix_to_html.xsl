@@ -407,7 +407,7 @@ mdunn@mitre.org
      - Thread Actor
      - Exploit Target
   -->
-  <xsl:template match="cybox:Observable|indicator:Observable|stix:Indicator|stix:TTP|stixCommon:Kill_Chain|stixCommon:Kill_Chain_Phase|stix:Campaign|stix:Incident|stix:Threat_Actor|stixCommon:Exploit_Target" mode="printReference">
+  <xsl:template match="cybox:Observable|indicator:Observable|stix:Indicator|stix:TTP|stixCommon:Kill_Chain|stixCommon:Kill_Chain_Phase|stix:Campaign|stix:Incident|stix:Threat_Actor|stixCommon:Exploit_Target|cybox:Action" mode="printReference">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
 
@@ -556,9 +556,17 @@ mdunn@mitre.org
           </div>
           
           <div id="{$expandedContentId}" class="expandableContents">
+            <!-- <div>THIS ONE</div> -->
             <xsl:choose>
               <xsl:when test="self::cybox:Observable|self::indicator:Observable">
                 <xsl:call-template name="processObservableContents" />
+              </xsl:when>
+              <xsl:when test="self::cybox:Action">
+                <!-- <div>ACTION DETAILS HERE...</div> -->
+                <div>
+                <xsl:apply-templates select="." />
+                </div>
+                <!-- <xsl:call-template name="processObservableContents" /> -->
               </xsl:when>
               <xsl:when test="self::stix:Indicator">
                 <xsl:call-template name="processIndicatorContents" />
