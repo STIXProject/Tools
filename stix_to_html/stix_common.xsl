@@ -475,7 +475,7 @@
             </xsl:when>
         </xsl:choose>
     </xsl:template>
-    
+  
     <xsl:template match="indicator:Indicated_TTP">
         <div>
         <!-- <div>(indicator Indicated TTP)</div> -->

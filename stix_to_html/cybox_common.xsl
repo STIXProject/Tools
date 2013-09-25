@@ -54,8 +54,10 @@ ikirillov@mitre.org
     xmlns:et="http://stix.mitre.org/ExploitTarget-1"
     xmlns:stix='http://stix.mitre.org/stix-1'
     
+    xmlns:AddressObject='http://cybox.mitre.org/objects#AddressObject-2'
+    xmlns:URIObject='http://cybox.mitre.org/objects#URIObject-2'
     xmlns:EmailMessageObj="http://cybox.mitre.org/objects#EmailMessageObject-2"
-    exclude-result-prefixes="cybox Common xsi fn EmailMessageObj">
+    exclude-result-prefixes="cybox Common xsi fn EmailMessageObj AddressObject URIObject">
 
 
     <xsl:output method="html" omit-xml-declaration="yes" indent="yes" media-type="text/html" version="4.0" />
@@ -815,6 +817,113 @@ ikirillov@mitre.org
         </div>
     </xsl:template>
 
+    <!--
+      Custom type handler for more readable output
+    -->
+    <xsl:template match="cybox:Properties[contains(@xsi:type,'URIObjectType')]|cybox:Properties[contains(@xsi:type,'LinkObjectType')]">
+        <fieldset>
+            <legend>URI</legend>
+            <div class="container cyboxPropertiesContainer cyboxProperties">
+                <div class="heading cyboxPropertiesHeading cyboxProperties">
+                    <xsl:apply-templates select="URIObject:Value" mode="cyboxProperties" />
+                </div>
+            </div>
+        </fieldset>
+    </xsl:template>
+    <xsl:template match="URIObject:Value" mode="cyboxProperties">
+        Value <xsl:value-of select="Common:Defanged(@is_defanged, @defanging_algorithm_ref)" />
+        <xsl:choose>
+            <xsl:when test="@condition!=''"><xsl:value-of select="Common:ConditionType(@condition)" /></xsl:when>
+            <xsl:otherwise> = </xsl:otherwise>
+        </xsl:choose>
+        <xsl:value-of select="." />
+    </xsl:template>
+
+    <!--
+      Custom type handler for more readable output
+    -->
+    <xsl:template match="*:Port[contains(@xsi:type,'PortObjectType')]" mode="cyboxProperties">
+        <div class="container cyboxPropertiesContainer cyboxProperties">
+            <div class="heading cyboxPropertiesHeading cyboxProperties">
+                Port <xsl:choose>
+                    <xsl:when test="@condition!=''"><xsl:value-of select="Common:ConditionType(@condition)" /></xsl:when>
+                    <xsl:otherwise> = </xsl:otherwise>
+                </xsl:choose>
+                <xsl:value-of select="." />
+            </div>
+        </div>
+    </xsl:template>
+    
+    
+    <!--
+      Custom type handler for more readable output
+    -->
+    <xsl:template match="cybox:Properties[contains(@xsi:type,'AddressObjectType')]">
+        <xsl:call-template name="Common:Address">
+            <xsl:with-param name="context" select="."/>
+        </xsl:call-template>
+    </xsl:template>
+    <xsl:template match="*:IP_Address" mode="cyboxProperties">
+        <xsl:call-template name="Common:Address">
+            <xsl:with-param name="context" select="."/>
+        </xsl:call-template>
+    </xsl:template>
+    <xsl:template name="Common:Address">
+        <xsl:param name="context" />
+        <div class="container cyboxPropertiesContainer cyboxProperties">
+            <div class="heading cyboxPropertiesHeading cyboxProperties">
+                <xsl:if test="$context/@isSource='true'">(source) </xsl:if>
+                <xsl:if test="$context/@isDestination='true'">(destination) </xsl:if>
+                <xsl:value-of select="Common:Category($context/@category)" />
+                <xsl:apply-templates mode="cyboxProperties" />
+            </div>
+        </div>
+    </xsl:template>
+    <xsl:function name="Common:Category">
+        <xsl:param name="category" />
+        <xsl:choose>
+            <xsl:when test="$category='ipv4-addr'">IPv4 </xsl:when>
+            <xsl:when test="$category='ipv4-net'">IPv4 network </xsl:when>
+            <xsl:when test="$category='ipv4-net-mask'">IPv4 netmask</xsl:when>
+            <xsl:when test="$category='ipv6-addr'">IPv6 </xsl:when>
+            <xsl:when test="$category='ipv6-addr'">IPv6 network </xsl:when>
+            <xsl:when test="$category='ipv6-net-mask'">IPv6 netmask </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$category" />
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
+    <xsl:template match="AddressObject:Address_Value" mode="cyboxProperties">
+        Address <xsl:value-of select="Common:Defanged(@is_defanged, @defanging_algorithm_ref)" />
+        <xsl:choose>
+            <xsl:when test="@condition!=''"><xsl:value-of select="Common:ConditionType(@condition)" /></xsl:when>
+            <xsl:otherwise> = </xsl:otherwise>
+        </xsl:choose>
+        <xsl:value-of select="." />
+    </xsl:template>
+    <xsl:function name="Common:ConditionType">
+        <xsl:param name="condition" />
+        <xsl:choose>
+            <xsl:when test="$condition='Equals'"> = </xsl:when>
+            <xsl:when test="$condition='DoesNotEqual'"> != </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$condition" />: 
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    <xsl:function name="Common:Defanged">
+        <xsl:param name="is_defanged" />
+        <xsl:param name="defanging_algorithm_ref" />
+        <xsl:if test="$is_defanged='true'">
+            (defanged 
+            <xsl:if test="$defanging_algorithm_ref!=''">
+                with <xsl:value-of select="$defanging_algorithm_ref" />
+            </xsl:if>
+            )
+        </xsl:if>
+    </xsl:function>
+    
     <!--
       default template for outputting hierarchical cybox:Properties names/values/constraints
     -->
