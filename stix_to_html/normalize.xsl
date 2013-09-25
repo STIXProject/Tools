@@ -174,6 +174,7 @@
     <xsl:attribute name="idref" select="fn:data(.)" />
 </xsl:template>
 -->
+  <!-- REFERENCE: HELP_UPDATE_STEP_1B -->
   <xsl:template match="@object_reference|@action_id" mode="createReference" priority="20.0">
     <xsl:attribute name="idref" select="fn:data(.)" />
   </xsl:template>

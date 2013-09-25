@@ -152,6 +152,7 @@ ikirillov@mitre.org
         </tbody>
     </xsl:template>
     
+    <!-- REFERENCE: HELP_UPDATE_STEP_1E -->
     <xsl:template name="printObjectForReferenceList">
         <xsl:param name="reference" select="()" />
         <xsl:param name="normalized" select="()" />
@@ -675,10 +676,11 @@ ikirillov@mitre.org
     
     See also the similar template in cybox_common.xsl.
   -->
+  <!-- REFERENCE: HELP_UPDATE_STEP_3 -->
   <xsl:template match="cybox:Object[@idref]|cybox:Event[@idref]|cybox:Related_Object[@idref]|cybox:Associated_Object[@idref]|stixCommon:Course_Of_Action[@idref]|stix:Course_Of_Action[@idref]|cybox:Action[@idref]|cybox:Action_Reference[@idref]">
         <!-- [object link here - - <xsl:value-of select="fn:data(@idref)" />] -->
     
-        <div>CLOSER!</div>
+        <div class="debug">CLOSER!</div>
         
         <xsl:call-template name="headerAndExpandableContent">
             <xsl:with-param name="targetId" select="fn:data(@idref)" />
@@ -705,7 +707,7 @@ ikirillov@mitre.org
         <xsl:variable name="friendlyName" select="fn:replace($localName, '_', ' ')" />
         <xsl:variable name="headingName" select="fn:upper-case($friendlyName)" />
       
-        <div>NOT THERE</div>
+        <div class="debug">NOT THERE</div>
         
         <div class="container {$identifierName}Container {$identifierName}">
             <div class="contents {$identifierName}Contents {$identifierName}">
@@ -748,13 +750,14 @@ ikirillov@mitre.org
         </div>
     </xsl:template>
   
+    <!-- REFERENCE: HELP_UPDATE_STEP_2 -->
     <xsl:template match="cybox:Action[@id]">
       <xsl:variable name="localName" select="local-name()"/>
       <xsl:variable name="identifierName" select="if ($localName = 'Object') then 'object' else if ($localName = 'Event') then 'event' else if ($localName = 'Related_Object') then 'relatedObject' else if ($localName = 'Associated_Object') then 'associatedObject' else ''" />
       <xsl:variable name="friendlyName" select="fn:replace($localName, '_', ' ')" />
       <xsl:variable name="headingName" select="fn:upper-case($friendlyName)" />
       
-      <div>NOT THERE</div>
+      <div class="debug">NOT THERE</div>
       
       <div class="container {$identifierName}Container {$identifierName}">
         <div class="contents {$identifierName}Contents {$identifierName}">
