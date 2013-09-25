@@ -449,6 +449,10 @@ ikirillov@mitre.org
                 <xsl:otherwise></xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
+      
+        <xsl:if test="$relationshipOrAssociationType or $currentObjectType">
+          <xsl:text> &#x25CB; </xsl:text>
+        </xsl:if>
         
         <xsl:if test="$relationshipOrAssociationType">
             <xsl:value-of select="$relationshipOrAssociationType/text()" />
