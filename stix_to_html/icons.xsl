@@ -43,7 +43,7 @@
     </xsl:template>
     <xsl:template name="iconExploitTargets">
       <div class="itemCategoryIcon">
-        <xsl:copy-of select="doc('images/exploit_targets.svg')" />
+        <xsl:copy-of select="doc('images/exploit_target.svg')" />
       </div>
     </xsl:template>
     <xsl:template name="iconIncidents">
