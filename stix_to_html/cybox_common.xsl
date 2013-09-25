@@ -916,7 +916,7 @@ ikirillov@mitre.org
     <!--
       Custom type handler for more readable output
     -->
-    <xsl:template match="*:Port[contains(@xsi:type,'PortObjectType')]" mode="cyboxProperties">
+    <xsl:template match="*:Port[contains(@xsi:type,'PortObjectType')]|*:Port[./*:Port_Value]" mode="cyboxProperties">
         <div class="container cyboxPropertiesContainer cyboxProperties">
             <div class="heading cyboxPropertiesHeading cyboxProperties">
                 Port <xsl:choose>
