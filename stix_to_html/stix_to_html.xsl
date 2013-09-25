@@ -138,6 +138,7 @@ mdunn@mitre.org
           
           These two variables will become the main inputs to the primary transform.
         -->
+        <!-- REFERENCE: HELP_UPDATE_STEP_1A -->
         <xsl:variable name="normalized">
           <xsl:apply-templates select="/stix:STIX_Package/*" mode="createNormalized" />
         </xsl:variable>
@@ -283,7 +284,8 @@ mdunn@mitre.org
                           When the user expands content, the appropriate nodes
                           from here will be cloned and copied into the document
                         -->
-                          
+                        
+                        <!-- REFERENCE: HELP_UPDATE_STEP_1C -->
                         <xsl:call-template name="printReference">
                           <xsl:with-param name="reference" select="$reference" />
                           <xsl:with-param name="normalized" select="$normalized" />
@@ -407,7 +409,8 @@ mdunn@mitre.org
      - Thread Actor
      - Exploit Target
   -->
-  <xsl:template match="cybox:Observable|indicator:Observable|stix:Indicator|stix:TTP|stixCommon:Kill_Chain|stixCommon:Kill_Chain_Phase|stix:Campaign|stix:Incident|stix:Threat_Actor|stixCommon:Exploit_Target" mode="printReference">
+  <!-- REFERENCE: HELP_UPDATE_STEP_1D -->
+  <xsl:template match="cybox:Observable|indicator:Observable|stix:Indicator|stix:TTP|stixCommon:Kill_Chain|stixCommon:Kill_Chain_Phase|stix:Campaign|stix:Incident|stix:Threat_Actor|stixCommon:Exploit_Target|cybox:Action" mode="printReference">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
 
@@ -424,6 +427,7 @@ mdunn@mitre.org
      - Kill Chain
      - Course Of Action
   -->
+  <!-- REFERENCE: HELP_UPDATE_STEP_1D -->
   <xsl:template match="cybox:Object|cybox:Related_Object|stixCommon:Kill_Chain|stixCommon:Course_Of_Action|stix:Course_Of_Action" mode="printReference">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
@@ -507,6 +511,7 @@ mdunn@mitre.org
     template never prints contents, as they will be looked up by id from the
     reference list, as printed by this template.]
   -->
+  <!-- REFERENCE: HELP_UPDATE_STEP_1E -->
   <xsl:template name="printGenericItemForReferenceList">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
@@ -556,9 +561,17 @@ mdunn@mitre.org
           </div>
           
           <div id="{$expandedContentId}" class="expandableContents">
+            <!-- <div>THIS ONE</div> -->
             <xsl:choose>
               <xsl:when test="self::cybox:Observable|self::indicator:Observable">
                 <xsl:call-template name="processObservableContents" />
+              </xsl:when>
+              <xsl:when test="self::cybox:Action">
+                <!-- <div>ACTION DETAILS HERE...</div> -->
+                <div>
+                <xsl:apply-templates select="." />
+                </div>
+                <!-- <xsl:call-template name="processObservableContents" /> -->
               </xsl:when>
               <xsl:when test="self::stix:Indicator">
                 <xsl:call-template name="processIndicatorContents" />

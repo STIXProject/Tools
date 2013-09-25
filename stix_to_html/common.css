@@ -449,10 +449,24 @@ tbody.expandableContainer > tr > td > .expandableToggle::before
   margin-bottom: 1em;
 }
 
+.expandableContainer.expanded
+{
+  border-style: solid;
+  border-color: hsl(0, 0%, 90%); /* very light gray */
+  border-width: 1px;
+}
+
 .expandableContainer > .expandableContents,
 tbody.expandableContainer > tr > td > .expandableContents
 {
-  background-color: #A8CBDE;
+
+/*
+background-color: gray;
+background-image: linear-gradient(90deg, transparent 50%, rgba(255,255,255,.5) 50%);
+background-size: 50px 50px;
+*/
+
+  /*background-color: #A8CBDE;*/
   padding-top: 0.25em;
   padding-right: 1em;
   padding-left: 0.5em;

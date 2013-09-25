@@ -154,6 +154,7 @@ ikirillov@mitre.org
         </tbody>
     </xsl:template>
     
+    <!-- REFERENCE: HELP_UPDATE_STEP_1E -->
     <xsl:template name="printObjectForReferenceList">
         <xsl:param name="reference" select="()" />
         <xsl:param name="normalized" select="()" />
@@ -677,8 +678,11 @@ ikirillov@mitre.org
     
     See also the similar template in cybox_common.xsl.
   -->
-  <xsl:template match="cybox:Object[@idref]|cybox:Event[@idref]|cybox:Related_Object[@idref]|cybox:Associated_Object[@idref]|stixCommon:Course_Of_Action[@idref]|stix:Course_Of_Action[@idref]">
+  <!-- REFERENCE: HELP_UPDATE_STEP_3 -->
+  <xsl:template match="cybox:Object[@idref]|cybox:Event[@idref]|cybox:Related_Object[@idref]|cybox:Associated_Object[@idref]|stixCommon:Course_Of_Action[@idref]|stix:Course_Of_Action[@idref]|cybox:Action[@idref]|cybox:Action_Reference[@idref]">
         <!-- [object link here - - <xsl:value-of select="fn:data(@idref)" />] -->
+    
+        <div class="debug">CLOSER!</div>
         
         <xsl:call-template name="headerAndExpandableContent">
             <xsl:with-param name="targetId" select="fn:data(@idref)" />
@@ -699,11 +703,13 @@ ikirillov@mitre.org
        
        It also prints out either original inline objects (with an id) or object references (with and idref).
     -->
-    <xsl:template match="cybox:Object[@id]|cybox:Event[@id]|cybox:Related_Object[@id]|cybox:Associated_Object[@id]">
+    <xsl:template match="cybox:Object[@id]|cybox:Event[@id]|cybox:Related_Object[@id]|cybox:Associated_Object[@id]|cybox:Action_Reference[@id]">
         <xsl:variable name="localName" select="local-name()"/>
         <xsl:variable name="identifierName" select="if ($localName = 'Object') then 'object' else if ($localName = 'Event') then 'event' else if ($localName = 'Related_Object') then 'relatedObject' else if ($localName = 'Associated_Object') then 'associatedObject' else ''" />
         <xsl:variable name="friendlyName" select="fn:replace($localName, '_', ' ')" />
         <xsl:variable name="headingName" select="fn:upper-case($friendlyName)" />
+      
+        <div class="debug">NOT THERE</div>
         
         <div class="container {$identifierName}Container {$identifierName}">
             <div class="contents {$identifierName}Contents {$identifierName}">
@@ -745,6 +751,67 @@ ikirillov@mitre.org
             </div>
         </div>
     </xsl:template>
+  
+    <!-- REFERENCE: HELP_UPDATE_STEP_2 -->
+    <xsl:template match="cybox:Action[@id]">
+      <xsl:variable name="localName" select="local-name()"/>
+      <xsl:variable name="identifierName" select="if ($localName = 'Object') then 'object' else if ($localName = 'Event') then 'event' else if ($localName = 'Related_Object') then 'relatedObject' else if ($localName = 'Associated_Object') then 'associatedObject' else ''" />
+      <xsl:variable name="friendlyName" select="fn:replace($localName, '_', ' ')" />
+      <xsl:variable name="headingName" select="fn:upper-case($friendlyName)" />
+      
+      <div class="debug">NOT THERE</div>
+      
+      <div class="container {$identifierName}Container {$identifierName}">
+        <div class="contents {$identifierName}Contents {$identifierName}">
+          <!-- Print the description if one is available (often they are not) -->
+          <xsl:if test="cybox:Description">
+            <div class="{$identifierName}Description description">
+              <xsl:value-of select="cybox:Description"/>
+            </div>
+          </xsl:if>
+          
+          <!--
+            Associated Objects need to have any Related Objects printed out
+          -->
+          <div>Associated Objects</div>
+          <xsl:apply-templates select="cybox:Associated_Objects/cybox:Associated_Object" />
+          
+          <div>Relationships</div>
+          <xsl:apply-templates select="cybox:Relationships/cybox:Relationship" />
+          
+          
+        </div>
+      </div>
+    </xsl:template>
+  
+  <xsl:template match="cybox:Relationship[@id]">
+    <xsl:variable name="localName" select="local-name()"/>
+    <xsl:variable name="identifierName" select="cybox:elementLocalNameToIdentifier($localName)" />
+    <xsl:variable name="friendlyName" select="fn:replace($localName, '_', ' ')" />
+    <xsl:variable name="headingName" select="fn:upper-case($friendlyName)" />
+        
+    <div class="container {$identifierName}Container {$identifierName}">
+      <div class="heading {$identifierName}Heading {$identifierName}">
+        <xsl:value-of select="cybox:Type/text()" />
+      </div>
+      <div class="contents {$identifierName}Contents {$identifierName}">
+        <xsl:apply-templates select="cybox:Action_Reference" />
+      </div>
+    </div>
+  </xsl:template>
+  
+  <xsl:function name="cybox:elementLocalNameToIdentifier" as="xs:string?">
+    <xsl:param name="localName" />
+    <xsl:choose>
+      <xsl:when test="$localName eq 'Object'" ><xsl:text>object</xsl:text></xsl:when>
+      <xsl:when test="$localName eq 'Event'" ><xsl:text>event</xsl:text></xsl:when>
+      <xsl:when test="$localName eq 'Related_Object'" ><xsl:text>relatedObject</xsl:text></xsl:when>
+      <xsl:when test="$localName eq 'Associated_Object'" ><xsl:text>associatedObject</xsl:text></xsl:when>
+      <xsl:otherwise><xsl:text>unknownObject</xsl:text></xsl:otherwise>
+    </xsl:choose>
+    
+    <xsl:variable name="identifierName" select="if ($localName = 'Object') then 'object' else if ($localName = 'Event') then 'event' else if ($localName = 'Related_Object') then 'relatedObject' else if ($localName = 'Associated_Object') then 'associatedObject' else ''" />
+  </xsl:function>
     
     <!--
       Print the details of an action.
@@ -752,7 +819,9 @@ ikirillov@mitre.org
       TODO: Merge this into the master object template.
     -->
     <!-- <xsl:template name="processAction"> -->
+  <!--
     <xsl:template match="cybox:Action">
+        <div>AHAH!!</div>
         <div class="container action">
             <div class="heading action">ACTION <xsl:value-of select="cybox:Type/text()" /> (xsi type: <xsl:value-of select="cybox:Type/@xsi:type" />)</div>
             <div class="contents action">
@@ -760,6 +829,7 @@ ikirillov@mitre.org
             </div>
         </div>
     </xsl:template>
+    -->
     
     <!--
       Print out the details of cybox:Properties.
