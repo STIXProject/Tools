@@ -449,6 +449,10 @@ ikirillov@mitre.org
                 <xsl:otherwise></xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
+      
+        <xsl:if test="$relationshipOrAssociationType or $currentObjectType">
+          <xsl:text> &#x25CB; </xsl:text>
+        </xsl:if>
         
         <xsl:if test="$relationshipOrAssociationType">
             <xsl:value-of select="$relationshipOrAssociationType/text()" />
@@ -764,20 +768,60 @@ ikirillov@mitre.org
       <div class="container {$identifierName}Container {$identifierName}">
         <div class="contents {$identifierName}Contents {$identifierName}">
           <!-- Print the description if one is available (often they are not) -->
+          
           <xsl:if test="cybox:Description">
-            <div class="{$identifierName}Description description">
-              <xsl:value-of select="cybox:Description"/>
-            </div>
+            <xsl:copy-of select="stix:printNameValueTable('Description', cybox:Description)" />
           </xsl:if>
+          <xsl:if test="cybox:Action_Aliases">
+            <xsl:variable name="contents">
+              <xsl:apply-templates select="cybox:Action_Aliases" />
+            </xsl:variable>
+            <xsl:copy-of select="stix:printNameValueTable('Action Aliases', $contents)" />
+          </xsl:if>
+          <xsl:if test="cybox:Action_Arguments">
+            <xsl:variable name="contents">
+              <xsl:apply-templates select="cybox:Action_Arguments" />
+            </xsl:variable>
+            <xsl:copy-of select="stix:printNameValueTable('Action Arguments', $contents)" />
+          </xsl:if>
+          <xsl:if test="cybox:Discovery_Method">
+            <xsl:variable name="contents">
+              <xsl:apply-templates select="cybox:Discovery_Method" />
+            </xsl:variable>
+            <xsl:copy-of select="stix:printNameValueTable('Discovery Method', $contents)" />
+          </xsl:if>
+          <xsl:if test="cybox:Frequency">
+            <xsl:copy-of select="stix:printNameValueTable('Frequency', cybox:Frequency)" />
+          </xsl:if>
+          <!--
+          <xsl:if test="cybox:Description">
+            <xsl:copy-of select="stix:printNameValueTable('Description', cybox:Description)" />
+          </xsl:if>              
+          <xsl:if test="indicator:Suggested_COAs/indicator:Suggested_COA">
+            <xsl:variable name="coaContents">
+              <xsl:apply-templates select="indicator:Suggested_COAs/indicator:Suggested_COA" />
+            </xsl:variable>
+            <xsl:copy-of select="stix:printNameValueTable('Suggested COAs', $coaContents)" />
+          </xsl:if>
+          -->
+          
           
           <!--
             Associated Objects need to have any Related Objects printed out
           -->
-          <div>Associated Objects</div>
-          <xsl:apply-templates select="cybox:Associated_Objects/cybox:Associated_Object" />
+          <xsl:if test="cybox:Associated_Objects/cybox:Associated_Object">
+            <xsl:variable name="contents">
+              <xsl:apply-templates select="cybox:Associated_Objects/cybox:Associated_Object" />
+            </xsl:variable>
+            <xsl:copy-of select="stix:printNameValueTable('Associated Objects', $contents)" />
+          </xsl:if>
           
-          <div>Relationships</div>
-          <xsl:apply-templates select="cybox:Relationships/cybox:Relationship" />
+          <xsl:if test="cybox:Relationships/cybox:Relationship">
+            <xsl:variable name="contents">
+              <xsl:apply-templates select="cybox:Relationships/cybox:Relationship" />
+            </xsl:variable>
+            <xsl:copy-of select="stix:printNameValueTable('Relationships', $contents)" />
+          </xsl:if>
           
           
         </div>

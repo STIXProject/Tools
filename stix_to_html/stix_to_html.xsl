@@ -428,7 +428,7 @@ mdunn@mitre.org
      - Course Of Action
   -->
   <!-- REFERENCE: HELP_UPDATE_STEP_1D -->
-  <xsl:template match="cybox:Object|cybox:Related_Object|stixCommon:Kill_Chain|stixCommon:Course_Of_Action|stix:Course_Of_Action" mode="printReference">
+  <xsl:template match="cybox:Object|cybox:Associated_Object|cybox:Related_Object|stixCommon:Kill_Chain|stixCommon:Course_Of_Action|stix:Course_Of_Action" mode="printReference">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
     
