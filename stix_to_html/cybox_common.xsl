@@ -863,7 +863,28 @@ ikirillov@mitre.org
             
         </fieldset>
     </xsl:template>
+
+    <!--
+        The following are a series of custom formatters for commonly-used Cybox types.  Each of these 
+        templates deviate from the default Cybox Properies output format (above) to simplify 
+        schema-related complexity.
+    -->
     
+    <!--
+        To extend support to a custom-defined object type, ensure that you have added your namespace
+        to the main <xsl:stylesheet> element at the top of this document and be sure to add your
+        prefix to the 'exclude-result-prefixes' attribute.  Next, define a template which matches an 
+        xpath expression of the elements/attributes you'd like to handle.
+        
+        For example, to output the mileage per gallon for red trucks in bold: 
+        
+        <xsl:template match="vehicles:Truck[@color='red']/MPG">
+            <div class="container truckProperties">
+                <strong><xsl:value-of select="." /></strong>
+            </div>
+        </xsl:template>
+    -->
+
     <!--
       Show email raw headers wrapped in a div with a class that is css styled
       to preserve wrapping in the original content.
@@ -875,7 +896,7 @@ ikirillov@mitre.org
     </xsl:template>
 
     <!--
-      Custom type handler for more readable output
+      Output hash value without unnecessary nested schema tree structure
     -->
     <xsl:template match="Common:Hash" mode="cyboxProperties">
         <div class="container cyboxPropertiesContainer cyboxProperties">
@@ -888,7 +909,7 @@ ikirillov@mitre.org
     </xsl:template>
 
     <!--
-      Custom type handler for more readable output
+      Output URI & Link value without unnecessary nested schema tree structure
     -->
     <xsl:template match="cybox:Properties[contains(@xsi:type,'URIObjectType')]|cybox:Properties[contains(@xsi:type,'LinkObjectType')]">
         <fieldset>
@@ -910,7 +931,7 @@ ikirillov@mitre.org
     </xsl:template>
 
     <!--
-      Custom type handler for more readable output
+      Output Port value without unnecessary nested schema tree structure
     -->
     <xsl:template match="*:Port[contains(@xsi:type,'PortObjectType')]|*:Port[./*:Port_Value]" mode="cyboxProperties">
         <div class="container cyboxPropertiesContainer cyboxProperties">
@@ -924,9 +945,8 @@ ikirillov@mitre.org
         </div>
     </xsl:template>
     
-    
     <!--
-      Custom type handler for more readable output
+      Output Address value without unnecessary nested schema tree structure
     -->
     <xsl:template match="cybox:Properties[contains(@xsi:type,'AddressObjectType')]">
         <xsl:call-template name="Common:Address">
@@ -963,7 +983,6 @@ ikirillov@mitre.org
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
-    
     <xsl:template match="AddressObject:Address_Value" mode="cyboxProperties">
         Address <xsl:value-of select="Common:Defanged(@is_defanged, @defanging_algorithm_ref)" />
         <xsl:choose>
