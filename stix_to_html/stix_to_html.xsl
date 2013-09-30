@@ -308,6 +308,7 @@ mdunn@mitre.org
                           <xsl:with-param name="reference" select="$reference" />
                           <xsl:with-param name="normalized" select="$normalized" />
                           <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:Indicators" />
+                          <xsl:with-param name="headingLabels" select="('Title', 'Observable Title', 'Type')" />
                           <xsl:with-param name="categoryLabel" select="'Indicators'" />
                           <xsl:with-param name="categoryIdentifier" select="'indicators'" />
                         </xsl:call-template>
@@ -316,7 +317,7 @@ mdunn@mitre.org
                           <xsl:with-param name="reference" select="$reference" />
                           <xsl:with-param name="normalized" select="$normalized" />
                           <xsl:with-param name="categoryGroupingElement" select="$normalized/stix:TTPs" />
-                          <xsl:with-param name="headingLabels" select="('ID', 'Title')" />
+                          <xsl:with-param name="headingLabels" select="('Title', 'ID')" />
                           <xsl:with-param name="categoryLabel" select="'TTPs'" />
                           <xsl:with-param name="categoryIdentifier" select="'ttps'" />
                         </xsl:call-template>
@@ -453,7 +454,7 @@ mdunn@mitre.org
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
     <xsl:param name="categoryGroupingElement" select="()" />
-    <xsl:param name="headingLabels" select="('ID', 'Type')" />
+    <xsl:param name="headingLabels" select="('Type', 'ID')" />
     <xsl:param name="categoryLabel" />
     <xsl:param name="categoryIdentifier" />
     
@@ -463,8 +464,9 @@ mdunn@mitre.org
         <div class="expandAll" onclick="expandAll(this.parentNode);">[expand all <xsl:value-of select="$categoryLabel"/>]</div>
         <table class="topLevelCategory {$categoryIdentifier}" cellspacing="0">
           <colgroup>
-            <col width="70%"/>
-            <col width="30%"/>
+            <xsl:for-each select="$headingLabels">
+              <col />
+            </xsl:for-each>
           </colgroup>
           <thead>
             <tr>
@@ -481,6 +483,7 @@ mdunn@mitre.org
             <xsl:call-template name="printGenericItemForTopLevelCategoryTable">
               <xsl:with-param name="reference" select="$reference" />
               <xsl:with-param name="normalized" select="$normalized" />
+              <xsl:with-param name="colCount" select="count($headingLabels)" />
             </xsl:call-template>
           </xsl:for-each>
           
@@ -492,6 +495,7 @@ mdunn@mitre.org
               <xsl:call-template name="printGenericItemForTopLevelCategoryTable">
                 <xsl:with-param name="reference" select="$reference" />
                 <xsl:with-param name="normalized" select="$normalized" />
+                <xsl:with-param name="colCount" select="count($headingLabels)" />
               </xsl:call-template>
               
             </xsl:for-each>

@@ -78,7 +78,6 @@ ikirillov@mitre.org
                 Event
             </xsl:when>
             <xsl:when test="$genericItem/cybox:Object/cybox:Properties/@xsi:type">
-                <!-- <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($actualObservable/cybox:Object/cybox:Properties/@xsi:type, $actualObservable/cybox:Object/cybox:Properties))" /> -->
                 <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($genericItem/cybox:Object/cybox:Properties/@xsi:type, $genericItem))" />
             </xsl:when>
             <xsl:when test="$genericItem/cybox:Object/cybox:Properties/@xsi:type and not($genericItem/cybox:Object/cybox:Properties/@xsi:type)">
@@ -100,6 +99,108 @@ ikirillov@mitre.org
     </xsl:function>
     
     <!--
+      Shared function that is used to calculate what type or title to show in
+      the top level category table, depending on the type of the generic
+      "item" element.
+    -->
+    <xsl:function name="cybox:calculateColumn1Content" as="xs:string">
+        <xsl:param name="genericItem" as="element()?" />
+        
+        <xsl:choose>
+            <xsl:when test="$genericItem/cybox:Observable_Composition">
+                Composition
+            </xsl:when>
+            <xsl:when test="$genericItem/cybox:Event">
+                Event
+            </xsl:when>
+            <xsl:when test="$genericItem/cybox:Object/cybox:Properties/@xsi:type">
+                <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($genericItem/cybox:Object/cybox:Properties/@xsi:type, $genericItem))" />
+            </xsl:when>
+            <xsl:when test="$genericItem/cybox:Object/cybox:Properties/@xsi:type and not($genericItem/cybox:Object/cybox:Properties/@xsi:type)">
+                Object (no properties set)
+            </xsl:when>
+            
+            <!-- stix -->
+            <xsl:when test="$genericItem[contains(@xsi:type,'IndicatorType')]">
+                <xsl:variable name="output" select="if ($genericItem/indicator:Title) then $genericItem/indicator:Title/text() else ('')" />
+                <xsl:value-of select="$output" />
+            </xsl:when>
+            <xsl:when test="$genericItem[contains(@xsi:type,'ThreatActorType')]">
+                <xsl:variable name="output" select="if ($genericItem/indicator:Title) then $genericItem/indicator:Title/text() else ('')" />
+                <xsl:value-of select="$output" />
+            </xsl:when>
+            <xsl:when test="$genericItem/ttp:Title">
+                <xsl:value-of select="$genericItem/ttp:Title/text()" />
+            </xsl:when>
+            <xsl:when test="$genericItem/coa:Type">
+                <xsl:value-of select="$genericItem/coa:Type/text()" />
+            </xsl:when>
+            <!-- /stix -->
+            <xsl:otherwise>
+                Other
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+
+    <!--
+      Shared function that is used to calculate what type or title to show in
+      the top level category table, depending on the type of the generic
+      "item" element.
+    -->
+    <xsl:template name="calculateColumn2Content">
+        <xsl:param name="reference" select="()" />
+        
+        <xsl:variable name="currentItem" select="." />
+        <xsl:variable name="actualItem2" select="$reference/*[@id = fn:data($currentItem/@idref)]" />
+        
+        <xsl:choose>
+            <!-- stix -->
+            <xsl:when test="$actualItem2[contains(@xsi:type,'IndicatorType')]/indicator:Composite_Indicator_Expression">
+                <td>
+                    [Composition]
+                </td>
+            </xsl:when>
+            <xsl:when test="$actualItem2[contains(@xsi:type,'IndicatorType')]/indicator:Observable">
+                <td>
+                    <xsl:variable name="obs" select="$reference/*[@id = fn:data($actualItem2/indicator:Observable/@idref)]" />
+                    <xsl:value-of select="$obs/cybox:Title/text()" />
+                </td>
+            </xsl:when>
+            <!-- /stix -->
+            <xsl:otherwise>
+                <td colspan="2">
+                    <xsl:value-of select="./@idref"/>
+                </td>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <!--
+      Shared function that is used to calculate what type or title to show in
+      the top level category table, depending on the type of the generic
+      "item" element.
+    -->
+    <xsl:template name="calculateColumn3Content">
+        <xsl:param name="reference" select="()" />
+        
+        <xsl:variable name="currentItem" select="." />
+        <xsl:variable name="actualItem2" select="$reference/*[@id = fn:data($currentItem/@idref)]" />
+        
+        <xsl:choose>
+            <!-- stix -->
+            <xsl:when test="$actualItem2[contains(@xsi:type,'IndicatorType')]">
+                <td>
+                    <xsl:value-of select="$actualItem2/indicator:Type/text()" />
+                </td>
+            </xsl:when>
+            <!-- /stix -->
+            <xsl:otherwise>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+
+    <!--
       print one of the "items" (Obserbale, Indicator, TTP, etc) for the top
       level category table.
       
@@ -110,6 +211,7 @@ ikirillov@mitre.org
     <xsl:template name="printGenericItemForTopLevelCategoryTable">
         <xsl:param name="reference" select="()" />
         <xsl:param name="normalized" select="()" />
+        <xsl:param name="colCount" select="2" />
 
         <xsl:variable name="originalItem" select="." />
         <!--
@@ -136,16 +238,18 @@ ikirillov@mitre.org
                 <td>
                     <div class="expandableToggle objectReference" onclick="embedObject()toggle(this.parentNode.parentNode.parentNode)">
                         <xsl:attribute name="onclick">embedObject(this.parentNode.parentNode.parentNode, '<xsl:value-of select="$id"/>','<xsl:value-of select="$expandedContentId"/>');</xsl:attribute>
-                        <!-- <div class="expandableToggle objectReference" onclick="toggle(this.parentNode.parentNode.parentNode)"> --> <!-- that is the tbody -->
-                        <xsl:value-of select="$actualItem/@id"/>
+                        <xsl:value-of select="cybox:calculateColumn1Content($actualItem)" />
                     </div>
                 </td>
-                <td>
-                    <xsl:value-of select="cybox:calculateDisplayTypeGenericItem($actualItem)" />
-                </td>
+                    <xsl:call-template name="calculateColumn2Content">
+                        <xsl:with-param name="reference" select="$reference" />
+                    </xsl:call-template>
+                    <xsl:call-template name="calculateColumn3Content">
+                        <xsl:with-param name="reference" select="$reference" />
+                    </xsl:call-template>
             </tr>
             <tr>
-                <td colspan="2">
+                <td colspan="{$colCount}">
                     <div id="{$expandedContentId}" class="expandableContents">
                         EXPANDABLE CONTENT HERE
                     </div>
