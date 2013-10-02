@@ -41,6 +41,7 @@ ikirillov@mitre.org
     xmlns:stixCommon="http://stix.mitre.org/common-1"
     
     xmlns:indicator="http://stix.mitre.org/Indicator-2"
+    xmlns:incident="http://stix.mitre.org/Incident-1"
     
     xmlns:coa="http://stix.mitre.org/CourseOfAction-1"
     
@@ -57,90 +58,82 @@ ikirillov@mitre.org
     xmlns:AddressObject='http://cybox.mitre.org/objects#AddressObject-2'
     xmlns:URIObject='http://cybox.mitre.org/objects#URIObject-2'
     xmlns:EmailMessageObj="http://cybox.mitre.org/objects#EmailMessageObject-2"
-    exclude-result-prefixes="cybox Common xsi fn EmailMessageObj AddressObject URIObject">
+    exclude-result-prefixes="cybox Common xsi fn EmailMessageObj AddressObject URIObject coa ttp ta et">
 
 
     <xsl:output method="html" omit-xml-declaration="yes" indent="yes" media-type="text/html" version="4.0" />
   
-    <!--
-      Shared function that is used to calculate what type or title to show in
-      the top level category table, depending on the type of the generic
-      "item" element.
-    -->
-    <xsl:function name="cybox:calculateDisplayTypeGenericItem" as="xs:string">
-        <xsl:param name="genericItem" as="element()?" />
 
-        <xsl:choose>
-            <xsl:when test="$genericItem/cybox:Observable_Composition">
-                Composition
-            </xsl:when>
-            <xsl:when test="$genericItem/cybox:Event">
-                Event
-            </xsl:when>
-            <xsl:when test="$genericItem/cybox:Object/cybox:Properties/@xsi:type">
-                <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($genericItem/cybox:Object/cybox:Properties/@xsi:type, $genericItem))" />
-            </xsl:when>
-            <xsl:when test="$genericItem/cybox:Object/cybox:Properties/@xsi:type and not($genericItem/cybox:Object/cybox:Properties/@xsi:type)">
-                Object (no properties set)
-            </xsl:when>
-            <xsl:when test="$genericItem/indicator:Type">
-                <xsl:value-of select="$genericItem/indicator:Type/text()" />
-            </xsl:when>
-            <xsl:when test="$genericItem/ttp:Title">
-              <xsl:value-of select="$genericItem/ttp:Title/text()" />
-            </xsl:when>
-            <xsl:when test="$genericItem/coa:Type">
-              <xsl:value-of select="$genericItem/coa:Type/text()" />
-            </xsl:when>
-            <xsl:otherwise>
-                Other
-            </xsl:otherwise>
-        </xsl:choose>
+    <!--
+      Shared function to convert CamelCaseText to standard word formatting.
+    -->
+    <xsl:function name="cybox:camelCase" as="xs:string" >
+        <xsl:param name="arg" as="xs:string?"/> 
+        
+        <xsl:sequence select="concat(substring($arg,1,1),replace(substring($arg,2),'(\p{Lu})',concat(' ', '$1')))" />
     </xsl:function>
-    
+
     <!--
       Shared function that is used to calculate what type or title to show in
       the top level category table, depending on the type of the generic
       "item" element.
     -->
-    <xsl:function name="cybox:calculateColumn1Content" as="xs:string">
-        <xsl:param name="genericItem" as="element()?" />
+    <xsl:template name="calculateColumn1Content">
+        <xsl:param name="reference" select="()" />
+        <xsl:param name="actualItem" select="()" />
         
         <xsl:choose>
-            <xsl:when test="$genericItem/cybox:Observable_Composition">
+            <xsl:when test="$actualItem/cybox:Observable_Composition">
                 Composition
             </xsl:when>
-            <xsl:when test="$genericItem/cybox:Event">
+            <xsl:when test="$actualItem/cybox:Event">
                 Event
             </xsl:when>
-            <xsl:when test="$genericItem/cybox:Object/cybox:Properties/@xsi:type">
-                <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName($genericItem/cybox:Object/cybox:Properties/@xsi:type, $genericItem))" />
-            </xsl:when>
-            <xsl:when test="$genericItem/cybox:Object/cybox:Properties/@xsi:type and not($genericItem/cybox:Object/cybox:Properties/@xsi:type)">
-                Object (no properties set)
+            <xsl:when test="$actualItem/cybox:Object">
+                <xsl:variable name="objectItem" select="$reference/*[@id = fn:data($actualItem/cybox:Object/@idref)]" />
+               
+                <xsl:choose>
+                    <xsl:when test="$objectItem/cybox:Properties/@xsi:type" xml:space="preserve">
+                        <xsl:value-of select="cybox:camelCase(fn:substring-before(fn:local-name-from-QName(fn:resolve-QName($objectItem/cybox:Properties/@xsi:type, $objectItem)),'ObjectType'))" />
+                    </xsl:when>
+                    <xsl:when test="$objectItem/cybox:Properties/@xsi:type and not($objectItem/cybox:Properties/@xsi:type)">
+                        Object (no properties set)
+                    </xsl:when>
+                    <xsl:otherwise>
+                        [Object, no ID]
+                    </xsl:otherwise>
+                </xsl:choose>
+               
             </xsl:when>
             
             <!-- stix -->
-            <xsl:when test="$genericItem[contains(@xsi:type,'IndicatorType')]">
-                <xsl:variable name="output" select="if ($genericItem/indicator:Title) then $genericItem/indicator:Title/text() else ('')" />
+            <xsl:when test="$actualItem[contains(@xsi:type,'IndicatorType')]"  xml:space="preserve">
+                <xsl:variable name="output" select="if ($actualItem/indicator:Title) then $actualItem/indicator:Title/text() else ('[Indicator, no Title]')" />
                 <xsl:value-of select="$output" />
             </xsl:when>
-            <xsl:when test="$genericItem[contains(@xsi:type,'ThreatActorType')]">
-                <xsl:variable name="output" select="if ($genericItem/indicator:Title) then $genericItem/indicator:Title/text() else ('')" />
+            <xsl:when test="$actualItem[contains(@xsi:type,'ThreatActorType')]"  xml:space="preserve">
+                <xsl:variable name="output" select="if ($actualItem/indicator:Title) then $actualItem/indicator:Title/text() else ('[ThreatActor, no Title]')" />
                 <xsl:value-of select="$output" />
             </xsl:when>
-            <xsl:when test="$genericItem/ttp:Title">
-                <xsl:value-of select="$genericItem/ttp:Title/text()" />
+            <xsl:when test="$actualItem[contains(@xsi:type,'TTPType')]"  xml:space="preserve">
+                <xsl:variable name="output" select="if ($actualItem/ttp:Title) then $actualItem/ttp:Title/text() else ('[TTP, no Title]')" />
+                <xsl:value-of select="$output" />
             </xsl:when>
-            <xsl:when test="$genericItem/coa:Type">
-                <xsl:value-of select="$genericItem/coa:Type/text()" />
+            <xsl:when test="$actualItem[contains(@xsi:type,'COAType')]"  xml:space="preserve">
+                <xsl:variable name="output" select="if ($actualItem/coa:Type) then $actualItem/coa:Type/text() else ('[TTP, no Type]')" />
+                <xsl:value-of select="$output" />
+            </xsl:when>
+            <xsl:when test="$actualItem[contains(@xsi:type,'IncidentType')]"  xml:space="preserve">
+                <xsl:variable name="output" select="if ($actualItem/coa:Type) then $actualItem/coa:Type/text() else ('[Incident, no Type]')" />
+                <xsl:value-of select="$output" />
             </xsl:when>
             <!-- /stix -->
             <xsl:otherwise>
                 Other
             </xsl:otherwise>
         </xsl:choose>
-    </xsl:function>
+    </xsl:template>
+    
 
     <!--
       Shared function that is used to calculate what type or title to show in
@@ -149,21 +142,20 @@ ikirillov@mitre.org
     -->
     <xsl:template name="calculateColumn2Content">
         <xsl:param name="reference" select="()" />
-        
-        <xsl:variable name="currentItem" select="." />
-        <xsl:variable name="actualItem2" select="$reference/*[@id = fn:data($currentItem/@idref)]" />
+        <xsl:param name="actualItem" select="()" />
         
         <xsl:choose>
             <!-- stix -->
-            <xsl:when test="$actualItem2[contains(@xsi:type,'IndicatorType')]/indicator:Composite_Indicator_Expression">
+            <xsl:when test="$actualItem[contains(@xsi:type,'IndicatorType')]/indicator:Composite_Indicator_Expression">
                 <td>
                     [Composition]
                 </td>
             </xsl:when>
-            <xsl:when test="$actualItem2[contains(@xsi:type,'IndicatorType')]/indicator:Observable">
+            <xsl:when test="$actualItem[contains(@xsi:type,'IndicatorType')]/indicator:Observable">
                 <td>
-                    <xsl:variable name="obs" select="$reference/*[@id = fn:data($actualItem2/indicator:Observable/@idref)]" />
-                    <xsl:value-of select="$obs/cybox:Title/text()" />
+                    <xsl:variable name="observableItem" select="$reference/*[@id = fn:data($actualItem/indicator:Observable/@idref)]" />
+                    <xsl:variable name="output" select="if ($observableItem/cybox:Title) then $observableItem/cybox:Title/text()  else ('[Observable, no Title]')" />
+                    <xsl:value-of select="$output" />
                 </td>
             </xsl:when>
             <!-- /stix -->
@@ -182,6 +174,7 @@ ikirillov@mitre.org
     -->
     <xsl:template name="calculateColumn3Content">
         <xsl:param name="reference" select="()" />
+        <xsl:param name="actualItem" select="()" />
         
         <xsl:variable name="currentItem" select="." />
         <xsl:variable name="actualItem2" select="$reference/*[@id = fn:data($currentItem/@idref)]" />
@@ -238,14 +231,19 @@ ikirillov@mitre.org
                 <td>
                     <div class="expandableToggle objectReference" onclick="embedObject()toggle(this.parentNode.parentNode.parentNode)">
                         <xsl:attribute name="onclick">embedObject(this.parentNode.parentNode.parentNode, '<xsl:value-of select="$id"/>','<xsl:value-of select="$expandedContentId"/>');</xsl:attribute>
-                        <xsl:value-of select="cybox:calculateColumn1Content($actualItem)" />
+                        <xsl:call-template name="calculateColumn1Content">
+                            <xsl:with-param name="reference" select="$reference" />
+                            <xsl:with-param name="actualItem" select="$actualItem" />
+                        </xsl:call-template>
                     </div>
                 </td>
                     <xsl:call-template name="calculateColumn2Content">
                         <xsl:with-param name="reference" select="$reference" />
+                        <xsl:with-param name="actualItem" select="$actualItem" />
                     </xsl:call-template>
                     <xsl:call-template name="calculateColumn3Content">
                         <xsl:with-param name="reference" select="$reference" />
+                        <xsl:with-param name="actualItem" select="$actualItem" />
                     </xsl:call-template>
             </tr>
             <tr>
@@ -546,9 +544,13 @@ ikirillov@mitre.org
                 <!-- case 1: cybox objects have a cybox:Properties child with an xsi type,
                      or an observable has a child that is an object that has cybox:Properties
                 -->
-                <xsl:when test="($currentObject/cybox:Properties|$currentObject/cybox:*/cybox:Properties)/@xsi:type"><xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName(($currentObject/cybox:Properties|$currentObject/cybox:*/cybox:Properties)/@xsi:type, ($currentObject/cybox:Properties|$currentObject/cybox:*/cybox:Properties)))"/></xsl:when>
+                <xsl:when test="($currentObject/cybox:Properties|$currentObject/cybox:*/cybox:Properties)/@xsi:type">
+                    <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName(($currentObject/cybox:Properties|$currentObject/cybox:*/cybox:Properties)/@xsi:type, ($currentObject/cybox:Properties|$currentObject/cybox:*/cybox:Properties)))"/>
+                </xsl:when>
                 <!-- case 2: the current item is a cybox event or an observable that contains an event  -->
-                <xsl:when test="$currentObject/cybox:Type|$currentObject/cybox:Event/cybox:Type"><xsl:value-of select="($currentObject/cybox:Type|$currentObject/cybox:Event/cybox:Type)/text()"/></xsl:when>
+                <xsl:when test="$currentObject/cybox:Type|$currentObject/cybox:Event/cybox:Type">
+                    <xsl:value-of select="($currentObject/cybox:Type|$currentObject/cybox:Event/cybox:Type)/text()"/>
+                </xsl:when>
                 <!-- catch all -->
                 <xsl:otherwise></xsl:otherwise>
             </xsl:choose>
@@ -863,12 +865,14 @@ ikirillov@mitre.org
     <!-- REFERENCE: HELP_UPDATE_STEP_2 -->
     <xsl:template match="cybox:Action[@id]">
       <xsl:variable name="localName" select="local-name()"/>
-      <xsl:variable name="identifierName" select="if ($localName = 'Object') then 'object' else if ($localName = 'Event') then 'event' else if ($localName = 'Related_Object') then 'relatedObject' else if ($localName = 'Associated_Object') then 'associatedObject' else ''" />
+      <xsl:variable name="identifierName" select="'action'" />
       <xsl:variable name="friendlyName" select="fn:replace($localName, '_', ' ')" />
       <xsl:variable name="headingName" select="fn:upper-case($friendlyName)" />
       
       <div class="debug">NOT THERE</div>
-      
+      <div>
+          <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
+          
       <div class="container {$identifierName}Container {$identifierName}">
         <div class="contents {$identifierName}Contents {$identifierName}">
           <!-- Print the description if one is available (often they are not) -->
@@ -929,6 +933,7 @@ ikirillov@mitre.org
           
           
         </div>
+      </div>
       </div>
     </xsl:template>
   

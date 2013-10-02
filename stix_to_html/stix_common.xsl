@@ -48,20 +48,18 @@
     <xsl:template name="processHeader">
         <xsl:for-each select="//stix:STIX_Package/stix:STIX_Header">        
             <div class="stixHeader">
-                <table class="grid tablesorter" cellspacing="0">
+              <table class="grid topLevelCategory tablesorter" cellspacing="0">
                     <colgroup>
                         <col width="30%"/>
                         <col width="70%"/>
                     </colgroup>
                     <thead>
-                        <tr>
-                            <th class="header">
-                                Field
-                            </th>
-                            <th class="header">
-                                Value
-                            </th>
-                        </tr>
+<!--
+                      <tr>
+                            <th class="header"></th>
+                            <th class="header"></th>
+                      </tr>
+-->
                     </thead>
                     <tbody>
                         <xsl:variable name="evenOrOdd" select="if(position() mod 2 = 0) then 'even' else 'odd'" />

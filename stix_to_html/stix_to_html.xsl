@@ -429,7 +429,7 @@ mdunn@mitre.org
      - Course Of Action
   -->
   <!-- REFERENCE: HELP_UPDATE_STEP_1D -->
-  <xsl:template match="cybox:Object|cybox:Associated_Object|cybox:Related_Object|stixCommon:Kill_Chain|stixCommon:Course_Of_Action|stix:Course_Of_Action" mode="printReference">
+  <xsl:template match="cybox:Object|cybox:Event|cybox:Associated_Object|cybox:Related_Object|stixCommon:Kill_Chain|stixCommon:Course_Of_Action|stix:Course_Of_Action" mode="printReference">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
     
@@ -569,6 +569,13 @@ mdunn@mitre.org
             <xsl:choose>
               <xsl:when test="self::cybox:Observable|self::indicator:Observable">
                 <xsl:call-template name="processObservableContents" />
+              </xsl:when>
+              <xsl:when test="self::cybox:Event">
+                <!-- <div>ACTION DETAILS HERE...</div> -->
+                <div>
+                  <xsl:apply-templates select="." />
+                </div>
+                <!-- <xsl:call-template name="processObservableContents" /> -->
               </xsl:when>
               <xsl:when test="self::cybox:Action">
                 <!-- <div>ACTION DETAILS HERE...</div> -->
