@@ -122,6 +122,10 @@
                           <xsl:when test="self::stix:Information_Source">
                             <xsl:apply-templates mode="cyboxProperties" />
                           </xsl:when>
+                          <xsl:when test="self::*[@structuring_format='HTML5']">
+                            <xsl:variable name="content" select="./text()" />
+                            <div class="htmlContainer" data-stix-content="{$content}" />
+                          </xsl:when>
                           <xsl:otherwise>
                             <xsl:value-of select="self::node()[text()]"/>
                           </xsl:otherwise>

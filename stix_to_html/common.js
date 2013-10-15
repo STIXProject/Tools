@@ -223,10 +223,40 @@ function expandNestedExpandables(contextExpandable)
   var expandableDescendentsSame = contextExpandable.querySelector(".expandableContainer.expandableSame");
 }
 
+function replaceHtmlContainers()
+{
+  var allTargets = document.querySelectorAll(".htmlContainer");
+  for (var i = 0; i < allTargets.length; i++)
+  {
+    var target = allTargets[i];
+    var rawHtml = target.getAttribute("data-stix-content");
+    
+    var htmlElement = document.createElement("html");
+    htmlElement.innerHTML = rawHtml;
+    
+    var body = htmlElement.querySelector("body");
+    var bodyChildren = body.childNodes;
+    //for (var j = 0; j < bodyChildren.length; j++)
+    while (bodyChildren.length > 0)
+    {
+      var currentBodyChild = bodyChildren[0];
+      if (currentBodyChild.nodeType == Node.ELEMENT_NODE || currentBodyChild.nodeType == Node.TEXT_NODE)
+      {
+        target.appendChild(currentBodyChild);
+      }
+
+    }
+    //target.appendChild();
+
+  }
+}
+
+
 function initialize()
 {
   console.log("beginning initialization...");
   wgxpath.install();
+  replaceHtmlContainers();
   console.log("done initialization.");
 
 }
