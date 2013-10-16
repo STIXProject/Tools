@@ -212,7 +212,10 @@
       </xsl:attribute>
       
       <xsl:if test="incident:Description">
-        <xsl:copy-of select="stix:printNameValueTable('Description', incident:Description)" />
+        <xsl:variable name="contents">
+          <xsl:apply-templates select="incident:Description" />
+        </xsl:variable>
+        <xsl:copy-of select="stix:printNameValueTable('Description', $contents)" />
       </xsl:if>              
       <xsl:if test="incident:Status">
         <xsl:copy-of select="stix:printNameValueTable('Status', incident:Status)" />
@@ -343,7 +346,10 @@
           <xsl:copy-of select="stix:printNameValueTable('Title', indicator:Title)" />
         </xsl:if>              
         <xsl:if test="indicator:Description">
-          <xsl:copy-of select="stix:printNameValueTable('Description', indicator:Description)" />
+          <xsl:variable name="contents">
+            <xsl:apply-templates select="indicator:Description" />
+          </xsl:variable>
+          <xsl:copy-of select="stix:printNameValueTable('Description', $contents)" />
         </xsl:if>              
         <xsl:if test="indicator:Valid_Time_Position">
           <xsl:copy-of select="stix:printNameValueTable('Valid Time Position', fn:concat('(', indicator:Valid_Time_Position/indicator:Start_Time/text(), ' to ', indicator:Valid_Time_Position/indicator:End_Time/text(), ')'))" />
@@ -524,7 +530,10 @@
             <xsl:if test="@id">container baseobj</xsl:if>
           </xsl:attribute>
           <xsl:if test="ttp:Description">
-            <xsl:copy-of select="stix:printNameValueTable('Description', ttp:Description)" />
+            <xsl:variable name="contents">
+              <xsl:apply-templates select="ttp:Description" />
+            </xsl:variable>
+            <xsl:copy-of select="stix:printNameValueTable('Description', $contents)" />
           </xsl:if>  
 
           <xsl:if test="ttp:Intended_Effect">
