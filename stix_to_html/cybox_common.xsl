@@ -1048,9 +1048,8 @@ ikirillov@mitre.org
         </div>
     </xsl:template>
   
-    <!-- <xsl:template match="text()[../*:Description[@structuring_format='HTML5']]" mode="cyboxProperties"> -->
-    <xsl:template match="*:Description[@structuring_format='HTML5']" mode="cyboxProperties">
-      <xsl:variable name="content" select="./text()" />
+    <xsl:template match="text()[../self::*:Description[@structuring_format='HTML5']]" mode="cyboxProperties">
+      <xsl:variable name="content" select="fn:data(.)" />
       <div class="htmlContainer" data-stix-content="{$content}" />
     </xsl:template>
   
