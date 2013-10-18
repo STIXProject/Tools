@@ -1106,7 +1106,12 @@ ikirillov@mitre.org
             <xsl:value-of select="fn:data(.)" />
         </div>
     </xsl:template>
-
+  
+    <xsl:template match="text()[../self::*:Description[@structuring_format='HTML5']]" mode="cyboxProperties">
+      <xsl:variable name="content" select="fn:data(.)" />
+      <div class="htmlContainer" data-stix-content="{$content}" />
+    </xsl:template>
+  
     <!--
       Output hash value without unnecessary nested schema tree structure
     -->

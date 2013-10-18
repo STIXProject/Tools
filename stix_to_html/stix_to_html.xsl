@@ -570,40 +570,51 @@ mdunn@mitre.org
             <!-- <div>THIS ONE</div> -->
             <xsl:choose>
               <xsl:when test="self::cybox:Observable|self::indicator:Observable">
-                <xsl:call-template name="processObservableContents" />
+                <div class="containerObservable">
+                  <xsl:call-template name="processObservableContents" />
+                </div>
               </xsl:when>
               <xsl:when test="self::cybox:Event">
                 <!-- <div>ACTION DETAILS HERE...</div> -->
                 <div>
-                  <xsl:apply-templates select="." />
+                  <div class="containerEvent">
+                    <xsl:apply-templates select="." />
+                  </div>
                 </div>
                 <!-- <xsl:call-template name="processObservableContents" /> -->
               </xsl:when>
-<!--              <xsl:when test="self::cybox:Action">
-                <div>
-                <xsl:apply-templates select="." />
+              <xsl:when test="self::stix:Indicator">
+                <div class="containerIndicator">
+                  <xsl:call-template name="processIndicatorContents" />
                 </div>
               </xsl:when>
--->              <xsl:when test="self::stix:Indicator">
-                <xsl:call-template name="processIndicatorContents" />
-              </xsl:when>
               <xsl:when test="self::stix:TTP">
-                <xsl:call-template name="processTTPContents" />
+                <div class="containerTtp">
+                  <xsl:call-template name="processTTPContents" />
+                </div>
               </xsl:when>
               <xsl:when test="self::stixCommon:Kill_Chain_Phase">
                 <xsl:apply-templates select="." />
               </xsl:when>
               <xsl:when test="self::stix:Campaign">
-                <xsl:call-template name="processCampaignContents" />
+                <div class="containerCampaign">
+                  <xsl:call-template name="processCampaignContents" />
+                </div>
               </xsl:when>
               <xsl:when test="self::stix:Incident">
-                <xsl:call-template name="processIncidentContents" />
+                <div class="containerIncident">
+                  <xsl:call-template name="processIncidentContents" />
+                </div>
               </xsl:when>
               <xsl:when test="self::stix:Threat_Actor">
-                <xsl:call-template name="processThreatActorContents" />
+                <div class="containerThreatActor">
+                  <xsl:call-template name="processThreatActorContents" />
+                </div>
               </xsl:when>
               <xsl:when test="self::stixCommon:Exploit_Target">
-                <xsl:call-template name="processExploitTargetContents" />
+                <div class="containerExploitTarget">
+                  <xsl:call-template name="processExploitTargetContents" />
+                </div>
               </xsl:when>
             </xsl:choose>
           </div>

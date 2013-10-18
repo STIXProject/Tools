@@ -20,80 +20,88 @@
   default to light gray + dark gray for alternating rows in top level category
   tables unless overridden by other css rules 
 */
+.containerGeneric,
 table.topLevelCategory > tbody:nth-child(even)
 {
 background-color: hsl(0, 0%, 90%);
 }
 table.topLevelCategory > tbody:nth-child(odd)
 {
-background-color: hsl(0, 0%, 98%);
+background-color: hsl(0, 0%, 95%);
 }
 
 /*
  color specific templates for top level tables for specific categories
 */
 
+.containerIndicator,
 table.topLevelCategory.indicators > tbody:nth-child(even)
 {
 background-color: hsl(56, 70%, 90%);
 }
 table.topLevelCategory.indicators > tbody:nth-child(odd)
 {
-background-color: hsl(56, 90%, 98%);
+background-color: hsl(56, 90%, 95%);
 }
 
+.containerTtp,
 table.topLevelCategory.ttps > tbody:nth-child(even)
 {
 background-color: hsl(274, 70%, 90%);
 }
 table.topLevelCategory.ttps > tbody:nth-child(odd)
 {
-background-color: hsl(274, 90%, 98%);
+background-color: hsl(274, 90%, 95%);
 }
 
+.containerObservable,
 table.topLevelCategory.observables > tbody:nth-child(even)
 {
 background-color: hsl(220, 70%, 90%);
 }
 table.topLevelCategory.observables > tbody:nth-child(odd)
 {
-background-color: hsl(220, 90%, 98%);
+background-color: hsl(220, 90%, 95%);
 }
 
+.containerCampaign,
 table.topLevelCategory.campaigns > tbody:nth-child(even)
 {
 background-color: hsl(200, 70%, 90%);
 }
 table.topLevelCategory.campaigns > tbody:nth-child(odd)
 {
-background-color: hsl(200, 90%, 98%);
+background-color: hsl(200, 90%, 95%);
 }
 
+.containerThreatActor,
 table.topLevelCategory.threatActors > tbody:nth-child(even)
 {
 background-color: hsl(358, 70%, 90%);
 }
 table.topLevelCategory.threatActors > tbody:nth-child(odd)
 {
-background-color: hsl(358, 90%, 98%);
+background-color: hsl(358, 90%, 95%);
 }
 
+.containerExploitTarget,
 table.topLevelCategory.exploitTargets > tbody:nth-child(even)
 {
 background-color: hsl(0, 70%, 90%);
 }
 table.topLevelCategory.exploitTargets > tbody:nth-child(odd)
 {
-background-color: hsl(0, 90%, 98%);
+background-color: hsl(0, 90%, 95%);
 }
 
+.containerIncident,
 table.topLevelCategory.incidents > tbody:nth-child(even)
 {
 background-color: hsl(24, 70%, 90%);
 }
 table.topLevelCategory.incidents > tbody:nth-child(odd)
 {
-background-color: hsl(24, 90%, 98%);
+background-color: hsl(24, 90%, 95%);
 }
 
 
