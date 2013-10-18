@@ -143,8 +143,10 @@ mdunn@mitre.org
           <xsl:apply-templates select="/stix:STIX_Package/*" mode="createNormalized" />
         </xsl:variable>
         <xsl:variable name="reference">
-          <xsl:apply-templates select="/stix:STIX_Package//*[@id or @phase_id[../../self::stixCommon:Kill_Chain]]" mode="createReference">
-            <xsl:with-param name="isTopLevel" select="fn:true()" />
+          <xsl:apply-templates select="/stix:STIX_Package//*[@id or @phase_id[../../self::stixCommon:Kill_Chain] 
+            or self::cybox:Action or self::cybox:Associated_Object]" mode="createReference">
+            <xsl:with-param name="isTopLevel" select="fn:true()"/>
+            <xsl:with-param name="isRoot" select="fn:true()"/>
           </xsl:apply-templates>
         </xsl:variable>
       
@@ -199,7 +201,7 @@ mdunn@mitre.org
                         <div id="header"> 
                           <xsl:call-template name="customTitle" />
                             
-                          <div class="expandAll" onclick="expandAll(document.querySelector('.topLevelCategoryTables'));">[expand all -- all sections]</div>
+                          <div class="expandAll" onclick="expandAll(document.querySelector('.topLevelCategoryTables'));"><xsl:attribute name="id" select="'expandAll'"></xsl:attribute>[expand all -- all sections]</div>
                           
                             <!-- print out the stix metadata table -->
                             <table class="stixMetadata hor-minimalist-a" width="100%">
@@ -411,7 +413,7 @@ mdunn@mitre.org
      - Exploit Target
   -->
   <!-- REFERENCE: HELP_UPDATE_STEP_1D -->
-  <xsl:template match="cybox:Observable|indicator:Observable|stix:Indicator|stix:TTP|stixCommon:Kill_Chain|stixCommon:Kill_Chain_Phase|stix:Campaign|stix:Incident|stix:Threat_Actor|stixCommon:Exploit_Target|cybox:Action" mode="printReference">
+  <xsl:template match="cybox:Observable|indicator:Observable|stix:Indicator|stix:TTP|stixCommon:Kill_Chain|stixCommon:Kill_Chain_Phase|stix:Campaign|stix:Incident|stix:Threat_Actor|stixCommon:Exploit_Target" mode="printReference">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
 
@@ -429,7 +431,7 @@ mdunn@mitre.org
      - Course Of Action
   -->
   <!-- REFERENCE: HELP_UPDATE_STEP_1D -->
-  <xsl:template match="cybox:Object|cybox:Event|cybox:Associated_Object|cybox:Related_Object|stixCommon:Kill_Chain|stixCommon:Course_Of_Action|stix:Course_Of_Action" mode="printReference">
+  <xsl:template match="cybox:Object|cybox:Event|cybox:Associated_Object|cybox:Related_Object|stixCommon:Kill_Chain|stixCommon:Course_Of_Action|stix:Course_Of_Action|cybox:Action" mode="printReference">
     <xsl:param name="reference" select="()" />
     <xsl:param name="normalized" select="()" />
     
@@ -577,14 +579,12 @@ mdunn@mitre.org
                 </div>
                 <!-- <xsl:call-template name="processObservableContents" /> -->
               </xsl:when>
-              <xsl:when test="self::cybox:Action">
-                <!-- <div>ACTION DETAILS HERE...</div> -->
+<!--              <xsl:when test="self::cybox:Action">
                 <div>
                 <xsl:apply-templates select="." />
                 </div>
-                <!-- <xsl:call-template name="processObservableContents" /> -->
               </xsl:when>
-              <xsl:when test="self::stix:Indicator">
+-->              <xsl:when test="self::stix:Indicator">
                 <xsl:call-template name="processIndicatorContents" />
               </xsl:when>
               <xsl:when test="self::stix:TTP">

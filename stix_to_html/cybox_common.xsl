@@ -70,7 +70,14 @@ ikirillov@mitre.org
     <xsl:function name="cybox:camelCase" as="xs:string" >
         <xsl:param name="arg" as="xs:string?"/> 
         
-        <xsl:sequence select="concat(substring($arg,1,1),replace(substring($arg,2),'(\p{Lu})',concat(' ', '$1')))" />
+        <xsl:choose>
+            <xsl:when test="matches($arg, '^\p{Ll}+$')">
+                <xsl:sequence select="concat(substring($arg,1,1),replace(substring($arg,2),'(\p{Lu})',concat(' ', '$1')))" />    
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="$arg" />
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
 
     <!--
@@ -367,8 +374,20 @@ ikirillov@mitre.org
                 
                 <xsl:variable name="relationshipOrAssociationType" select="cybox:Relationship|cybox:Association_Type" />
                 
+                <xsl:variable name="idGen">
+                    <xsl:choose>
+                        <xsl:when test="@idgen">
+                            <xsl:value-of select="'true'" />
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="'false'" />
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
+                
                 <xsl:call-template name="headerAndExpandableContent">
-                    <xsl:with-param name="targetId" select="$targetId"/>
+                    <xsl:with-param name="targetId" select="string(@idref)"/>
+                    <xsl:with-param name="isIDGenerated" select="$idGen" />
                     <xsl:with-param name="relationshipOrAssociationType" select="$relationshipOrAssociationType" />
                 </xsl:call-template>
             </xsl:if>
@@ -549,7 +568,7 @@ ikirillov@mitre.org
                 </xsl:when>
                 <!-- case 2: the current item is a cybox event or an observable that contains an event  -->
                 <xsl:when test="$currentObject/cybox:Type|$currentObject/cybox:Event/cybox:Type">
-                    <xsl:value-of select="($currentObject/cybox:Type|$currentObject/cybox:Event/cybox:Type)/text()"/>
+                    <xsl:value-of select="($currentObject/cybox:Type|$currentObject/cybox:Event/cybox:Type)/text()" />
                 </xsl:when>
                 <!-- catch all -->
                 <xsl:otherwise></xsl:otherwise>
@@ -636,9 +655,14 @@ ikirillov@mitre.org
                 <!-- case 1: cybox objects have a cybox:Properties child with an xsi type,
                      or an observable has a child that is an object that has cybox:Properties
                 -->
-                <xsl:when test="($targetObject/cybox:Properties|$targetObject/cybox:*/cybox:Properties)/@xsi:type"><xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName(($targetObject/cybox:Properties|$targetObject/cybox:*/cybox:Properties)/@xsi:type, ($targetObject/cybox:Properties|$targetObject/cybox:*/cybox:Properties)))"/></xsl:when>
+                <xsl:when test="($targetObject/cybox:Properties|$targetObject/cybox:*/cybox:Properties)/@xsi:type">
+                    <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName(($targetObject/cybox:Properties|$targetObject/cybox:*/cybox:Properties)/@xsi:type, ($targetObject/cybox:Properties|$targetObject/cybox:*/cybox:Properties)))"/>
+                </xsl:when>
+                
                 <!-- case 2: the current item is a cybox event or an observable that contains an event  -->
-                <xsl:when test="$targetObject/cybox:Type|$targetObject/cybox:Event/cybox:Type"><xsl:value-of select="($targetObject/cybox:Type|$targetObject/cybox:Event/cybox:Type)/text()"/></xsl:when>
+                <xsl:when test="$targetObject/cybox:Type|$targetObject/cybox:Event/cybox:Type">
+                    <xsl:value-of select="($targetObject/cybox:Type|$targetObject/cybox:Event/cybox:Type)/text()"/>
+                </xsl:when>
                 <!-- catch all -->
                 <xsl:otherwise></xsl:otherwise>
             </xsl:choose>
@@ -660,7 +684,9 @@ ikirillov@mitre.org
         </xsl:if>
         
         <!-- THIS IS THE MAIN LINK TEXT -->
-        "<xsl:value-of select="$idref"/>"
+        <xsl:if test="$idref!='[No ID]'">"</xsl:if>
+        <xsl:value-of select="$idref"/>
+        <xsl:if test="$idref!='[No ID]'">"</xsl:if>
 
         <xsl:text> </xsl:text>
         
@@ -678,11 +704,24 @@ ikirillov@mitre.org
     <xsl:template name="processObservableInObservableCompositionSimple">
         <xsl:if test="@idref">
             <div class="foreignObservablePointer">
-                <xsl:variable name="targetId" select="string(@idref)"/>
+                <!-- <xsl:variable name="targetId" select="string(@idref)"/> -->
                 <xsl:variable name="relationshipOrAssociationType" select="''" />
                 
+                <xsl:variable name="idGen">
+                    <xsl:choose>
+                        <xsl:when test="@idgen">
+                            <xsl:value-of select="'true'" />
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="'false'" />
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
+                
+                
                 <xsl:call-template name="headerAndExpandableContent">
-                    <xsl:with-param name="targetId" select="$targetId"/>
+                    <xsl:with-param name="targetId" select="string(@idref)"/>
+                    <xsl:with-param name="isIDGenerated" select="$idGen" />
                     <xsl:with-param name="isComposition" select="fn:true()"/>
                     <xsl:with-param name="relationshipOrAssociationType" select="''" />
                 </xsl:call-template>
@@ -696,6 +735,7 @@ ikirillov@mitre.org
     
     <xsl:template name="headerAndExpandableContent">
         <xsl:param name="targetId" />
+        <xsl:param name="isIDGenerated" />
         <xsl:param name="isComposition" select="fn:false()" />
         <xsl:param name="targetObject" select="//*[@id = $targetId]" />
         <xsl:param name="relationshipOrAssociationType" />
@@ -705,15 +745,25 @@ ikirillov@mitre.org
                 <div class="expandableContainer expandableSeparate collapsed" data-stix-content-id="{$targetId}">
                     <xsl:variable name="idVar" select="generate-id(.)"/>
 
+                    <xsl:variable name="displayID">
+                        <xsl:choose>
+                            <xsl:when test="$isIDGenerated='true'">
+                                <xsl:value-of select="'[No ID]'" />
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="$targetId" />
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:variable>
+
                     <xsl:choose>
                         <xsl:when test="$isComposition">
                             <div class="expandableToggle objectReference">
-                                <!-- <xsl:attribute name="onclick">toggle(this.parentElement)</xsl:attribute> -->
                                 <xsl:attribute name="onclick">embedObject(this.parentElement, '<xsl:value-of select="$targetId"/>','<xsl:value-of select="$idVar"/>');</xsl:attribute>
                                 <xsl:call-template name="clickableIdref">
                                     <xsl:with-param name="targetObject" select="$targetObject" />
                                     <xsl:with-param name="relationshipOrAssociationType" select="$relationshipOrAssociationType"/>
-                                    <xsl:with-param name="idref" select="$targetId"/>
+                                    <xsl:with-param name="idref" select="$displayID"/>
                                 </xsl:call-template>
                             </div>
                             
@@ -732,7 +782,7 @@ ikirillov@mitre.org
                                 <xsl:call-template name="clickableIdref">
                                     <xsl:with-param name="targetObject" select="$targetObject" />
                                     <xsl:with-param name="relationshipOrAssociationType" select="$relationshipOrAssociationType"/>
-                                    <xsl:with-param name="idref" select="$targetId"/>
+                                    <xsl:with-param name="idref" select="$displayID"/>
                                 </xsl:call-template>
                             </div>
                             
@@ -790,15 +840,27 @@ ikirillov@mitre.org
   -->
   <!-- REFERENCE: HELP_UPDATE_STEP_3 -->
   <xsl:template match="cybox:Object[@idref]|cybox:Event[@idref]|cybox:Related_Object[@idref]|cybox:Associated_Object[@idref]|stixCommon:Course_Of_Action[@idref]|stix:Course_Of_Action[@idref]|cybox:Action[@idref]|cybox:Action_Reference[@idref]">
-        <!-- [object link here - - <xsl:value-of select="fn:data(@idref)" />] -->
+      <!-- [object link here - - <xsl:value-of select="fn:data(@idref)" />] -->
     
-        <div class="debug">CLOSER!</div>
+      <div class="debug">CLOSER!</div>
         
-        <xsl:call-template name="headerAndExpandableContent">
-            <xsl:with-param name="targetId" select="fn:data(@idref)" />
-            <xsl:with-param name="relationshipOrAssociationType" select="()" />
-        </xsl:call-template>
-    </xsl:template>
+      <xsl:variable name="idGen">
+          <xsl:choose>
+              <xsl:when test="@idgen">
+                  <xsl:value-of select="@idgen" />
+              </xsl:when>
+              <xsl:otherwise>
+                  <xsl:value-of select="''" />
+              </xsl:otherwise>
+          </xsl:choose>
+      </xsl:variable>
+
+      <xsl:call-template name="headerAndExpandableContent">
+          <xsl:with-param name="targetId" select="fn:data(@idref)" />
+          <xsl:with-param name="isIDGenerated" select="$idGen" />
+          <xsl:with-param name="relationshipOrAssociationType" select="()" />
+      </xsl:call-template>
+  </xsl:template>
   
   
     <!--
@@ -813,7 +875,8 @@ ikirillov@mitre.org
        
        It also prints out either original inline objects (with an id) or object references (with and idref).
     -->
-    <xsl:template match="cybox:Object[@id]|cybox:Event[@id]|cybox:Related_Object[@id]|cybox:Associated_Object[@id]|cybox:Action_Reference[@id]">
+    <!--<xsl:template match="cybox:Object[@id]|cybox:Event[@id]|cybox:Related_Object[@id]|cybox:Associated_Object[@id]|cybox:Action_Reference[@id]">-->
+    <xsl:template match="cybox:Object|cybox:Event|cybox:Related_Object|cybox:Associated_Object|cybox:Action_Reference">
         <xsl:variable name="localName" select="local-name()"/>
         <xsl:variable name="identifierName" select="if ($localName = 'Object') then 'object' else if ($localName = 'Event') then 'event' else if ($localName = 'Related_Object') then 'relatedObject' else if ($localName = 'Associated_Object') then 'associatedObject' else ''" />
         <xsl:variable name="friendlyName" select="fn:replace($localName, '_', ' ')" />
@@ -832,12 +895,12 @@ ikirillov@mitre.org
                 
                 <!--
                   If this is an Event, we need to print out the list of Actions
-                -->
+                 -->               
                 <xsl:if test="cybox:Actions/cybox:Action">
                     <div class="container">
                         <div class="heading actions">Actions</div>
                         <div class="contents actions">
-                            <xsl:apply-templates select="cybox:Actions/cybox:Action"></xsl:apply-templates>
+                            <xsl:apply-templates select="cybox:Actions/cybox:Action" />
                         </div>
                     </div>
                 </xsl:if>
@@ -863,81 +926,77 @@ ikirillov@mitre.org
     </xsl:template>
   
     <!-- REFERENCE: HELP_UPDATE_STEP_2 -->
-    <xsl:template match="cybox:Action[@id]">
-      <xsl:variable name="localName" select="local-name()"/>
-      <xsl:variable name="identifierName" select="'action'" />
-      <xsl:variable name="friendlyName" select="fn:replace($localName, '_', ' ')" />
-      <xsl:variable name="headingName" select="fn:upper-case($friendlyName)" />
-      
-      <div class="debug">NOT THERE</div>
-      <div>
-          <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
-          
-      <div class="container {$identifierName}Container {$identifierName}">
-        <div class="contents {$identifierName}Contents {$identifierName}">
-          <!-- Print the description if one is available (often they are not) -->
-          
-          <xsl:if test="cybox:Description">
-            <xsl:copy-of select="stix:printNameValueTable('Description', cybox:Description)" />
-          </xsl:if>
-          <xsl:if test="cybox:Action_Aliases">
-            <xsl:variable name="contents">
-              <xsl:apply-templates select="cybox:Action_Aliases" />
-            </xsl:variable>
-            <xsl:copy-of select="stix:printNameValueTable('Action Aliases', $contents)" />
-          </xsl:if>
-          <xsl:if test="cybox:Action_Arguments">
-            <xsl:variable name="contents">
-              <xsl:apply-templates select="cybox:Action_Arguments" />
-            </xsl:variable>
-            <xsl:copy-of select="stix:printNameValueTable('Action Arguments', $contents)" />
-          </xsl:if>
-          <xsl:if test="cybox:Discovery_Method">
-            <xsl:variable name="contents">
-              <xsl:apply-templates select="cybox:Discovery_Method" />
-            </xsl:variable>
-            <xsl:copy-of select="stix:printNameValueTable('Discovery Method', $contents)" />
-          </xsl:if>
-          <xsl:if test="cybox:Frequency">
-            <xsl:copy-of select="stix:printNameValueTable('Frequency', cybox:Frequency)" />
-          </xsl:if>
-          <!--
-          <xsl:if test="cybox:Description">
-            <xsl:copy-of select="stix:printNameValueTable('Description', cybox:Description)" />
-          </xsl:if>              
-          <xsl:if test="indicator:Suggested_COAs/indicator:Suggested_COA">
-            <xsl:variable name="coaContents">
-              <xsl:apply-templates select="indicator:Suggested_COAs/indicator:Suggested_COA" />
-            </xsl:variable>
-            <xsl:copy-of select="stix:printNameValueTable('Suggested COAs', $coaContents)" />
-          </xsl:if>
-          -->
-          
-          
-          <!--
-            Associated Objects need to have any Related Objects printed out
-          -->
-          <xsl:if test="cybox:Associated_Objects/cybox:Associated_Object">
-            <xsl:variable name="contents">
-              <xsl:apply-templates select="cybox:Associated_Objects/cybox:Associated_Object" />
-            </xsl:variable>
-            <xsl:copy-of select="stix:printNameValueTable('Associated Objects', $contents)" />
-          </xsl:if>
-          
-          <xsl:if test="cybox:Relationships/cybox:Relationship">
-            <xsl:variable name="contents">
-              <xsl:apply-templates select="cybox:Relationships/cybox:Relationship" />
-            </xsl:variable>
-            <xsl:copy-of select="stix:printNameValueTable('Relationships', $contents)" />
-          </xsl:if>
-          
-          
+    <xsl:template match="cybox:Action">
+        <xsl:variable name="localName" select="local-name()"/>
+        <xsl:variable name="identifierName" select="'action'"/>
+        <xsl:variable name="friendlyName" select="fn:replace($localName, '_', ' ')"/>
+        <xsl:variable name="headingName" select="fn:upper-case($friendlyName)"/>
+
+        <div>
+            <xsl:choose>
+                <xsl:when test="@id">
+                    <xsl:attribute name="id">
+                        <xsl:value-of select="@id"/>
+                    </xsl:attribute>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:attribute name="id">
+                        <xsl:value-of select="generate-id(.)"/>
+                    </xsl:attribute>
+                </xsl:otherwise>
+            </xsl:choose>
+
+            <div class="container {$identifierName}Container {$identifierName}">
+                <div class="contents {$identifierName}Contents {$identifierName}">
+                    <!-- Print the description if one is available (often they are not) -->
+
+                    <xsl:if test="cybox:Description">
+                        <xsl:copy-of select="stix:printNameValueTable('Description', cybox:Description)"/>
+                    </xsl:if>
+                    <xsl:if test="cybox:Action_Aliases">
+                        <xsl:variable name="contents">
+                            <xsl:apply-templates select="cybox:Action_Aliases"/>
+                        </xsl:variable>
+                        <xsl:copy-of select="stix:printNameValueTable('Action Aliases', $contents)"/>
+                    </xsl:if>
+                    <xsl:if test="cybox:Action_Arguments">
+                        <xsl:variable name="contents">
+                            <xsl:apply-templates select="cybox:Action_Arguments"/>
+                        </xsl:variable>
+                        <xsl:copy-of select="stix:printNameValueTable('Action Arguments', $contents)"/>
+                    </xsl:if>
+                    <xsl:if test="cybox:Discovery_Method">
+                        <xsl:variable name="contents">
+                            <xsl:apply-templates select="cybox:Discovery_Method"/>
+                        </xsl:variable>
+                        <xsl:copy-of select="stix:printNameValueTable('Discovery Method', $contents)"/>
+                    </xsl:if>
+                    <xsl:if test="cybox:Frequency">
+                        <xsl:copy-of select="stix:printNameValueTable('Frequency', cybox:Frequency)"/>
+                    </xsl:if>
+
+                    <!--
+                        Associated Objects need to have any Related Objects printed out
+                    -->
+                    <xsl:if test="cybox:Associated_Objects/cybox:Associated_Object">
+                        <xsl:variable name="contents">
+                            <xsl:apply-templates select="cybox:Associated_Objects/cybox:Associated_Object"/>
+                        </xsl:variable>
+                        <xsl:copy-of select="stix:printNameValueTable('Associated Objects', $contents)"/>
+                    </xsl:if>
+
+                    <xsl:if test="cybox:Relationships/cybox:Relationship">
+                        <xsl:variable name="contents">
+                            <xsl:apply-templates select="cybox:Relationships/cybox:Relationship"/>
+                        </xsl:variable>
+                        <xsl:copy-of select="stix:printNameValueTable('Relationships', $contents)"/>
+                    </xsl:if>
+                </div>
+            </div>
         </div>
-      </div>
-      </div>
     </xsl:template>
   
-  <xsl:template match="cybox:Relationship[@id]">
+  <xsl:template match="cybox:Relationship">
     <xsl:variable name="localName" select="local-name()"/>
     <xsl:variable name="identifierName" select="cybox:elementLocalNameToIdentifier($localName)" />
     <xsl:variable name="friendlyName" select="fn:replace($localName, '_', ' ')" />
@@ -997,7 +1056,7 @@ ikirillov@mitre.org
       
       This is customizable by writing custom templates for specific properties.
     -->
-    <xsl:template match="cybox:Properties|ttp:Behavior|ta:Identity|ta:Type|ta:Motivation|et:Vulnerability|stixCommon:Course_Of_Action[@id]|stix:Course_Of_Action[@id]">
+    <xsl:template match="cybox:Properties|ttp:Behavior|ta:Identity|ta:Type|ta:Motivation|et:Vulnerability|stixCommon:Course_Of_Action|stix:Course_Of_Action">
         <fieldset>
             <legend>
                 <xsl:if test="./self::cybox:Properties">cybox properties</xsl:if>
@@ -1221,12 +1280,23 @@ ikirillov@mitre.org
       print out object reference links
     -->
     <xsl:template match="@object_reference|@idref" mode="cyboxProperties">
-        <xsl:variable name="targetId" select="fn:data(.)"/>
-        <xsl:variable name="targetObject" select="//*[@id = $targetId]"/>
+        <!-- <xsl:variable name="targetId" select="fn:data(.)"/> -->
+        
+        <xsl:variable name="idGen">
+            <xsl:choose>
+                <xsl:when test="..[@idgen]">
+                    <xsl:value-of select="'true'" />
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="'false'" />
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         
         <xsl:variable name="relationshipOrAssociationType" select="()" />
         <xsl:call-template name="headerAndExpandableContent">
-            <xsl:with-param name="targetId" select="$targetId"/>
+            <xsl:with-param name="targetId" select="fn:data(.)"/>
+            <xsl:with-param name="isIDGenerated" select="$idGen" />
             <xsl:with-param name="relationshipOrAssociationType" select="$relationshipOrAssociationType" />
         </xsl:call-template>
     </xsl:template>   
