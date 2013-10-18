@@ -27,7 +27,7 @@ background-color: hsl(0, 0%, 90%);
 }
 table.topLevelCategory > tbody:nth-child(odd)
 {
-background-color: hsl(0, 0%, 98%);
+background-color: hsl(0, 0%, 95%);
 }
 
 /*
@@ -41,7 +41,7 @@ background-color: hsl(56, 70%, 90%);
 }
 table.topLevelCategory.indicators > tbody:nth-child(odd)
 {
-background-color: hsl(56, 90%, 98%);
+background-color: hsl(56, 90%, 95%);
 }
 
 .containerTtp,
@@ -51,7 +51,7 @@ background-color: hsl(274, 70%, 90%);
 }
 table.topLevelCategory.ttps > tbody:nth-child(odd)
 {
-background-color: hsl(274, 90%, 98%);
+background-color: hsl(274, 90%, 95%);
 }
 
 .containerObservable,
@@ -61,7 +61,7 @@ background-color: hsl(220, 70%, 90%);
 }
 table.topLevelCategory.observables > tbody:nth-child(odd)
 {
-background-color: hsl(220, 90%, 98%);
+background-color: hsl(220, 90%, 95%);
 }
 
 .containerCampaign,
@@ -71,7 +71,7 @@ background-color: hsl(200, 70%, 90%);
 }
 table.topLevelCategory.campaigns > tbody:nth-child(odd)
 {
-background-color: hsl(200, 90%, 98%);
+background-color: hsl(200, 90%, 95%);
 }
 
 .containerThreatActor,
@@ -81,7 +81,7 @@ background-color: hsl(358, 70%, 90%);
 }
 table.topLevelCategory.threatActors > tbody:nth-child(odd)
 {
-background-color: hsl(358, 90%, 98%);
+background-color: hsl(358, 90%, 95%);
 }
 
 .containerExploitTarget,
@@ -91,7 +91,7 @@ background-color: hsl(0, 70%, 90%);
 }
 table.topLevelCategory.exploitTargets > tbody:nth-child(odd)
 {
-background-color: hsl(0, 90%, 98%);
+background-color: hsl(0, 90%, 95%);
 }
 
 .containerIncident,
@@ -101,7 +101,7 @@ background-color: hsl(24, 70%, 90%);
 }
 table.topLevelCategory.incidents > tbody:nth-child(odd)
 {
-background-color: hsl(24, 90%, 98%);
+background-color: hsl(24, 90%, 95%);
 }
 
 
