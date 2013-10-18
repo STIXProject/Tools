@@ -143,8 +143,8 @@ mdunn@mitre.org
           <xsl:apply-templates select="/stix:STIX_Package/*" mode="createNormalized" />
         </xsl:variable>
         <xsl:variable name="reference">
-          <xsl:apply-templates select="/stix:STIX_Package//*[@id or @phase_id[../../self::stixCommon:Kill_Chain] 
-            or self::cybox:Action or self::cybox:Associated_Object]" mode="createReference">
+          <xsl:apply-templates select="/stix:STIX_Package//*[@id or @phase_id[../../self::stixCommon:Kill_Chain] or self::cybox:Object or self::cybox:Event 
+            or self::cybox:Related_Object or self::cybox:Associated_Object or self::cybox:Action_Reference or self::cybox:Action]" mode="createReference">
             <xsl:with-param name="isTopLevel" select="fn:true()"/>
             <xsl:with-param name="isRoot" select="fn:true()"/>
           </xsl:apply-templates>

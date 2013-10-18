@@ -377,10 +377,10 @@ ikirillov@mitre.org
                 <xsl:variable name="idGen">
                     <xsl:choose>
                         <xsl:when test="@idgen">
-                            <xsl:value-of select="'true'" />
+                            <xsl:value-of select="@idGen" />
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="'false'" />
+                            <xsl:value-of select="''" />
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
@@ -554,7 +554,7 @@ ikirillov@mitre.org
         <xsl:param name="id" select="if ($currentObject/@id) then (fn:data($currentObject/@id)) else (fn:data($currentObject/@idref))"/>
         
         <xsl:variable name="originalObservable" select="$currentObject" />
-        <xsl:variable name="actualObservable"  as="element()" select="if ($originalObservable/@id) then ($originalObservable) else ($reference/*[@id = fn:data($originalObservable/@idref)])" />
+        <xsl:variable name="actualObservable"  as="element()" select="if ($originalObservable/@id) then ($originalObservable) else (../*[@id = fn:data($originalObservable/@idref)])" />
         
         <xsl:variable name="relationshipOrAssociationType" select="$actualObservable/(cybox:Relationship|cybox:Association_Type)"/>
         
@@ -658,8 +658,11 @@ ikirillov@mitre.org
                 <xsl:when test="($targetObject/cybox:Properties|$targetObject/cybox:*/cybox:Properties)/@xsi:type">
                     <xsl:value-of select="fn:local-name-from-QName(fn:resolve-QName(($targetObject/cybox:Properties|$targetObject/cybox:*/cybox:Properties)/@xsi:type, ($targetObject/cybox:Properties|$targetObject/cybox:*/cybox:Properties)))"/>
                 </xsl:when>
-                
-                <!-- case 2: the current item is a cybox event or an observable that contains an event  -->
+                <!-- case 2: cybox event with a name  -->
+                <xsl:when test="$targetObject/cybox:Name|$targetObject/cybox:Event/cybox:Name">
+                    <xsl:value-of select="($targetObject/cybox:Name|$targetObject/cybox:Event/cybox:Name)/text()"/>
+                </xsl:when>
+                <!-- case 3: the current item is a cybox event or an observable that contains an event  -->
                 <xsl:when test="$targetObject/cybox:Type|$targetObject/cybox:Event/cybox:Type">
                     <xsl:value-of select="($targetObject/cybox:Type|$targetObject/cybox:Event/cybox:Type)/text()"/>
                 </xsl:when>
@@ -710,10 +713,10 @@ ikirillov@mitre.org
                 <xsl:variable name="idGen">
                     <xsl:choose>
                         <xsl:when test="@idgen">
-                            <xsl:value-of select="'true'" />
+                            <xsl:value-of select="@idGen" />
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="'false'" />
+                            <xsl:value-of select="''" />
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
@@ -738,7 +741,7 @@ ikirillov@mitre.org
         <xsl:param name="isIDGenerated" />
         <xsl:param name="isComposition" select="fn:false()" />
         <xsl:param name="targetObject" select="//*[@id = $targetId]" />
-        <xsl:param name="relationshipOrAssociationType" />
+        <xsl:param name="relationshipOrAssociationType" select="$targetObject/(cybox:Relationship|cybox:Association_Type)" />
         
          <xsl:choose>
             <xsl:when test="$targetObject">
@@ -858,7 +861,6 @@ ikirillov@mitre.org
       <xsl:call-template name="headerAndExpandableContent">
           <xsl:with-param name="targetId" select="fn:data(@idref)" />
           <xsl:with-param name="isIDGenerated" select="$idGen" />
-          <xsl:with-param name="relationshipOrAssociationType" select="()" />
       </xsl:call-template>
   </xsl:template>
   
@@ -1022,7 +1024,7 @@ ikirillov@mitre.org
       <xsl:otherwise><xsl:text>unknownObject</xsl:text></xsl:otherwise>
     </xsl:choose>
     
-    <xsl:variable name="identifierName" select="if ($localName = 'Object') then 'object' else if ($localName = 'Event') then 'event' else if ($localName = 'Related_Object') then 'relatedObject' else if ($localName = 'Associated_Object') then 'associatedObject' else ''" />
+    <!-- <xsl:variable name="identifierName" select="if ($localName = 'Object') then 'object' else if ($localName = 'Event') then 'event' else if ($localName = 'Related_Object') then 'relatedObject' else if ($localName = 'Associated_Object') then 'associatedObject' else ''" /> -->
   </xsl:function>
     
     <!--
@@ -1238,7 +1240,9 @@ ikirillov@mitre.org
             <div class="heading cyboxPropertiesHeading cyboxProperties">
                 <span class="cyboxPropertiesName"><xsl:value-of select="local-name()"/> </span>
                 <span class="cyboxPropertiesConstraints"><xsl:apply-templates select="@*[not(node-name(.) = fn:QName('', 'object_reference'))][not(node-name(.) = fn:QName('http://www.w3.org/2001/XMLSchema-instance', 'type'))]" mode="#current"/></span>
-                <span class="cyboxPropertiesNameValueSeparator"> &#x2192; </span>
+                <xsl:if test="text()">
+                    <span class="cyboxPropertiesNameValueSeparator"> &#x2192; </span>
+                </xsl:if>
                 <span class="cyboxPropertiesValue">
                     <xsl:apply-templates select="text()" mode="#current"/>
                 </span>
@@ -1290,10 +1294,10 @@ ikirillov@mitre.org
         <xsl:variable name="idGen">
             <xsl:choose>
                 <xsl:when test="..[@idgen]">
-                    <xsl:value-of select="'true'" />
+                    <xsl:value-of select="..[@idGen]" />
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="'false'" />
+                    <xsl:value-of select="''" />
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>

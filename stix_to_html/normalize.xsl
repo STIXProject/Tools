@@ -115,13 +115,14 @@
             <!-- for debugging, label each element with an attribute indicating if
                  it's the top level or a descendant
             -->
-
+            <!--
             <xsl:attribute name="level">
                 <xsl:if test="$isTopLevel">TOP</xsl:if>
                 <xsl:if test="not($isTopLevel)">DESCENDENT</xsl:if>
             </xsl:attribute>
+            -->
             
-            <xsl:if test="$isRoot and not(@id)">
+            <xsl:if test="$isRoot and not(@id) and not(@idref) and not(@action_id)">
                 <xsl:attribute name="idgen"><xsl:value-of select="true()" /></xsl:attribute>
                 <xsl:attribute name="id"><xsl:value-of select="generate-id(.)" /></xsl:attribute>
             </xsl:if>
@@ -139,7 +140,7 @@
                 <!-- call template applying idref -->
                     <xsl:message select="local-name(.)"></xsl:message>
                     
-                    <xsl:if test="not(@id)">
+                    <xsl:if test="not(@id) and not(@idref) and not(@action_id)">
                         <xsl:attribute name="idgen"><xsl:value-of select="true()" /></xsl:attribute>
                         <xsl:attribute name="idref"><xsl:value-of select="generate-id(.)" /></xsl:attribute>
                     </xsl:if>
