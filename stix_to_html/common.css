@@ -131,9 +131,9 @@ border-left: 10px solid transparent;
 }
 .oce-first-obs
 {
-background: #EFF8F4;
+background: hsla(0,50%, 0%, 0.25);
 /*border-right: 10px solid transparent;*/
-border-right: 10px solid black;
+border-right: 10px solid  black;
 }
 .oce-first-obscomp-or
 {
@@ -182,11 +182,13 @@ background: #FFFFFF;
 margin: 0px 0px 10px 0px;
 padding: 10px;
 }
+/*
 #section { 
 color: #333;
 background: #FFFFFF;
 margin: 0px 0px 5px 0px;
 }
+*/
 #object_label_div div {
 /*display: inline;*/
 /*width: 30%;*/

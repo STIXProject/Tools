@@ -588,7 +588,9 @@ mdunn@mitre.org
                 <xsl:call-template name="processIndicatorContents" />
               </xsl:when>
               <xsl:when test="self::stix:TTP">
-                <xsl:call-template name="processTTPContents" />
+                <div class="containerTtp">
+                  <xsl:call-template name="processTTPContents" />
+                </div>
               </xsl:when>
               <xsl:when test="self::stixCommon:Kill_Chain_Phase">
                 <xsl:apply-templates select="." />
