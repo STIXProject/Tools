@@ -104,4 +104,14 @@ table.topLevelCategory.incidents > tbody:nth-child(odd)
 background-color: hsl(24, 90%, 95%);
 }
 
+/*
+.containerEvent, .eventContainer
+{
+  background-color: hsl(270, 70%, 90%);
+}
 
+.containerAction, .actionContainer
+{
+  background-color: hsl(120, 70%, 90%);
+}
+*/

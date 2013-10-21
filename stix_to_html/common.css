@@ -242,6 +242,12 @@ margin-bottom: 2px;
   margin-left: 1em;
   padding-left: 0.5em;
 }
+
+.contents.actionContents, .container.actionContainer {
+  margin-left: 0;
+  padding-left: 0;
+}
+
 .eventDescription,
 .description
 {

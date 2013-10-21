@@ -845,8 +845,6 @@ ikirillov@mitre.org
   <xsl:template match="cybox:Object[@idref]|cybox:Event[@idref]|cybox:Related_Object[@idref]|cybox:Associated_Object[@idref]|stixCommon:Course_Of_Action[@idref]|stix:Course_Of_Action[@idref]|cybox:Action[@idref]|cybox:Action_Reference[@idref]">
       <!-- [object link here - - <xsl:value-of select="fn:data(@idref)" />] -->
     
-      <div class="debug">CLOSER!</div>
-        
       <xsl:variable name="idGen">
           <xsl:choose>
               <xsl:when test="@idgen">
