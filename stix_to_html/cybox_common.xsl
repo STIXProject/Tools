@@ -1323,7 +1323,7 @@ ikirillov@mitre.org
     <xsl:param name="title" />
     <xsl:param name="value" />
     
-    <div id="section">
+    <div class="nameValueTable">
       <table class="one-column-emphasis indicator-sub-table">
         <colgroup>
           <col class="oce-first-obs heading-column" />

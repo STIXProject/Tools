@@ -148,9 +148,11 @@
     <div>
       <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
             
+      <!--
       <xsl:attribute name="class">
         <xsl:if test="@id">container baseobj</xsl:if>
       </xsl:attribute>
+      -->
       
       <xsl:if test="campaign:Title">
         <xsl:copy-of select="stix:printNameValueTable('Title', campaign:Title)" />
@@ -207,9 +209,11 @@
     <div>
       <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
       
+      <!--
       <xsl:attribute name="class">
         <xsl:if test="@id">container baseobj</xsl:if>
       </xsl:attribute>
+      -->
       
       <xsl:if test="incident:Description">
         <xsl:variable name="contents">
@@ -258,9 +262,11 @@
     <div>
       <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
       
+      <!--
       <xsl:attribute name="class">
         <xsl:if test="@id">container baseobj</xsl:if>
       </xsl:attribute>
+      -->
       
       <xsl:if test="ta:Title">
         <xsl:copy-of select="stix:printNameValueTable('Title', ta:Title)" />
@@ -306,9 +312,11 @@
     <div>
       <xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
       
+      <!--
       <xsl:attribute name="class">
         <xsl:if test="@id">container baseobj</xsl:if>
       </xsl:attribute>
+      -->
       
       <xsl:if test="et:Title">
         <xsl:copy-of select="stix:printNameValueTable('Title', et:Title)" />
@@ -337,10 +345,12 @@
       
       <!-- <span style="color: red; background-color: yellow;">INDICATOR CONTENTS HERE</span> -->
       
+        <!--
         <xsl:attribute name="class">
           <xsl:if test="not(indicator:Composite_Indicator_Expression)">baseindicator </xsl:if>
           <xsl:if test="@id">container baseobj</xsl:if>
         </xsl:attribute>
+        -->
         
         <xsl:if test="indicator:Title">
           <xsl:copy-of select="stix:printNameValueTable('Title', indicator:Title)" />
@@ -525,10 +535,12 @@
           
           <!-- <span style="color: red; background-color: yellow;">INDICATOR CONTENTS HERE</span> -->
           
+          <!--
           <xsl:attribute name="class">
-            <!-- <xsl:if test="not(indicator:Composite_Indicator_Expression)">baseindicator </xsl:if> -->
+            <!- - <xsl:if test="not(indicator:Composite_Indicator_Expression)">baseindicator </xsl:if> - ->
             <xsl:if test="@id">container baseobj</xsl:if>
           </xsl:attribute>
+          -->
           <xsl:if test="ttp:Description">
             <xsl:variable name="contents">
               <xsl:apply-templates select="ttp:Description" />
