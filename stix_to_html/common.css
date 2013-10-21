@@ -27,6 +27,16 @@ border-style:solid;
 border-width:1px;
 }
 
+table.topLevelCategory > colgroup > col.typeColumn
+{
+  width: 20em;
+}
+
+table.topLevelCategory > colgroup > col.idColumn
+{
+  width: auto;
+}
+
 /*
 table.grid thead,
 table.grid .collapsible

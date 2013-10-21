@@ -457,6 +457,7 @@ mdunn@mitre.org
     <xsl:param name="normalized" select="()" />
     <xsl:param name="categoryGroupingElement" select="()" />
     <xsl:param name="headingLabels" select="('Type', 'ID')" />
+    <xsl:param name="headingColumnStyles" select="('typeColumn', 'idColumn')" />
     <xsl:param name="categoryLabel" />
     <xsl:param name="categoryIdentifier" />
     
@@ -466,8 +467,8 @@ mdunn@mitre.org
         <div class="expandAll" onclick="expandAll(this.parentNode);">[expand all <xsl:value-of select="$categoryLabel"/>]</div>
         <table class="topLevelCategory {$categoryIdentifier}" cellspacing="0">
           <colgroup>
-            <xsl:for-each select="$headingLabels">
-              <col />
+            <xsl:for-each select="$headingColumnStyles">
+              <col class="{.}"/>
             </xsl:for-each>
           </colgroup>
           <thead>
