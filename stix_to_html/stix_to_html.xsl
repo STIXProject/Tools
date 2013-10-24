@@ -218,7 +218,7 @@ if(typeof document!=="undefined"&&!("classList" in document.createElement("a")))
 
               <div class="expandAll"
                 onclick="expandAll(document.querySelector('.topLevelCategoryTables'));"
-                  ><xsl:attribute name="id" select="'expandAll'"/>[expand all -- all sections]</div>
+                  ><xsl:attribute name="id" select="'expandAll'"/>[toggle all -- all sections]</div>
 
               <!-- print out the stix metadata table -->
               <table class="stixMetadata hor-minimalist-a" width="100%">
@@ -502,7 +502,7 @@ if(typeof document!=="undefined"&&!("classList" in document.createElement("a")))
             <xsl:value-of select="$categoryLabel"/>
           </a>
         </h2>
-        <div class="expandAll" onclick="expandAll(this.parentNode);">[expand all <xsl:value-of
+        <div class="expandAll" onclick="expandAll(this.parentNode);">[toggle all <xsl:value-of
             select="$categoryLabel"/>]</div>
         <table class="topLevelCategory {$categoryIdentifier}" cellspacing="0">
           <colgroup>
