@@ -14,8 +14,8 @@ THE STIX XML to HTML TRANSFORM.
 For more information, please refer to the terms.txt file.
 
 #################################################################
-STIX XML to HTML transform v1.0beta1
-Compatible with STIX v1.0
+STIX XML to HTML transform v1.0beta2
+Compatible with STIX v1.1
 
 This is an xslt to transform a stix 1.0 document containing metadata and
 different categories of top level items into html for easy viewing.
@@ -95,8 +95,15 @@ requirements:
  - XSLT 2.0 engine (this has been tested with Saxon 9.5)
  - a STIX 1.0 input xml document
 
+current release:
+v1.0beta2
+2013-10-24
+https://github.com/STIXProject/Tools/issues?milestone=1&state=open
+
+previous releases:
 v1.0beta1
 2013-08-28
+
 
 STIX - http://stix.mitre.org
 #################################################################
@@ -105,11 +112,23 @@ STIX - http://stix.mitre.org
 
 README: this file.
 stix_to_html.xsl: the top-level STIX XML to HTML XSL Transform.
+stix_to_hmtl__customized.xsl: [not required] example of how to use the stix
+  stylesheet and override the default title, header, footer, and css to
+  customize the output.
 cybox_common.xsl: common CybOX transformations used by stix_to_html.xsl.
 stix_common.xsl: common stix transformations used by stix_to_html.xsl.
 normalize.xsl: used by stix
+icons.xsl: stylesheet code to read in the svg icons for the main item type logos
 common.js: common javascript code
+wgxpath.install.css: xpath support in javascript for browsers that don't
+  support it (IE)
+  [source: http://code.google.com/p/wicked-good-xpath/]
 common.css: common css styles
+theme_default.css: css styles used for main item type background colors
+  (observables, ttps, indicators, etc)
+images/*.svg and *.svgz: svg vector images for the main item type logos
+  (the *.svg files are used and pulled in via the xsl and included in the
+  output html inline)
 
 --------------------------------------------------------------------------------
 --Usage Notes-------------------------------------------------------------------
@@ -128,3 +147,50 @@ Directory of files ("inputdir" and "outputdir" are directories):
   
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
+
+#################################################################
+Customization
+#################################################################
+The header, footer, title, and css can easily be customized.
+
+Inside stix_to_html.xsl there are three corresponding named templates:
+ * customHeader
+ * customFooter
+ * customTitle
+ * customCss
+ 
+The easiest and cleanest way to customize this is to create your own
+stylesheet, import stix_to_html.xsl, and then define your own named templates
+with the above names.
+
+There is an example of this in stix_to_html__customized.xsl
+
+The css that determines the color scheme for the main top level items
+(Observables, TTPs, Indicators, etc) is contained in theme_default.css.  The
+colors are defined with css's hsl() color definitions.  The general color can
+be tweaked by just adjusting the first parameter, the hue (which is specified
+in degrees and varies from 0-359).  By adjusting the saturation and lightness,
+the darness or lightness can be adjusted.
+
+There are also three stylesheet parameters that may be used to control the
+output.  Each one is a boolean and can be passed in on the command-line or
+programatically.
+
+Here are the three stylesheet parameters.  Each one defaults to true.
+
+ * includeFileMetadataHeader
+ * includeStixHeader
+ * displayConstraints
+
+"includeFileMetadataHeader" determines if the header with the stix version,
+filename, and html generation date is going to be displayed.
+
+"includeStixHeader" determines if the header table (generated from the
+stix:STIX_Header contents) is dislayed.
+
+"displayContraints" determines if the contraint properties on cybox:Properties
+(and other similary formatted data elements) will be displayed.  This includes
+such information what type of matching is performed (equals or string match).
+
+#################################################################
+#################################################################

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  sample of a stix ttp with raw (escaped) html content in a description
+-->
+
+<stix:STIX_Package id="mandiant:package-e33ffe07-2f4c-48d8-b0af-ee2619d765cf" version="1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:example="http://example.com/"
+  xmlns:marking="http://data-marking.mitre.org/Marking-1"
+  xmlns:simpleMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1"
+  xmlns:cybox="http://cybox.mitre.org/cybox-2" 
+  xmlns:cyboxCommon="http://cybox.mitre.org/common-2"
+  xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2"
+  xmlns:AddressObject="http://cybox.mitre.org/objects#AddressObject-2"
+  xmlns:URIObject="http://cybox.mitre.org/objects#URIObject-2"
+  xmlns:LinkObject="http://cybox.mitre.org/objects#LinkObject-1"
+  xmlns:stix="http://stix.mitre.org/stix-1" 
+  xmlns:stixCommon="http://stix.mitre.org/common-1"
+  xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
+  xmlns:indicator="http://stix.mitre.org/Indicator-2" 
+  xmlns:ttp="http://stix.mitre.org/TTP-1"
+  xmlns:campaign="http://stix.mitre.org/Campaign-1"
+  xmlns:threat-actor="http://stix.mitre.org/ThreatActor-1"
+  xmlns:stix-ciq="http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
+  xmlns:xnl="urn:oasis:names:tc:ciq:xnl:3"
+  xmlns:xal="urn:oasis:names:tc:ciq:xal:3" 
+  xmlns:xpil="urn:oasis:names:tc:ciq:xpil:3"
+  xmlns:lmco="lockheedmartin.com" 
+  xmlns:mandiant="http://www.mandiant.com"
+  xmlns:mitre="http://www.mitre.org"
+  
+  xsi:schemaLocation="
+  http://cybox.mitre.org/objects#AddressObject-2 http://cybox.mitre.org/XMLSchema/objects/Address/2.0/Address_Object.xsd
+  http://cybox.mitre.org/objects#URIObject-2 http://cybox.mitre.org/XMLSchema/objects/URI/2.0/URI_Object.xsd		
+  http://cybox.mitre.org/objects#LinkObject-1 http://cybox.mitre.org/XMLSchema/objects/Link/1.0/Link_Object.xsd
+  http://stix.mitre.org/Indicator-2 http://stix.mitre.org/XMLSchema/indicator/2.0/indicator.xsd
+  http://stix.mitre.org/Campaign-1 http://stix.mitre.org/XMLSchema/campaign/1.0/campaign.xsd
+  http://stix.mitre.org/ThreatActor-1 http://stix.mitre.org/XMLSchema/threat_actor/1.0/threat_actor.xsd
+  http://stix.mitre.org/TTP-1 http://stix.mitre.org/XMLSchema/ttp/1.0/ttp.xsd
+  http://stix.mitre.org/default_vocabularies-1 http://stix.mitre.org/XMLSchema/default_vocabularies/1.0.0/stix_default_vocabularies.xsd
+  http://cybox.mitre.org/default_vocabularies-2 http://cybox.mitre.org/XMLSchema/default_vocabularies/2.0.0/cybox_default_vocabularies.xsd
+  http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1 http://stix.mitre.org/XMLSchema/extensions/identity/ciq_identity_3.0/1.0/ciq_identity_3.0.xsd
+  http://stix.mitre.org/stix-1 http://stix.mitre.org/XMLSchema/core/1.0/stix_core.xsd
+  http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1 http://stix.mitre.org/XMLSchema/extensions/marking/simple_marking/1.0/simple_marking.xsd">
+  <stix:STIX_Header>
+    <stix:Title>stix example with html description</stix:Title>
+    <stix:Package_Intent>Stix Report</stix:Package_Intent>
+    <stix:Description structuring_format="HTML5"><![CDATA[<!DOCTYPE html>
+<html><body>
+<p style="margin-top:0px"><span class="bluebold" style="font-size:120%">STIX&trade;</span> is a collaborative community-driven effort to define and develop a standardized language to represent structured cyber threat information. The STIX Language intends to convey the full range of potential cyber threat information and strives to be fully expressive, flexible, extensible, automatable, and as human-readable as possible. All interested parties are welcome to participate in evolving STIX as part of its open, collaborative community.</p>
+<p><a href="http://taxii.mitre.org/" target="_blank">Trusted Automated eXchange of Indicator Information (TAXII&trade;)</a> is the main transport mechanism for cyber threat information represented as STIX. Through the use of TAXII services, organizations can share cyber threat information in a secure and automated manner.</p>
+<!--round box-->
+<div id="RoundGradientBox" style="width:75%;margin: 40px auto;min-width:500px">
+<table style="border-collapse:collapse" id="IntroText" class="roundbox" summary="Related Efforts Layout Table">
+<tr>
+	<th colspan="2" style="vertical-align:top">Related Efforts</th>
+</tr>
+<tr>
+	<td style="vertical-align:top" class="line">
+    <div class="line">
+		<div><a href="http://cybox.mitre.org/" target="_blank">Cyber Observables (CybOX)</a></div>
+		<div><a href="http://maec.mitre.org/" target="_blank">Malware (MAEC)</a></div>
+		<div><a href="http://capec.mitre.org/" target="_blank">Attack Patterns (CAPEC)</a></div>
+    </div>
+	</td>
+	<td style="vertical-align:top" class="line">
+    <div class="line">
+        <div><a href="http://taxii.mitre.org/" target="_blank">Threat Information Exchange (TAXII)</a></div>
+    </div>
+	</td>
+</tr>
+</table>
+</div>
+<!--/round box-->
+</body>
+</html>]]>
+    </stix:Description>
+  </stix:STIX_Header>
+  
+  <stix:TTPs>
+    <stix:TTP id="example:ttp-123456" xsi:type="ttp:TTPType">
+      <ttp:Title>TTP with HTML description</ttp:Title>
+      <ttp:Intended_Effect>
+        <stixCommon:Description structuring_format="HTML5"><![CDATA[<!DOCTYPE html>
+<html><head><style type="text/css">body { background-color: green; }</style></head><body>
+<p style="margin-top:0px"><span class="bluebold" style="font-size:120%">STIX&trade;</span> is a collaborative community-driven effort to define and develop a standardized language to represent structured cyber threat information. The STIX Language intends to convey the full range of potential cyber threat information and strives to be fully expressive, flexible, extensible, automatable, and as human-readable as possible. All interested parties are welcome to participate in evolving STIX as part of its open, collaborative community.</p>
+<p><a href="http://taxii.mitre.org/" target="_blank">Trusted Automated eXchange of Indicator Information (TAXII&trade;)</a> is the main transport mechanism for cyber threat information represented as STIX. Through the use of TAXII services, organizations can share cyber threat information in a secure and automated manner.</p>
+<!--round box-->
+<div id="RoundGradientBox" style="width:75%;margin: 40px auto;min-width:500px">
+<table style="border-collapse:collapse" id="IntroText" class="roundbox" summary="Related Efforts Layout Table">
+<tr>
+	<th colspan="2" style="vertical-align:top">Related Efforts</th>
+</tr>
+<tr>
+	<td style="vertical-align:top" class="line">
+    <div class="line">
+		<div><a href="http://cybox.mitre.org/" target="_blank">Cyber Observables (CybOX)</a></div>
+		<div><a href="http://maec.mitre.org/" target="_blank">Malware (MAEC)</a></div>
+		<div><a href="http://capec.mitre.org/" target="_blank">Attack Patterns (CAPEC)</a></div>
+    </div>
+	</td>
+	<td style="vertical-align:top" class="line">
+    <div class="line">
+        <div><a href="http://taxii.mitre.org/" target="_blank">Threat Information Exchange (TAXII)</a></div>
+    </div>
+	</td>
+</tr>
+</table>
+</div>
+<!--/round box-->
+</body></html>]]>
+        </stixCommon:Description>
+      </ttp:Intended_Effect>
+    </stix:TTP>
+  </stix:TTPs>
+</stix:STIX_Package>

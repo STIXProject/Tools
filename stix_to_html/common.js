@@ -58,6 +58,12 @@ function embedObject(container, targetId, expandedContentContainerId) {
 
     //var copy = pristineCopies[targetId].cloneNode(true);
     var template = document.querySelector(".reference #" + targetId.replace(":", "\\:"));
+    
+    if (template == null)
+    {
+      console.log("tried to expand id that didn't exist in reference list: " + targetId);
+      return;
+    }
     //var copy = template.cloneNode(true);
     
     var target = container.querySelector("#" + expandedContentContainerId.replace(":", "\\:"));
@@ -147,4 +153,110 @@ function toggle(containerElement) {
   // now using a shim to support classList in IE8/9
   containerElement.classList.toggle("collapsed");
   containerElement.classList.toggle("expanded");
+}
+
+function nsResolver(prefix) {
+  var ns = {
+    'xhtml' : 'http://www.w3.org/1999/xhtml',
+    'mathml': 'http://www.w3.org/1998/Math/MathML'
+  };
+  return ns[prefix] || null;
+}
+
+function expandAll(current)
+{
+  console.log("expanding all..");
+  var topCategoryExpandables = current.querySelectorAll("table.topLevelCategory > tbody.expandableContainer.expandableSeparate");
+  
+  for (var i=0; i < topCategoryExpandables.length; i++)
+  {
+    var currentExpandable = topCategoryExpandables.item(i);
+    var currentToggle = currentExpandable.querySelector("tr > td > .expandableToggle");
+    
+    // document.evaluate("ancestor::*", $p, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,null)
+    
+    // check if this item id has already been expanded
+    var currentId = currentExpandable.getAttribute("data-stix-content-id");
+    var ancestorList = document.evaluate("ancestor::*[@data-stix-content-id = '" + currentId + "']", currentExpandable, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,null);
+    if (ancestorList.snapshotLength == 0)
+    {
+      // if not previously expanded (that is previously in it's ancestors in the html dom)
+      currentToggle.onclick();
+      
+    expandNestedExpandables(currentExpandable);      
+    }
+    
+    
+  }
+  console.log("done expanding.");
+}
+
+function expandTopLevelCategoryTable()
+{
+  
+}
+
+function expandNestedExpandables(contextExpandable)
+{
+  // document.evaluate("ancestor::*", $p, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,null)
+  
+  //   //div[contains(concat(' ', @class, ' '), ' Test ')]
+  
+  var expandableDescendentsSeparate = contextExpandable.querySelectorAll(".expandableContainer.expandableSeparate");
+  for (var i=0; i < expandableDescendentsSeparate.length; i++)
+  {
+    var currentExpandable = expandableDescendentsSeparate.item(i);
+    var currentToggle = currentExpandable.querySelector(".expandableToggle");
+
+    // check if this item id has already been expanded
+    var currentId = currentExpandable.getAttribute("data-stix-content-id");
+    var ancestorList = document.evaluate("ancestor::*[@data-stix-content-id = '" + currentId + "']", currentExpandable, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,null);
+    if (ancestorList.snapshotLength == 0)
+    {
+      // if not previously expanded (that is previously in it's ancestors in the html dom)
+      currentToggle.onclick();
+      expandNestedExpandables(currentExpandable);      
+    }
+      
+  }
+  
+  var expandableDescendentsSame = contextExpandable.querySelector(".expandableContainer.expandableSame");
+}
+
+function replaceHtmlContainers()
+{
+  var allTargets = document.querySelectorAll(".htmlContainer");
+  for (var i = 0; i < allTargets.length; i++)
+  {
+    var target = allTargets[i];
+    var rawHtml = target.getAttribute("data-stix-content");
+    
+    var htmlElement = document.createElement("html");
+    htmlElement.innerHTML = rawHtml;
+    
+    var body = htmlElement.querySelector("body");
+    var bodyChildren = body.childNodes;
+    //for (var j = 0; j < bodyChildren.length; j++)
+    while (bodyChildren.length > 0)
+    {
+      var currentBodyChild = bodyChildren[0];
+      if (currentBodyChild.nodeType == Node.ELEMENT_NODE || currentBodyChild.nodeType == Node.TEXT_NODE)
+      {
+        target.appendChild(currentBodyChild);
+      }
+
+    }
+    //target.appendChild();
+
+  }
+}
+
+
+function initialize()
+{
+  console.log("beginning initialization...");
+  wgxpath.install();
+  replaceHtmlContainers();
+  console.log("done initialization.");
+
 }
