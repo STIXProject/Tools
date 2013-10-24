@@ -14,7 +14,7 @@ THE STIX XML to HTML TRANSFORM.
 For more information, please refer to the terms.txt file.
 
 #################################################################
-STIX XML to HTML transform v1.1beta1
+STIX XML to HTML transform v1.0beta2
 Compatible with STIX v1.1
 
 This is an xslt to transform a stix 1.0 document containing metadata and
@@ -95,8 +95,15 @@ requirements:
  - XSLT 2.0 engine (this has been tested with Saxon 9.5)
  - a STIX 1.0 input xml document
 
+current release:
+v1.0beta2
+2013-10-24
+https://github.com/STIXProject/Tools/issues?milestone=1&state=open
+
+previous releases:
 v1.0beta1
 2013-08-28
+
 
 STIX - http://stix.mitre.org
 #################################################################
@@ -105,11 +112,23 @@ STIX - http://stix.mitre.org
 
 README: this file.
 stix_to_html.xsl: the top-level STIX XML to HTML XSL Transform.
+stix_to_hmtl__customized.xsl: [not required] example of how to use the stix
+  stylesheet and override the default title, header, footer, and css to
+  customize the output.
 cybox_common.xsl: common CybOX transformations used by stix_to_html.xsl.
 stix_common.xsl: common stix transformations used by stix_to_html.xsl.
 normalize.xsl: used by stix
+icons.xsl: stylesheet code to read in the svg icons for the main item type logos
 common.js: common javascript code
+wgxpath.install.css: xpath support in javascript for browsers that don't
+  support it (IE)
+  [source: http://code.google.com/p/wicked-good-xpath/]
 common.css: common css styles
+theme_default.css: css styles used for main item type background colors
+  (observables, ttps, indicators, etc)
+images/*.svg and *.svgz: svg vector images for the main item type logos
+  (the *.svg files are used and pulled in via the xsl and included in the
+  output html inline)
 
 --------------------------------------------------------------------------------
 --Usage Notes-------------------------------------------------------------------
