@@ -15,9 +15,9 @@ For more information, please refer to the terms.txt file.
 
 #################################################################
 STIX XML to HTML transform v1.0beta2
-Compatible with STIX v1.1
+Compatible with STIX v1.0.1
 
-This is an xslt to transform a stix 1.0 document containing metadata and
+This is an xslt to transform a stix 1.0/1.0.1 document containing metadata and
 different categories of top level items into html for easy viewing.
 
 The first two tables on the output html page are 1) a metadata table
@@ -93,7 +93,7 @@ This is a work in progress.  Feedback is most welcome!
 
 requirements:
  - XSLT 2.0 engine (this has been tested with Saxon 9.5)
- - a STIX 1.0 input xml document
+ - a STIX 1.0/1.0.1 input xml document
 
 current release:
 v1.0beta2
