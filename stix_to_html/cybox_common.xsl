@@ -55,6 +55,8 @@ ikirillov@mitre.org
     xmlns:et="http://stix.mitre.org/ExploitTarget-1"
     xmlns:stix='http://stix.mitre.org/stix-1'
     
+    xmlns:campaign="http://stix.mitre.org/Campaign-1"
+    
     xmlns:AddressObject='http://cybox.mitre.org/objects#AddressObject-2'
     xmlns:URIObject='http://cybox.mitre.org/objects#URIObject-2'
     xmlns:EmailMessageObj="http://cybox.mitre.org/objects#EmailMessageObject-2"
@@ -132,6 +134,10 @@ ikirillov@mitre.org
             </xsl:when>
             <xsl:when test="$actualItem[contains(@xsi:type,'IncidentType')]"  xml:space="preserve">
                 <xsl:variable name="output" select="if ($actualItem/coa:Type) then $actualItem/coa:Type/text() else ('[Incident, no Type]')" />
+                <xsl:value-of select="$output" />
+            </xsl:when>
+            <xsl:when test="$actualItem[self::stix:Campaign]">
+                <xsl:variable name="output" select="if ($actualItem/campaign:Names/campaign:Name) then $actualItem[self::stix:Campaign]/campaign:Names/campaign:Name/text() else ('[Other Campaign]')" />
                 <xsl:value-of select="$output" />
             </xsl:when>
             <!-- /stix -->
