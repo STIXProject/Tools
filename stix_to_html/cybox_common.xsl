@@ -140,6 +140,10 @@ ikirillov@mitre.org
                 <xsl:variable name="output" select="if ($actualItem/campaign:Names/campaign:Name) then $actualItem[self::stix:Campaign]/campaign:Names/campaign:Name/text() else ('[Other Campaign]')" />
                 <xsl:value-of select="$output" />
             </xsl:when>
+            <xsl:when test="$actualItem[self::stixCommon:Kill_Chain]">
+                <xsl:variable name="output" select="if ($actualItem/@name) then fn:data($actualItem/@name) else ('[Other Kill Chain]')" />
+                <xsl:value-of select="$output" />
+            </xsl:when>
             <!-- /stix -->
             <xsl:otherwise>
                 Other
